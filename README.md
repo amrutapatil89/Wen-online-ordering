@@ -13,6 +13,11 @@ All features present in mobile app will feature in this app.
 * Summary of set up
 By executing simple npm, bower and gulp commands, anyone can creating a local server and create a build for web online ordering. 
 
+* Configuration
+1. Master - It is used for production deployment 
+2. Design_mock - branch is used to create sample design mocks to finalize design components and layout
+2. Development - branch is used for current development 
+
 * Dependencies
 
 1. Node
@@ -57,4 +62,4 @@ gulp build
 
 * Admin : @bnair 
 * Developer : @Sudhindra_Chausalkar 
-* Tester : Manish Birthariya 
+* Tester : Manish Birthariya
