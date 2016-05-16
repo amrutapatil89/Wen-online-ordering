@@ -79,7 +79,7 @@
         });
 
         triMenuProvider.addMenu({
-            name: 'Dashboards',
+            name: 'Home',
             icon: 'zmdi zmdi-home',
             type: 'dropdown',
             priority: 1.1,
@@ -100,7 +100,7 @@
                 state: 'triangular.dashboard-server',
                 type: 'link'
             },{
-                name: 'Social',
+                name: 'Clavo Demo',
                 state: 'triangular.dashboard-social',
                 type: 'link'
             },{

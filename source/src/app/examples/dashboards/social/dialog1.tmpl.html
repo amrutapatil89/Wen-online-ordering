@@ -1,0 +1,42 @@
+<md-dialog aria-label="Item choices" flex="70" ng-cloak>
+  <form flex="100">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Item choices</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content">
+       <md-subheader class="md-no-sticky">Modifier Group 1</md-subheader>
+              <md-list-item ng-repeat="item in modifierGroups">
+                  <p>{{item.name}}</p>
+                  <md-checkbox class="md-secondary" ng-model="item.selected"></md-checkbox>
+              </md-list-item>
+              <md-subheader class="md-no-sticky">Single Selection</md-subheader>
+               <md-list-item ng-repeat="item in modifierGroups">
+                  <!-- <img ng-src="{{item.image}}" class="md-avatar" /> -->
+                  <p>{{item.name}}</p>
+                  <md-switch class="md-secondary" ng-model="item.selected"></md-switch>
+              </md-list-item>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+
+      <span flex></span>
+      <md-button ng-click="answer('useful')" style="margin-right:20px;">
+        Add to cart
+      </md-button>
+    </md-dialog-actions>
+  </form>
+
+          <!-- <div flex layout="column" layout-margin>
+            <md-subheader class="md-no-sticky">Modifier Group 1</md-subheader>
+              <md-list-item ng-repeat="item in modifierGroups">
+                  <p>{{item.name}}</p>
+              </md-list-item>
+          </div> -->
+</md-dialog>
