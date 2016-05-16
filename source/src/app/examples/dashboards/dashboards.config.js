@@ -25,22 +25,22 @@
                 }
             }
         })
-        .state('triangular.dashboard-general', {
-            url: '/dashboards/general',
-            templateUrl: 'app/examples/dashboards/general/dashboard-general.tmpl.html'
-        })
-        .state('triangular.dashboard-analytics', {
-            url: '/dashboards/analytics',
-            templateUrl: 'app/examples/dashboards/analytics/dashboard-analytics.tmpl.html',
-            controller: 'DashboardAnalyticsController',
-            controllerAs: 'vm'
-        })
-        .state('triangular.dashboard-server', {
-            url: '/dashboards/server',
-            templateUrl: 'app/examples/dashboards/server/dashboard-server.tmpl.html',
-            controller: 'DashboardServerController',
-            controllerAs: 'vm'
-        })
+        // .state('triangular.dashboard-general', {
+        //     url: '/dashboards/general',
+        //     templateUrl: 'app/examples/dashboards/general/dashboard-general.tmpl.html'
+        // })
+        // .state('triangular.dashboard-analytics', {
+        //     url: '/dashboards/analytics',
+        //     templateUrl: 'app/examples/dashboards/analytics/dashboard-analytics.tmpl.html',
+        //     controller: 'DashboardAnalyticsController',
+        //     controllerAs: 'vm'
+        // })
+        // .state('triangular.dashboard-server', {
+        //     url: '/dashboards/server',
+        //     templateUrl: 'app/examples/dashboards/server/dashboard-server.tmpl.html',
+        //     controller: 'DashboardServerController',
+        //     controllerAs: 'vm'
+        // })
         .state('triangular.dashboard-widgets', {
             url: '/dashboards/widgets',
             templateUrl: 'app/examples/dashboards/widgets.tmpl.html'
@@ -50,68 +50,71 @@
             templateUrl: 'app/examples/dashboards/social/dashboard-social.tmpl.html',
             controller: 'DashboardSocialController',
             controllerAs: 'vm'
-        })
-        .state('triangular.dashboard-sales', {
-            url: '/dashboards/sales',
-            data: {
-                layout: {
-                    showToolbar: false
-                }
-            },
-            views: {
-                '': {
-                    templateUrl: 'app/examples/dashboards/sales/dashboard-sales.tmpl.html',
-                    controller: 'DashboardSalesController',
-                    controllerAs: 'vm'
-                },
-                'belowContent': {
-                    templateUrl: 'app/examples/dashboards/sales/fab-button.tmpl.html',
-                    controller: 'SalesFabController',
-                    controllerAs: 'vm'
-                }
-            }
-        })
-        .state('triangular.dashboard-draggable', {
-            url: '/dashboards/draggable-widgets',
-            templateUrl: 'app/examples/dashboards/dashboard-draggable.tmpl.html',
-            controller: 'DashboardDraggableController',
-            controllerAs: 'vm'
         });
+        // .state('triangular.dashboard-sales', {
+        //     url: '/dashboards/sales',
+        //     data: {
+        //         layout: {
+        //             showToolbar: false
+        //         }
+        //     },
+        //     views: {
+        //         '': {
+        //             templateUrl: 'app/examples/dashboards/sales/dashboard-sales.tmpl.html',
+        //             controller: 'DashboardSalesController',
+        //             controllerAs: 'vm'
+        //         },
+        //         'belowContent': {
+        //             templateUrl: 'app/examples/dashboards/sales/fab-button.tmpl.html',
+        //             controller: 'SalesFabController',
+        //             controllerAs: 'vm'
+        //         }
+        //     }
+        // })
+        // .state('triangular.dashboard-draggable', {
+        //     url: '/dashboards/draggable-widgets',
+        //     templateUrl: 'app/examples/dashboards/dashboard-draggable.tmpl.html',
+        //     controller: 'DashboardDraggableController',
+        //     controllerAs: 'vm'
+        // });
 
         triMenuProvider.addMenu({
             name: 'Home',
             icon: 'zmdi zmdi-home',
             type: 'dropdown',
-            priority: 1.1,
-            children: [{
-                name: 'Analytics',
-                state: 'triangular.dashboard-analytics',
-                type: 'link'
-            },{
-                name: 'General',
-                state: 'triangular.dashboard-general',
-                type: 'link'
-            },{
-                name: 'Sales',
-                state: 'triangular.dashboard-sales',
-                type: 'link'
-            },{
-                name: 'Server',
-                state: 'triangular.dashboard-server',
-                type: 'link'
-            },{
-                name: 'Clavo Demo',
+            priority: 1.0,
+            children: [
+            //     name: 'Analytics',
+            //     state: 'triangular.dashboard-analytics',
+            //     type: 'link'
+            // },{
+            //     name: 'General',
+            //     state: 'triangular.dashboard-general',
+            //     type: 'link'
+            // },{
+            //     name: 'Sales',
+            //     state: 'triangular.dashboard-sales',
+            //     type: 'link'
+            // },{
+            //     name: 'Server',
+            //     state: 'triangular.dashboard-server',
+            //     type: 'link'
+            // },{
+            {
+                name: 'Menu',
                 state: 'triangular.dashboard-social',
                 type: 'link'
-            },{
-                name: 'Widgets',
+            },
+            {
+                name: 'Cart',
                 state: 'triangular.dashboard-widgets',
                 type: 'link'
-            },{
-                name: 'Draggable',
-                state: 'triangular.dashboard-draggable',
-                type: 'link'
             }]
+            // },{
+            //     name: 'Draggable',
+            //     state: 'triangular.dashboard-draggable',
+            //     type: 'link'
+            // }]
         });
 
     }

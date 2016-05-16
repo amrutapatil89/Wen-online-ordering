@@ -54,32 +54,32 @@
         });
 
         triMenuProvider.addMenu({
-            name: 'Authentication',
+            name: 'About Us',
             icon: 'zmdi zmdi-account',
-            type: 'dropdown',
+            type: 'link',
             priority: 4.1,
-            permission: 'viewAuthentication',
-            children: [{
-                name: 'Login',
-                state: 'authentication.login',
-                type: 'link'
-            },{
-                name: 'Sign Up',
-                state: 'authentication.signup',
-                type: 'link'
-            },{
-                name: 'Forgot Password',
-                state: 'authentication.forgot',
-                type: 'link'
-            },{
-                name: 'Lock Page',
-                state: 'authentication.lock',
-                type: 'link'
-            },{
-                name: 'Profile',
-                state: 'triangular.profile',
-                type: 'link'
-            }]
+            permission: 'viewAuthentication'
+            // children: [{
+            //     name: 'Login',
+            //     state: 'authentication.login',
+            //     type: 'link'
+            // },{
+            //     name: 'Sign Up',
+            //     state: 'authentication.signup',
+            //     type: 'link'
+            // },{
+            //     name: 'Forgot Password',
+            //     state: 'authentication.forgot',
+            //     type: 'link'
+            // },{
+            //     name: 'Lock Page',
+            //     state: 'authentication.lock',
+            //     type: 'link'
+            // },{
+            //     name: 'Profile',
+            //     state: 'triangular.profile',
+            //     type: 'link'
+            // }]
         });
     }
 })();

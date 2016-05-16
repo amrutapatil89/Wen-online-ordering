@@ -6,19 +6,19 @@
         .config(moduleConfig)
         .constant('EMAIL_ROUTES', [{
             state: 'triangular.email.inbox',
-            name: 'Inbox',
+            name: 'My Profile',
             url: '/email/inbox',
-            icon: 'zmdi zmdi-inbox'
+            // icon: 'zmdi zmdi-inbox'
         },{
             state: 'triangular.email.trash',
-            name: 'Trash',
+            name: 'Order History',
             url: '/email/trash',
-            icon: 'zmdi zmdi-minus-circle'
+            // icon: 'zmdi zmdi-minus-circle'
         },{
             state: 'triangular.email.sent',
-            name: 'Sent',
+            name: 'Current Orders',
             url: '/email/sent',
-            icon: 'zmdi zmdi-email'
+            // icon: 'zmdi zmdi-email'
         }]);
 
     /* @ngInject */
@@ -102,7 +102,7 @@
         });
 
         var emailMenu = {
-            name: 'Email',
+            name: 'User Profile',
             icon: 'zmdi zmdi-email',
             type: 'dropdown',
             priority: 2.1,
@@ -114,8 +114,8 @@
             emailMenu.children.push({
                 name: route.name,
                 state: route.state,
-                type: 'link',
-                badge: Math.round(Math.random() * (20 - 1) + 1)
+                type: 'link'
+                // badge: Math.round(Math.random() * (20 - 1) + 1)
             });
         });
 
