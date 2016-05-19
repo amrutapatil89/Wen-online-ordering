@@ -25,9 +25,9 @@
                 <tri-widget flex="70" title="" contacts-widget content-layout="row">
 
                     <md-list flex="20">
-                    <h2 style="margin-left:15px;">categories</h2>
-                        <md-list-item ng-repeat="category in vm.categories">
-                            <a href="">{{category.name}}</a href="">                            
+                    <h2 style="margin-left:15px;">Categories</h2>
+                        <md-list-item ng-repeat="category in vm.categories" href="">
+                            {{category.name}}                         
                         </md-list-item>
                     </md-list>
 
@@ -68,19 +68,32 @@
                     <md-divider></md-divider>
                     <md-card-content>
                     <md-input-container class="md-block">
-                    <label>Order Type</label>
-                        <md-select placeholder="Pick" ng-model="numCakes" ng-init="numCakes = 1">
+                    <label>Order Type</label> <br>
+                        <!-- <md-select placeholder="Pick" ng-model="numCakes" ng-init="numCakes = 1">
                         <md-option value="1">Delivery</md-option>
                         <md-option value="2">Pickup</md-option>
-                    </md-select>
+                    </md-select> -->
+                    <md-radio-group ng-model="numCakes" ng-init="numCakes = 1" layout="row">
+                      <md-radio-button value="1" class="md-primary">Delivery</md-radio-button>
+                      <md-radio-button value="2" class="md-primary"> Pickup </md-radio-button>
+                    </md-radio-group>
                     </md-input-container>
                     <h3>Items</h3>
                         <div layout="row" flex ng-mouseover="hover=true" ng-mouseleave="hover=false">
-                            <div flex="40"> <md-icon md-font-icon="zmdi zmdi-edit material-icon" layout-align="end end" class="" ng-click="vm.openModifiers($event)" ng-show="hover"></md-icon> Fountain Drinks</div>
+                            <div flex="40"> 
+                                <md-icon md-font-icon="zmdi zmdi-edit material-icon" layout-align="end end" class="" ng-click="vm.openModifiers($event)" ng-show="hover">
+                                <md-tooltip md-direction="left">
+                                     Edit Item
+                                </md-tooltip>
+                                </md-icon> Fountain Drinks</div>
                             <div flex>$5.00</div>
                             <div flex>1</div>
                             <div flex>$5.00</div>
-                            <div flex="5" ng-show="hover"><md-icon md-font-icon="zmdi zmdi-delete"></md-icon></div>
+                            <div flex="5" ng-show="hover"><md-icon md-font-icon="zmdi zmdi-delete">
+                            <md-tooltip md-direction="left">
+                                     Delete Item
+                                </md-tooltip>
+                            </md-icon></div>
                         </div>
                         <div layout="row" flex>
                             <div flex="40"> <!-- <md-icon md-font-icon="zmdi zmdi-edit material-icon" layout-align="end end" class="" ng-click="vm.openModifiers($event)"></md-icon> --> Double Chicken</div>
