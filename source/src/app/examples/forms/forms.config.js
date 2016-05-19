@@ -43,7 +43,7 @@
             controllerAs: 'wizardController',
             data: {
                 layout: {
-                    contentClass: 'layout-column full-image-background mb-bg-fb-02 background-overlay-static',
+                    contentClass: 'layout-column full-image-background background-overlay-static',
                     innerContentClass: 'overlay-gradient-20'
                 }
             }
