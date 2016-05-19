@@ -24,23 +24,24 @@
             <div layout="row" layout-margin>
                 <tri-widget flex="70" title="" contacts-widget content-layout="row">
 
-                    <md-list flex="20">
-                    <h2 style="margin-left:15px;">Categories</h2>
+                    <md-list flex="20" class="md-grey">
+                    <h2 style="margin-left:15px;">Categories</h2><md-divider></md-divider> <br>
                         <md-list-item ng-repeat="category in vm.categories" href="">
-                            {{category.name}}                         
+                           <p>{{category.name}}</p>                    
                         </md-list-item>
                     </md-list>
 
                     <md-list flex="80">
-                    <h2>Items</h2>
-                     <md-subheader class="md-no-sticky">Eats</md-subheader>
+                    <h2>Items</h2><md-divider></md-divider> <br>
                         <md-list-item class="md-2-line" ng-repeat="item in vm.items">
                              <div class="md-list-item-text" style="width:100%">
                                 <h3 layout="row" layout-align="end center" layout-wrap >{{item.name}} 
                                      <div layout="row" layout-align="start center" flex>
                                          <span flex></span>
                                          ${{item.price/100}} &nbsp;&nbsp;
-                                         <md-icon md-font-icon="zmdi zmdi-plus-circle-o" layout-align="end end" class="md-primary" ng-click="vm.openModifiers($event)"></md-icon>
+                                         <md-icon md-font-icon="zmdi zmdi-plus-circle-o" layout-align="end end" class="md-primary" ng-click="vm.openModifiers($event)"><md-tooltip md-direction="right">
+                                     Add to cart
+                                </md-tooltip></md-icon>
                                        
                                       </div>
                                 </h3>
@@ -53,21 +54,21 @@
                     </md-list>
                 </tri-widget>
                 <md-card flex>
-                    <md-card-header>
-                            <h2>Cart</h2>
+                <h2>&nbsp;&nbsp;Cart</h2><md-divider></md-divider>
+                    <!-- <md-card-header>
+                            
                         <md-card-header-text>
                         
                         </md-card-header-text>
                         <md-card-icon-actions>
-                            <!-- <md-button class="md-icon-button" aria-label="close" ng-click="vm.closeEmail()">
+                            <md-button class="md-icon-button" aria-label="close" ng-click="vm.closeEmail()">
                                 <md-icon md-font-icon="zmdi zmdi-close"></md-icon>
-                            </md-button> -->
+                            </md-button>
 
                         </md-card-icon-actions>
-                    </md-card-header>
-                    <md-divider></md-divider>
+                    </md-card-header> -->
                     <md-card-content>
-                    <md-input-container class="md-block">
+                    <md-input-container class="md-block margin-top-0">
                     <label>Order Type</label> <br>
                         <!-- <md-select placeholder="Pick" ng-model="numCakes" ng-init="numCakes = 1">
                         <md-option value="1">Delivery</md-option>
