@@ -78,12 +78,12 @@
         //     controllerAs: 'vm'
         // });
 
-        triMenuProvider.addMenu({
-            name: 'Home',
-            icon: 'zmdi zmdi-home',
-            type: 'dropdown',
-            priority: 1.0,
-            children: [
+        // triMenuProvider.addMenu({
+        //     name: 'Home',
+        //     icon: 'zmdi zmdi-home',
+        //     type: 'dropdown',
+        //     priority: 1.0,
+            // children: [
             //     name: 'Analytics',
             //     state: 'triangular.dashboard-analytics',
             //     type: 'link'
@@ -100,22 +100,22 @@
             //     state: 'triangular.dashboard-server',
             //     type: 'link'
             // },{
-            {
-                name: 'Menu',
-                state: 'triangular.dashboard-social',
-                type: 'link'
-            },
-            {
-                name: 'Cart',
-                state: 'triangular.dashboard-widgets',
-                type: 'link'
-            }]
+            // {
+            //     name: 'Menu',
+            //     state: 'triangular.dashboard-social',
+            //     type: 'link'
+            // },
+            // {
+            //     name: 'Cart',
+            //     state: 'triangular.dashboard-widgets',
+            //     type: 'link'
+            // }]
             // },{
             //     name: 'Draggable',
             //     state: 'triangular.dashboard-draggable',
             //     type: 'link'
             // }]
-        });
+        // });
 
     }
 })();

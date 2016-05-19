@@ -220,6 +220,6 @@
         /**
          *  SET DEFAULT SKIN
          */
-        triSkinsProvider.setSkin('kermit-green');
+        triSkinsProvider.setSkin('cyan-cloud');
     }
 })();
