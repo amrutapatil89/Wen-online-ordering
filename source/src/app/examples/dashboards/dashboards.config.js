@@ -25,22 +25,22 @@
                 }
             }
         })
-        // .state('triangular.dashboard-general', {
-        //     url: '/dashboards/general',
-        //     templateUrl: 'app/examples/dashboards/general/dashboard-general.tmpl.html'
-        // })
-        // .state('triangular.dashboard-analytics', {
-        //     url: '/dashboards/analytics',
-        //     templateUrl: 'app/examples/dashboards/analytics/dashboard-analytics.tmpl.html',
-        //     controller: 'DashboardAnalyticsController',
-        //     controllerAs: 'vm'
-        // })
-        // .state('triangular.dashboard-server', {
-        //     url: '/dashboards/server',
-        //     templateUrl: 'app/examples/dashboards/server/dashboard-server.tmpl.html',
-        //     controller: 'DashboardServerController',
-        //     controllerAs: 'vm'
-        // })
+        .state('triangular.dashboard-general', {
+            url: '/dashboards/general',
+            templateUrl: 'app/examples/dashboards/general/dashboard-general.tmpl.html'
+        })
+        .state('triangular.dashboard-analytics', {
+            url: '/dashboards/analytics',
+            templateUrl: 'app/examples/dashboards/analytics/dashboard-analytics.tmpl.html',
+            controller: 'DashboardAnalyticsController',
+            controllerAs: 'vm'
+        })
+        .state('triangular.dashboard-server', {
+            url: '/dashboards/server',
+            templateUrl: 'app/examples/dashboards/server/dashboard-server.tmpl.html',
+            controller: 'DashboardServerController',
+            controllerAs: 'vm'
+        })
         .state('triangular.dashboard-widgets', {
             url: '/dashboards/widgets',
             templateUrl: 'app/examples/dashboards/widgets.tmpl.html'
