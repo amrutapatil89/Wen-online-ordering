@@ -1,70 +1,85 @@
-<h2>Online Payment</h2>
-<md-content class="md-padding" flex="100">
-                            <form name="billingForm" flex="100">
-                                <div>
-                                    <md-input-container class="md-block">
-                                        <label translate>Credit card number</label>
-                                        <input name="cardNumber" ng-model="wizardController.data.billing.number" required>
-                                        <div ng-messages="billingForm.cardNumber.$error" md-auto-hide="false" ng-show="billingForm.cardNumber.$touched">
-                                            <div ng-message when="required">
-                                                <span translate>This field is required</span>
-                                            </div>
-                                        </div>
-                                    </md-input-container>
-                                    <md-input-container class="md-block">
-                                        <label translate>Name on card</label>
-                                        <input name="cardName" ng-model="wizardController.data.billing.name" required>
-                                        <div ng-messages="billingForm.cardName.$error" md-auto-hide="false" ng-show="billingForm.cardName.$touched">
-                                            <div ng-message when="required">
-                                                <span translate>This field is required</span>
-                                            </div>
-                                        </div>
-                                    </md-input-container>
-                                </div>
-                                <div layout layout-xs="column" flex>
-                                    <md-input-container flex>
-                                        <label translate>Expiry date (MM)</label>
-                                        <input name="cardMonth" ng-model="wizardController.data.billing.cardMonth" ng-minlength="2" ng-maxlength="2" ng-pattern="/^(0?[1-9]|1[012])$/" required>
-                                        <div ng-messages="billingForm.cardMonth.$error" md-auto-hide="false" ng-show="billingForm.cardMonth.$touched">
-                                            <div ng-message when="required">
-                                                <span translate>This field is required</span>
-                                            </div>
-                                            <div ng-message when="maxlength">
-                                                <span translate>Month must be in the format MM</span>
-                                            </div>
-                                            <div ng-message when="minlength">
-                                                <span translate>Month must be in the format MM</span>
-                                            </div>
-                                            <div ng-message when="pattern">
-                                                <span translate>Month must be in the format MM</span>
-                                            </div>
-                                        </div>
-                                    </md-input-container>
-                                    <md-input-container flex>
-                                        <label translate>Expiry date (YYYY)</label>
-                                        <input name="cardYear" ng-model="wizardController.data.billing.cardYear" ng-minlength="4" ng-maxlength="4" ng-pattern="/^[0-9]+$/" required>
-                                        <div ng-messages="billingForm.cardYear.$error" md-auto-hide="false" ng-show="billingForm.cardYear.$touched">
-                                            <div ng-message when="required">
-                                                <span translate>This field is required</span>
-                                            </div>
-                                            <div ng-message when="maxlength">
-                                                <span translate>Year must be in the format YYYY</span>
-                                            </div>
-                                            <div ng-message when="minlength">
-                                                <span translate>Year must be in the format YYYY</span>
-                                            </div>
-                                            <div ng-message when="pattern">
-                                                <span translate>Year must be in the format YYYY</span>
-                                            </div>
-                                        </div>
-                                    </md-input-container>
-                                </div>
+<div layout="column" class="padded-content-page">
+    <p class="md-subhead">Triangular allows you to build stunning dashbords easily using widgets.  Each widget has many different options you can find out how to use some of them below.</p>
 
-                                <div layout="coloumn" layout-align="end center">
-                                     <md-button class="md-raised md-primary margin-left-0 margin-right-0 margin-top-10 margin-bottom-10" href="#/dashboards/social">Pay</md-button>
-                                </div>
-                            </form>
-                        </md-content>
 
-                         <br>
-                         <br>
+    <p>Titles & subtitles can be placed above and below the widget content.</p>
+    <div class="example-code md-whiteframe-z1 margin-bottom-20">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Title above and below the content</h2>
+            </div>
+        </md-toolbar>
+
+        <md-tabs class="example-tabs" md-dynamic-height md-border-bottom>
+            <md-tab label="example">
+                <div class="md-tabs-content" ng-include="'app/examples/dashboards/examples/widget-title-above.tmpl.html'"></div>
+            </md-tab>
+            <md-tab label="HTML">
+                <div class="md-tabs-content">
+                    <div flex hljs language="html" include="'app/examples/dashboards/examples/widget-title-above.tmpl.html'"></div>
+                </div>
+            </md-tab>
+        </md-tabs>
+    </div>
+
+
+    <p>Titles & subtitles can also be be placed to the side of the widget content.</p>
+    <div class="example-code md-whiteframe-z1 margin-bottom-20">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Title on the side of the content</h2>
+            </div>
+        </md-toolbar>
+
+        <md-tabs class="example-tabs" md-dynamic-height md-border-bottom>
+            <md-tab label="example">
+                <div class="md-tabs-content" ng-include="'app/examples/dashboards/examples/widget-title-side.tmpl.html'"></div>
+            </md-tab>
+            <md-tab label="HTML">
+                <div class="md-tabs-content">
+                    <div flex hljs language="html" include="'app/examples/dashboards/examples/widget-title-side.tmpl.html'"></div>
+                </div>
+            </md-tab>
+        </md-tabs>
+    </div>
+
+    <p>You can also use any of <a ui-sref="admin-panel.default.ui-colors">triangulars palette colors</a> for your widgets.</p>
+    <div class="example-code md-whiteframe-z1 margin-bottom-20">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Using palette colours</h2>
+            </div>
+        </md-toolbar>
+
+        <md-tabs class="example-tabs" md-dynamic-height md-border-bottom>
+            <md-tab label="example">
+                <div class="md-tabs-content" ng-include="'app/examples/dashboards/examples/widget-colors.tmpl.html'"></div>
+            </md-tab>
+            <md-tab label="HTML">
+                <div class="md-tabs-content">
+                    <div flex hljs language="html" include="'app/examples/dashboards/examples/widget-colors.tmpl.html'"></div>
+                </div>
+            </md-tab>
+        </md-tabs>
+    </div>
+
+
+    <p>You can also use an image for your widget backgrounds.</p>
+    <div class="example-code md-whiteframe-z1 margin-bottom-20">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Using palette colours</h2>
+            </div>
+        </md-toolbar>
+        <md-tabs class="example-tabs" md-dynamic-height md-border-bottom>
+            <md-tab label="example">
+                <div class="md-tabs-content" ng-include="'app/examples/dashboards/examples/widget-backgrounds.tmpl.html'"></div>
+            </md-tab>
+            <md-tab label="HTML">
+                <div class="md-tabs-content">
+                    <div flex hljs language="html" include="'app/examples/dashboards/examples/widget-backgrounds.tmpl.html'"></div>
+                </div>
+            </md-tab>
+        </md-tabs>
+    </div>
+</div>

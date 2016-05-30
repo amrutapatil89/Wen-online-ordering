@@ -1,137 +1,186 @@
-<div flex layout="column" layout-margin>
+<div class="dashboard-container overlay-5 padded-content-page" layout="column">
+    <div layout="row" layout-xs="column" layout-margin>
+        <tri-widget calendar-widget flex class="widget-calendar" palette-background="triCyan:500" content-layout="column" content-layout-align="space-between">
+            <div flex layout="row" layout-align="start center" layout-padding layout-fill>
+                <div flex layout="column">
+                    <h3 class="md-subhead text-ellipsis margin-0">
+                        {{calendarController.currentDay | amDateFormat:'MMMM'}}
+                    </h3>
+                    <h3 class="md-subhead text-ellipsis margin-0">
+                        {{calendarController.currentDay | amDateFormat:'YYYY'}}
+                    </h3>
+                </div>
+                <div class="widget-buttons">
+                    <md-button class="widget-button md-icon-button" ng-click="calendarController.changeMonth('prev')" aria-label="previous month">
+                        <md-icon md-font-icon="zmdi zmdi-chevron-left"></md-icon>
+                    </md-button>
+                    <md-button show-gt-md class="widget-button md-icon-button" ng-click="calendarController.changeMonth('today')" aria-label="today">
+                        <md-icon md-font-icon="zmdi zmdi-calendar-alt"></md-icon>
+                    </md-button>
+                    <md-button class="widget-button md-icon-button" ng-click="calendarController.changeMonth('next')" aria-label="next month">
+                        <md-icon md-font-icon="zmdi zmdi-chevron-right"></md-icon>
+                    </md-button>
+                </div>
+            </div>
+            <md-divider></md-divider>
+            <div layout-padding>
+                <div ui-calendar="calendarController.calendarOptions" ng-model="calendarController.calendarEvents" calendar="calendarWidget"></div>
+            </div>
+        </tri-widget>
+
+
+        <div layout="column" flex layout-margin>
+            <tri-widget palette-background="deep-orange:500" content-layout="column" content-layout-align="space-between">
+                <h2 class="md-display-2 font-weight-100 margin-0" flex layout-padding>Call Sue</h2>
+                <md-divider></md-divider>
+                <div flex="20" layout="row" layout-align="space-between center" layout-padding>
+                    <span>Monday 1st March</span>
+                    <md-button class="md-icon-button" aria-label="call">
+                        <md-icon md-font-icon="zmdi zmdi-phone"></md-icon>
+                    </md-button>
+                </div>
+            </tri-widget>
+            <tri-widget palette-background="purple:300" content-layout="column" content-layout-align="space-between">
+                <h2 class="md-display-2 font-weight-100 margin-0" flex layout-padding>Clean Desk</h2>
+                <md-divider></md-divider>
+                <div flex="20" layout="row" layout-align="space-between center" layout-padding>
+                    <span>Tuesday 2st March</span>
+                    <md-button class="md-icon-button" aria-label="clean">
+                        <md-icon md-font-icon="zmdi zmdi-calendar"></md-icon>
+                    </md-button>
+                </div>
+            </tri-widget>
+        </div>
+        <tri-widget todo-widget class="dashboard-todo-widget" palette-background="light-blue:600" title="Todo List" subtitle="Your current todo list" title-position="top" content-layout-align="space-between" content-padding>
+            <md-list flex class="padding-left-0">
+                <md-list-item ng-repeat="todo in todos">
+                    <md-checkbox ng-model="todo.done"></md-checkbox>
+                    <p>{{todo.name}}</p>
+                </md-list-item>
+            </md-list>
+        </tri-widget>
+    </div>
+
+    <div layout="row" layout-xs="column" layout-margin>
+       <tri-widget flex weather-widget="Sitia" background-image="assets/images/dashboards/weather.jpg" palette-background="deep-orange:800" content-layout="column" content-layout-align="space-between">
+            <div layout="column" flex layout-align="start center">
+                <p class="md-caption">{{weather.date | amDateFormat:'dddd, MMMM Do YYYY'}}</p>
+                <h1 class="font-size-14 margin-top-80 margin-bottom-80 font-weight-100">
+                    {{::weather.temp}}&deg;
+                </h1>
+            </div>
+            <div layout="column" class="full-width overlay-gradient-40">
+                <md-divider></md-divider>
+                <div flex layout="row" layout-margin layout-align="space-between center" class="padding-30">
+                    <i class="wi font-size-2" ng-class="weather.iconClass"></i>
+                    <p class="margin-0">{{::weather.text}}</p>
+                    <p class="margin-0">{{::weather.location}}</p>
+                </div>
+            </div>
+        </tri-widget>
+
+        <tri-widget chat-widget flex class="widget-chat" title="Chat" content-layout="column" content-layout-align="space-between">
+            <md-divider></md-divider>
+            <md-list class="padding-top-20 padding-bottom-0" flex>
+                <md-list-item ng-repeat="chat in ::conversation" class="md-3-line" ng-class="userClass($even)" ng-init="userColor = $even ? 'cyan' : 'light-green'">
+                    <img class="md-avatar" ng-src="{{::chat.image}}" alt="{{::chat.name}}">
+                    <div class="md-list-item-text">
+                        <p palette-background="{{::userColor}}:200" ng-repeat="message in ::chat.messages">
+                           {{::message}}
+                        </p>
+                    </div>
+                </md-list-item>
+            </md-list>
+            <div layout="row" layout-align="space-between center">
+                <md-input-container flex class="margin-left-20 margin-right-20">
+                    <label>Message</label>
+                    <input type="text">
+                </md-input-container>
+            </div>
+        </tri-widget>
+    </div>
+    <div layout="row" layout-xs="column" layout-margin ng-cloak>
+        <div layout="column" layout-margin layout-fill flex="40" flex-xs="100">
+            <tri-widget class="widget-blog" flex="60" flex-xs="100" content-layout="column" content-layout-align="start center">
+                <img src="assets/images/backgrounds/material-backgrounds/mb-bg-01.jpg" alt="some bg">
+                <div class="widget-blog-text padding-10" ng-cloak>
+                    <h2>It's all about Material</h2>
+                    <p>We challenged ourselves to create a visual language for our users that synthesizes the classic principles of good design with the innovation and possibility of technology and science. This is material design.</p>
+                    <md-fab-speed-dial md-direction="up" class="md-fling">
+                        <md-fab-trigger>
+                            <md-button aria-label="share this post" class="md-fab md-warn">
+                                <md-icon md-font-icon="zmdi zmdi-share"></md-icon>
+                            </md-button>
+                        </md-fab-trigger>
+                        <md-fab-actions>
+                            <md-button aria-label="twitter" class="md-fab md-raised md-mini" ng-click="share('Shared on Twitter', $event)">
+                                <md-icon md-font-icon="fa fa-twitter"></md-icon>
+                            </md-button>
+                            <md-button aria-label="facebook" class="md-fab md-raised md-mini" ng-click="share('Shared on Facebook', $event)">
+                                <md-icon md-font-icon="fa fa-facebook"></md-icon>
+                            </md-button>
+                            <md-button aria-label="google-plus" class="md-fab md-raised md-mini" ng-click="share('Shared on Google+', $event)">
+                                <md-icon md-font-icon="fa fa-google-plus"></md-icon>
+                            </md-button>
+                        </md-fab-actions>
+                    </md-fab-speed-dial>
+                </div>
+            </tri-widget>
             <div layout="row" layout-margin>
-                <tri-widget flex="60" title="" contacts-widget content-layout="row">
+                <tri-widget flex title="Color palette" subtitle="Color in material design is inspired by bold hues and bright highlights. "  palette-background="deep-orange:800" background-image="assets/images/backgrounds/material-backgrounds/mb-bg-05.jpg" overlay-title title-position="bottom" >
+                </tri-widget>
+            </div>
+        </div>
 
+        <div flex layout="column" layout-margin>
+            <div layout-margin>
+            <tri-widget palette-background="triCyan:500" twitter-widget>
+                <div layout="row" layout-align="space-between center" class="padding-normal">
+                    <i class="fa fa-twitter font-size-4 opacity-50"></i>
+                    <h3 flex hide-xs class="md-subhead">Oxygenna's feed</h3>
+                    <div class="widget-buttons">
+                        <md-button class="md-icon-button" ng-click="prevTweet()" aria-label="previous tweet">
+                            <md-icon md-font-icon="zmdi zmdi-chevron-left"></md-icon>
+                        </md-button>
+                        <md-button class="md-icon-button" ng-click="nextTweet()" aria-label="next tweet">
+                            <md-icon md-font-icon="zmdi zmdi-chevron-right"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+                <div layout="column" class="padding-top-0 padding-left-40 padding-right-40 padding-bottom-40">
+                    <md-tabs md-selected="selectedTab" class="dashboard-no-bar-tabs text-center" md-no-pagination md-no-bar md-dynamic-height>
+                        <md-tab ng-repeat="tweet in ::tweets" label="tweet.id">
+                            <div ng-bind="tweet.body" linkify="twitter" class="font-weight-300 font-size-2 font-style-italic line-height-big"></div>
+                        </md-tab>
+                    </md-tabs>
+                </div>
+            </tri-widget>
+            </div>
+            <div layout="row" layout-margin>
+                 <tri-widget flex="50" title="Contacts" contacts-widget content-layout="row">
                     <md-list flex>
-                    <h2> &nbsp;&nbsp; Checkout</h2><md-divider></md-divider> <br>
-                        <md-list-item class="md-3-line margin-top-10">
-                             <div class="md-list-item-text" style="width:100%">
-                                <h3 layout="row" layout-align="end center"  class="margin-bottom-10" layout-wrap > 
-
-                                        <md-icon md-svg-icon="assets/images/icons/ic_close_black_24px.svg"></md-icon> Double Chicken 
-
-                                     <div layout="row" layout-align="start center" flex>
-                                         <span flex></span>
-                                        3 Qty &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                         $07.00 &nbsp;&nbsp;
-                                         <!-- <md-icon md-font-icon="zmdi zmdi-plus-circle-o" layout-align="end end" class="md-primary" ng-click="vm.openModifiers($event)"><md-tooltip md-direction="right">
-                                     Add to cart
-                                </md-tooltip></md-icon> -->
-                                       
-                                      </div>
-                                </h3>
-                                <p layout="row" layout-align="end center" layout-wrap >Hot Sauce  
-                                    <span layout="row" layout-align="end center" flex>
-                                        
-                                         $00.50 &nbsp;&nbsp;
-                                    </span>
-                                </p>
-                                <p layout="row" layout-align="end center" layout-wrap >Pepper 
-                                    <span layout="row" layout-align="start center" flex>
-                                         <span flex></span>
-                                         $00.50  &nbsp;&nbsp;
-                                    </span>
-                                </p>
-                                <p layout="row" layout-align="end center" layout-wrap >Cheese
-
-                                    <span layout="row" layout-align="start center" flex>
-                                         <span flex></span>
-                                         $03.00 &nbsp;&nbsp;
-                                    </span>
-                                </p>
-                                <p>{{item.vzCustomData.description}}</p>
-                             </div>
-
-                            
-                            <md-divider ng-hide="$last"></md-divider>
-                        </md-list-item> <md-list-item class="md-3-line margin-top-10">
-                             <div class="md-list-item-text" style="width:100%">
-                                <h3 layout="row" layout-align="end center"  class="margin-bottom-10" layout-wrap > <md-icon md-svg-icon="assets/images/icons/ic_close_black_24px.svg"></md-icon>Double Chicken 
-                                     <div layout="row" layout-align="start center" flex>
-                                         <span flex></span>
-                                         3 Qty &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                         $07.00 &nbsp;&nbsp;
-                                         <!-- <md-icon md-font-icon="zmdi zmdi-plus-circle-o" layout-align="end end" class="md-primary" ng-click="vm.openModifiers($event)"><md-tooltip md-direction="right">
-                                     Add to cart
-                                </md-tooltip></md-icon> -->
-                                       
-                                      </div>
-                                </h3>
-                                <p layout="row" layout-align="end center" layout-wrap >Hot Sauce  
-                                    <span layout="row" layout-align="end center" flex>
-                                        
-                                         $00.50 &nbsp;&nbsp;
-                                    </span>
-                                </p>
-                                <p layout="row" layout-align="end center" layout-wrap >Pepper 
-                                    <span layout="row" layout-align="start center" flex>
-                                         <span flex></span>
-                                         $00.50  &nbsp;&nbsp;
-                                    </span>
-                                </p>
-                                <p layout="row" layout-align="end center" layout-wrap >Cheese
-
-                                    <span layout="row" layout-align="start center" flex>
-                                         <span flex></span>
-                                         $03.00 &nbsp;&nbsp;
-                                    </span>
-                                </p>
-                                <p>{{item.vzCustomData.description}}</p>
-                             </div>
-
-                            
+                        <md-list-item ng-repeat="contact in ::contacts">
+                            <img class="md-avatar" ng-src="{{::contact.image}}" alt="{{::contact.name}}">
+                            <p>{{::contact.name}}</p>
+                            <md-icon md-font-icon="zmdi zmdi-chat" class="md-primary"></md-icon>
                             <md-divider ng-hide="$last"></md-divider>
                         </md-list-item>
-                        <md-subheader  layout="row" layout-align="end center" layout-wrap class="md-no-sticky">Sub total : $14.50  &nbsp;&nbsp;</md-subheader>
-
-                        <md-input-container flex="40" class="md-icon-float md-icon-right margin-left-20">
-                          <label>Have a coupon</label>
-                          <input ng-model="user.donation" type="text">
-                          <md-icon md-svg-src="img/icons/ic_euro_24px.svg"></md-icon>
-                          
-                        </md-input-container>
-                        <md-button flex="60" class="md-primary" aria-label="flat button">Offers </md-button>
-                        </md-list>
-
+                    </md-list>
                 </tri-widget>
-                <md-card flex>
-                <h2>&nbsp;&nbsp;Order Details</h2><md-divider></md-divider>
+                <tri-widget palette-background="deep-orange:600">
+                    <img class="full-width" src="assets/images/avatars/avatar-big.png" alt="my face">
 
-                    <md-card-content>
-                    <md-input-container class="md-block margin-top-0">
-                    <label>Order Type</label> <br>
-                        <!-- <md-select placeholder="Pick" ng-model="numCakes" ng-init="numCakes = 1">
-                        <md-option value="1">Delivery</md-option>
-                        <md-option value="2">Pickup</md-option>
-                    </md-select> -->
-                    <md-radio-group ng-model="numCakes" ng-init="numCakes = 1" layout="row">
-                      <md-radio-button value="1" class="md-primary">Delivery</md-radio-button>
-                      <md-radio-button value="2" class="md-primary"> Pickup </md-radio-button>
-                    </md-radio-group>
-                    </md-input-container>                    <md-divider></md-divider>
-
-                    <H4>Estimated time for delivery 45 min. 
-                    <md-switch class="md-primary" ng-model="switches.primary" aria-label="Primary Switch" ng-init="switches.primary = true">
-                            Delivery for later
-                        </md-switch>
-                    </H4>
-
-
-                    <md-input-container class="md-block margin-top-50">
-                        <label>Additional Notes (max 140 characters)</label>
-                        <textarea ng-model="tweet" md-maxlength="140"></textarea>
-                        <p class="md-caption">If you want to add any special instructions for the store</p>
-                    </md-input-container>
-                   
-                    </md-card-content>
-                    <md-card-actions layout="coloumn" layout-align="end end">
-                    
-                    <md-button ng-class="md-primary" href="#/dashboards/server" aria-label="flat button">Checkout</md-button>
-                    </md-card-actions>
-                </md-card>
+                    <div>
+                        <md-divider></md-divider>
+                        <h2 class="opacity-90 margin-10 text-center">
+                            About me
+                        </h2>
+                        <p class="md-body-2 opacity-80 padding-normal padding-top-0 text-center">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi voluptatibus.
+                        </p>
+                    </div>
+                </tri-widget>
             </div>
-            </div>
-            <br>
-            <br>
-
-         </div>
+        </div>
+    </div>
+</div>

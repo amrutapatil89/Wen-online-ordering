@@ -46,7 +46,7 @@
 
 
         // set default routes when no path specified
-        $urlRouterProvider.when('', '/dashboards/social');
+        // $urlRouterProvider.when('', '/dashboards/analytics');
         $urlRouterProvider.when('/', '/dashboards/social');
 
         // always goto 404 if route not found

@@ -1,62 +1,97 @@
-<div layout="row" flex layout-padding layout-fill layout-align="center center">
-    <div flex="40" flex-lg="50" flex-md="70" flex-xs="100">
-        <md-card>
-            <md-toolbar class="padding-20">
-                <div flex layout="row" layout-align="center center">
-                    <img ng-src="{{::vm.triSettings.logo}}" alt="{{vm.triSettings.name}}">
-                </div>
-                <div layout="row" layout-align="center center">
-                    <h1 class="md-headline" translate>Login</h1>
-                </div>
-            </md-toolbar>
-
-            <md-content class="md-padding">
-                <form name="login">
-                    <md-input-container class="md-block">
-                        <label for="email" translate>email</label>
-                        <input id="email" label="email" name="email" type="email" ng-model="vm.user.email" required/>
-                        <div ng-messages="login.email.$error" md-auto-hide="false" ng-show="login.email.$touched">
-                            <div ng-message when="required"><span translate>Please enter your email address.</span></div>
-                            <div ng-message when="email"><span translate>Please enter a valid email address.</span></div>
-                        </div>
-                    </md-input-container>
-                    <md-input-container class="md-block">
-                        <label for="password" translate>password</label>
-                        <input  id="password" label="password" name="password" type="password" ng-model="vm.user.password" required/>
-                        <div ng-messages for="login.password.$error" md-auto-hide="false" ng-show="login.password.$touched">
-                            <div ng-message when="required"><span translate>Please enter your password.</span></div>
-                        </div>
-                    </md-input-container>
-
-                    <div layout="row" layout-align="space-between center">
-                        <md-input-container>
-                            <md-checkbox ng-model="vm.user.rememberMe">
-                                <span translate>Remember Me</span>
-                            </md-checkbox>
-                        </md-input-container>
-
-                        <md-input-container>
-                            <md-button flex class="md-primary" href="#/forgot" translate="Forgot password?" aria-label="{{'Forgot password?' | triTranslate}}"></md-button>
-                        </md-input-container>
-                    </div>
-
-                    <md-button class="md-raised md-primary full-width margin-left-0 margin-right-0 margin-top-10 margin-bottom-10"  href="#/dashboards/server" ng-disabled="login.$invalid" translate="Log in" aria-label="{{'Log in' | triTranslate}}"></md-button>
-
-                    <md-button class="md-primary full-width margin-left-0 margin-right-0 margin-top-10 margin-bottom-10" href="#/signup" translate="Don't have an account? Create one now" aria-label="{{'Don\'t have an account? Create one now' | triTranslate}}"></md-button>
-
-                    <div class="social-login">
-                        <md-divider></md-divider>
-
-                        <div class="text-center margin-20" translate>or login with Social channels</div>
-
-                        <div layout="row" layout-align="space-between center"  layout-margin>
-                            <md-button href="#" ng-repeat="social in ::vm.socialLogins" class="md-icon-button" ng-style="{ 'background-color': social.color }" aria-label="{{social.icon}}"> Facebook
-                                <md-icon md-font-icon="{{::social.icon}}"></md-icon>
-                            </md-button>
-                        </div>
-                    </div>
-                </form>
-            </md-content>
-        </md-card>
+<div class="dashboard-container overlay-10 padded-content-page" layout="column">
+    <div class="drag-container" layout="row" layout-xs="column" layout-margin dragula='"drag-analytics-container"'>
+        <tri-widget palette-background="deep-orange:500" content-layout="row" content-layout-align="space-between center" content-padding>
+            <div>
+                <md-icon class="font-size-5 opacity-50 margin-left-10" md-font-icon="fa fa-comments"></md-icon>
+            </div>
+            <div layout="column" layout-align="center end">
+                <p class="md-display-3 font-weight-100 margin-top-0 margin-bottom-0 text-ellipsis" countupto="54" decimals="0"></p>
+                <p class="md-body-2 opacity-60 margin-top-0 margin-bottom-0" translate>Comments</p>
+            </div>
+        </tri-widget>
+        <tri-widget palette-background="triCyan:500" content-layout="row" content-layout-align="space-between center" content-padding>
+            <div>
+                <md-icon class="font-size-5 opacity-50 margin-left-10" md-font-icon="fa fa-twitter"></md-icon>
+            </div>
+            <div layout="column" layout-align="center end">
+                <p class="md-display-3 font-weight-100 margin-top-0 margin-bottom-0 text-ellipsis" countupto="101" decimals="0"></p>
+                <p class="md-body-2 opacity-60 margin-top-0 margin-bottom-0" translate>Tweets</p>
+            </div>
+        </tri-widget>
+        <tri-widget palette-background="indigo:500" content-layout="row" content-layout-align="space-between center" content-padding>
+            <div>
+                <md-icon class="font-size-5 opacity-50 margin-left-10" md-font-icon="fa fa-facebook"></md-icon>
+            </div>
+            <div layout="column" layout-align="center end">
+                <p class="md-display-3 font-weight-100 margin-top-0 margin-bottom-0" countupto="943" decimals="0"></p>
+                <p class="md-body-2 opacity-60 margin-top-0 margin-bottom-0" translate>Likes</p>
+            </div>
+        </tri-widget>
+        <tri-widget palette-background="teal:500" content-layout="row" content-layout-align="space-between center" content-padding>
+            <div>
+                <md-icon class="font-size-5 opacity-50 margin-left-10" md-font-icon="fa fa-eye"></md-icon>
+            </div>
+            <div layout="column" layout-align="center end">
+                <p class="md-display-3 font-weight-100 margin-top-0 margin-bottom-0" countupto="944" decimals="0"></p>
+                <p class="md-body-2 opacity-60 margin-top-0 margin-bottom-0" translate>Reach</p>
+            </div>
+        </tri-widget>
+    </div>
+    <div layout="row" layout-xs="column" layout-margin>
+        <tri-widget chartjs-line-widget title="Pageviews & Visits" subtitle="11/03/15 - 11/4/15" content-layout="row" content-padding>
+            <canvas class="chart-line" chart-data="lineChart.data" chart-labels="lineChart.labels" chart-legend="true" chart-series="lineChart.series" chart-options="lineChart.options"></canvas>
+        </tri-widget>
+        <tri-widget chartjs-pie-widget title="Network Referrals" subtitle="11/03/15 - 11/4/15" content-padding>
+            <canvas class="chart-doughnut" chart-data="pieChart.data" chart-legend="true" chart-labels="pieChart.labels"></canvas>
+        </tri-widget>
+    </div>
+    <div layout="row" layout-xs="column" layout-margin>
+        <tri-widget flex load-data-widget="{ referrals: 'app/examples/dashboards/data/referrals.json' }" title="Referral Traffic" subtitle="11/03/15 - 11/4/15" content-padding>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th ng-repeat="header in ::referrals.header | limitTo:3">{{::header}}</th>
+                    </tr>
+                </thead>
+                <tbody class="md-caption">
+                    <tr ng-repeat="referral in ::referrals.data | limitTo:5">
+                        <td ng-repeat="data in ::referral | limitTo:3">{{::data}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </tri-widget>
+        <tri-widget flex load-data-widget="{ social: 'app/examples/dashboards/data/social.json' }" title="Network Referrals" subtitle="11/03/15 - 11/4/15" content-padding>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th ng-repeat="header in ::social.header | limitTo:3">{{::header}}</th>
+                    </tr>
+                </thead>
+                <tbody class="md-caption">
+                    <tr ng-repeat="socialData in ::social.data | limitTo:5">
+                        <td ng-repeat="data in ::socialData | limitTo:3">{{::data}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </tri-widget>
+    </div>
+    <div layout="row" layout-xs="column" layout-margin>
+        <tri-widget google-geochart-widget flex title="Location" subtitle="11/03/15 - 11/4/15" title-position="top" content-padding>
+            <div class="google-chart" google-chart chart="geoChartData"></div>
+        </tri-widget>
+        <tri-widget flex load-data-widget="{ social: 'app/examples/dashboards/data/location.json' }" title="Network Referrals" subtitle="11/03/15 - 11/4/15" content-padding>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th ng-repeat="header in ::social.header | limitTo:3">{{::header}}</th>
+                    </tr>
+                </thead>
+                <tbody class="md-caption">
+                    <tr ng-repeat="socialData in ::social.data | limitTo:5">
+                        <td ng-repeat="data in ::socialData | limitTo:3">{{::data}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </tri-widget>
     </div>
 </div>

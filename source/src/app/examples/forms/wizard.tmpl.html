@@ -1,22 +1,22 @@
 <div>
 
     <div layout="row" layout-align="center center">
-        <p flex="70"  flex-xs="90" class="md-headline font-weight-300 text-center text-dark" translate></p>
+        <p flex="70"  flex-xs="90" class="md-headline font-weight-300 text-center text-light" translate>We have combined material tabs and form inputs to create an interactive form wizardController.  We have also added validation messages to all fields and prevented the user from completing a step in the wizard until it is valid.</p>
     </div>
 
     <div flex layout="row" layout-align="center center" layout-fill>
         <md-card flex="90" class="md-whiteframe-z1 margin-bottom-100" tri-wizard>
             <md-toolbar class="md-primary">
                 <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
-                    <h2>Order Checkout </h2><h2> {{triWizard.progress}}% <span translate>Complete</span></h2>
+                    <h2>Form Wizard</h2><h2> {{triWizard.progress}}% <span translate>Complete</span></h2>
                 </div>
                 <md-progress-linear class="md-accent padding-bottom-10" md-mode="determinate" ng-value="triWizard.progress"></md-progress-linear>
             </md-toolbar>
-            <md-tabs class="" layout-fill md-selected="triWizard.currentStep" md-dynamic-height>
-                <!-- <md-tab id="account">
+            <md-tabs class="md-primary" layout-fill md-selected="triWizard.currentStep" md-dynamic-height>
+                <md-tab id="account">
                     <md-tab-label>
                         <span class="oxy-step-label">1</span>
-                        <span translate>Your details</span>
+                        <span translate>Account details</span>
                     </md-tab-label>
                     <md-tab-body>
                         <md-content class="md-padding">
@@ -32,7 +32,7 @@
                                         </div>
                                     </md-input-container>
                                     <md-input-container class="md-block">
-                                        <label>Email</label> 
+                                        <label>Email</label>
                                         <input type="email" name="email" ng-model="wizardController.data.account.email" required>
                                         <div ng-messages="accountForm.email.$error" md-auto-hide="false" ng-show="accountForm.email.$touched">
                                             <div ng-message when="required">
@@ -67,8 +67,8 @@
                             </form>
                         </md-content>
                     </md-tab-body>
-                </md-tab> -->
-                <md-tab id="address">
+                </md-tab>
+                <md-tab id="address" ng-disabled="accountForm.$invalid">
                     <md-tab-label>
                         <span class="oxy-step-label">2</span>
                         <span translate>Your address</span>

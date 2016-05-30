@@ -79,42 +79,39 @@
         // });
 
         // triMenuProvider.addMenu({
-        //     name: 'Home',
+        //     name: 'Dashboards',
         //     icon: 'zmdi zmdi-home',
         //     type: 'dropdown',
-        //     priority: 1.0,
-            // children: [
-            //     name: 'Analytics',
-            //     state: 'triangular.dashboard-analytics',
-            //     type: 'link'
-            // },{
-            //     name: 'General',
-            //     state: 'triangular.dashboard-general',
-            //     type: 'link'
-            // },{
-            //     name: 'Sales',
-            //     state: 'triangular.dashboard-sales',
-            //     type: 'link'
-            // },{
-            //     name: 'Server',
-            //     state: 'triangular.dashboard-server',
-            //     type: 'link'
-            // },{
-            // {
-            //     name: 'Menu',
-            //     state: 'triangular.dashboard-social',
-            //     type: 'link'
-            // },
-            // {
-            //     name: 'Cart',
-            //     state: 'triangular.dashboard-widgets',
-            //     type: 'link'
-            // }]
-            // },{
-            //     name: 'Draggable',
-            //     state: 'triangular.dashboard-draggable',
-            //     type: 'link'
-            // }]
+        //     priority: 1.1,
+        //     children: [{
+        //         name: 'Analytics',
+        //         state: 'triangular.dashboard-analytics',
+        //         type: 'link'
+        //     },{
+        //         name: 'General',
+        //         state: 'triangular.dashboard-general',
+        //         type: 'link'
+        //     },{
+        //         name: 'Sales',
+        //         state: 'triangular.dashboard-sales',
+        //         type: 'link'
+        //     },{
+        //         name: 'Server',
+        //         state: 'triangular.dashboard-server',
+        //         type: 'link'
+        //     },{
+        //         name: 'Social',
+        //         state: 'triangular.dashboard-social',
+        //         type: 'link'
+        //     },{
+        //         name: 'Widgets',
+        //         state: 'triangular.dashboard-widgets',
+        //         type: 'link'
+        //     },{
+        //         name: 'Draggable',
+        //         state: 'triangular.dashboard-draggable',
+        //         type: 'link'
+        //     }]
         // });
 
     }

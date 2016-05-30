@@ -4,10 +4,14 @@
     </div>
     <div class="text-light">
         <h2 class="font-weight-600 margin-bottom-0 text-light">Carvers</h2>
-        <p class="font-weight-300 margin-top-0 margin-bottom-0">Our refreshing, thick and creamy Smoothies are blended with real fruit, natural juices and our optional Smoothie CHARGERS. Maintain Health, Trim Down, Boost Energy, Replace a Meal, Bulk Up, or try our Kids Menu. Each Recharge Smoothie is made fresh to order. <br></p>
-        <p class="margin-top-0">
+
+        <p class="font-weight-300 margin-top-0 margin-bottom-0">
+            Our refreshing, thick and creamy Smoothies are blended with real fruit, natural juices and our optional Smoothie CHARGERS. Maintain Health, Trim Down, Boost Energy, Replace a Meal, Bulk Up, or try our Kids Menu. Each Recharge Smoothie is made fresh to order. 
+            <br>
         </p>
- <p style="bottom:0; top:80px;background: rgba(255,255,255,0.2);bottom: 0;text-align: center;"><md-icon md-font-icon="zmdi zmdi-pin color-inherit"></md-icon> 4819 Emperor, Suite 4000 Blvd, Durham, NC, 27703. <md-button md-no-ink  aria-label="flat button"> CHANGE LOCATION</md-button> </p>
+
+
+        <p style="bottom:0; top:80px;background: rgba(255,255,255,0.5);bottom: 0;text-align: center;margin-left: -140px;margin-right: -20px;"><md-icon md-font-icon="zmdi zmdi-pin color-inherit"></md-icon> 4819 Emperor, Suite 4000 Blvd, Durham, NC, 27703. <md-button md-no-ink class="md-primary" aria-label="flat button"> CHANGE LOCATION</md-button> </p>
        
      </div>
      <p>
@@ -20,16 +24,16 @@
             <span>Menu</span>
         </md-tab-label>
         <md-tab-body>
-        <div flex layout="column" layout-margin>
-            <div layout="row" layout-margin>
-                <tri-widget flex="70" title="" contacts-widget content-layout="row">
+            <div layout="row" layout-xs="column">
+                <br>
+                 <tri-widget flex="70" title="" contacts-widget content-layout="row">
 
-                    <md-list flex="20" class="md-grey">
-                    <h2 style="margin-left:15px;">Categories</h2><md-divider></md-divider> <br>
-                        <md-list-item ng-repeat="category in vm.categories" href="">
-                           <p>{{category.name}}</p>                    
-                        </md-list-item>
-                    </md-list>
+                    <ul flex="20" class="menu-toggle-list ">
+                    <h2 style="margin-left:15px;">Categories</h2><md-divider></md-divider>
+                        <li ng-repeat="category in vm.categories" href="" style="background:lightgrey;">
+                            <button  class="md-button md-ink-ripple side-menu-link">{{category.name}} </button>             
+                        </li>
+                    </ul>
 
                     <md-list flex="80">
                     <h2>Items</h2><md-divider></md-divider> <br>
@@ -39,7 +43,7 @@
                                      <div layout="row" layout-align="start center" flex>
                                          <span flex></span>
                                          ${{item.price/100}} &nbsp;&nbsp;
-                                         <md-icon md-font-icon="zmdi zmdi-plus-circle-o" layout-align="end end" class="md-primary" ng-click="vm.openModifiers($event)"><md-tooltip md-direction="right">
+                                         <md-icon md-font-icon="zmdi zmdi-plus-circle-o" layout-align="end end" class="md-primary" ng-click="vm.createDialog($event)"><md-tooltip md-direction="right">
                                      Add to cart
                                 </md-tooltip></md-icon>
                                        
@@ -53,80 +57,10 @@
                         </md-list-item>
                     </md-list>
                 </tri-widget>
-                <md-card flex>
-                <h2>&nbsp;&nbsp;Cart</h2><md-divider></md-divider>
-                    <!-- <md-card-header>
-                            
-                        <md-card-header-text>
-                        
-                        </md-card-header-text>
-                        <md-card-icon-actions>
-                            <md-button class="md-icon-button" aria-label="close" ng-click="vm.closeEmail()">
-                                <md-icon md-font-icon="zmdi zmdi-close"></md-icon>
-                            </md-button>
-
-                        </md-card-icon-actions>
-                    </md-card-header> -->
-                    <md-card-content>
-                    <md-input-container class="md-block margin-top-0">
-                    <label>Order Type</label> <br>
-                        <!-- <md-select placeholder="Pick" ng-model="numCakes" ng-init="numCakes = 1">
-                        <md-option value="1">Delivery</md-option>
-                        <md-option value="2">Pickup</md-option>
-                    </md-select> -->
-                    <md-radio-group ng-model="numCakes" ng-init="numCakes = 1" layout="row">
-                      <md-radio-button value="1" class="md-primary">Delivery</md-radio-button>
-                      <md-radio-button value="2" class="md-primary"> Pickup </md-radio-button>
-                    </md-radio-group>
-                    </md-input-container>
-                    <h3>Items</h3>
-                        <div layout="row" flex ng-mouseover="hover=true" ng-mouseleave="hover=false">
-                            <div flex="40"> 
-                                <md-icon md-font-icon="zmdi zmdi-edit material-icon" layout-align="end end" class="" ng-click="vm.openModifiers($event)" ng-show="hover">
-                                <md-tooltip md-direction="left">
-                                     Edit Item
-                                </md-tooltip>
-                                </md-icon> Fountain Drinks</div>
-                            <div flex>$5.00</div>
-                            <div flex>1</div>
-                            <div flex>$5.00</div>
-                            <div flex="5" ng-show="hover"><md-icon md-font-icon="zmdi zmdi-delete">
-                            <md-tooltip md-direction="left">
-                                     Delete Item
-                                </md-tooltip>
-                            </md-icon></div>
-                        </div>
-                        <div layout="row" flex>
-                            <div flex="40"> <!-- <md-icon md-font-icon="zmdi zmdi-edit material-icon" layout-align="end end" class="" ng-click="vm.openModifiers($event)"></md-icon> --> Double Chicken</div>
-                            <div flex>$7.00</div>
-                            <div flex>2</div>
-                            <div flex>$14.00</div>
-                            <!-- <div flex="5"><md-icon md-font-icon="zmdi zmdi-delete"></md-icon></div> -->
-                        </div>
-                        <div layout="row" flex>
-                            <div flex="40"> <!-- <md-icon md-font-icon="zmdi zmdi-edit material-icon" layout-align="end end" class="" ng-click="vm.openModifiers($event)"></md-icon> --> Fountain Drinks</div>
-                            <div flex>$3.5.00</div>
-                            <div flex>2</div>
-                            <div flex>$7.00</div>
-                            <!-- <div flex="5"><md-icon md-font-icon="zmdi zmdi-delete"></md-icon></div> -->
-                        </div>
-                        <md-divider></md-divider>
-                        <br>
-
-                        Sub total: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$26.00  <br>
-                        Tax: &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; $02.60 <br>
-                        Grand total: &nbsp;&nbsp; $28.60  <br><br>
-                        <md-divider></md-divider>
-                    </md-card-content>
-                    <md-card-actions layout="coloumn" layout-align="end end">
-                    
-                    <md-button ng-class="md-primary" href="#/dashboards/analytics" aria-label="flat button">PRoceed </md-button>
-                    </md-card-actions>
-                </md-card>
             </div>
+            <div layout="row" layout-xs="column">
+                
             </div>
-         </div>
-
         </md-tab-body>
     </md-tab>
     <md-tab>
@@ -206,80 +140,56 @@
             </div>
         </md-tab-body>
     </md-tab>
-     <md-tab>
+    <md-tab>
         <md-tab-label layout="column">
             <span>Offers</span>
         </md-tab-label>
         <md-tab-body>
             <div layout="row" layout-xs="column" layout-margin>
-                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
-                    <div class="widget-follower-header">
-                        <img src="assets/images/backgrounds/material-backgrounds/mb-bg-26.jpg" alt="some bg" class="display-block">
-                        <img src="assets/images/avatars/avatar-2.png" class="widget-follower-header-avatar"/>
-                    </div>
-                    <div class="widget-follower-text padding-10">
-                        <h4 class="md-title margin-0">Morris Onions</h4>
-                        <p class="md-caption margin-0">@morris</p>
-                        <p class="md-body-1">Senior Software Test Engineer at Progressive, Indie Game Developer, Cleveland Game Devs member, a cyberpunk before it was cool & a geek Dad.</p>
-                    </div>
+                <tri-widget class="flex" flex="70" flex-xs="100" title="Favorites" content-layout="column" content-layout-align="start center">
+                    <md-divider></md-divider>
+                    <md-list>
+                        <md-list-item class="md-2-line" ng-repeat="fave in ::vm.favorites">
+                            <img ng-src="{{::fave.avatar}}" class="md-avatar"/>
+                            <div class="md-list-item-text">
+                                <div layout="row">
+                                    <span flex class="md-subhead text-dark">
+                                        {{::fave.name}}
+                                        <span class="text-gray">@{{::fave.user}}</span>
+                                    </span>
+                                    <span class="md-caption" am-time-ago="fave.date"></span>
+                                </div>
+                                <p linkify="twitter">{{::fave.tweet}}</p>
+                            </div>
+                            <md-divider></md-divider>
+                        </md-list-item>
+                    </md-list>
                 </tri-widget>
-                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
-                    <div class="widget-follower-header">
-                        <img src="assets/images/backgrounds/material-backgrounds/mb-bg-12.jpg" alt="some bg" class="display-block">
-                        <img src="assets/images/avatars/avatar-6.png" class="widget-follower-header-avatar"/>
-                    </div>
-                    <div class="widget-follower-text padding-10">
-                        <h4 class="md-title margin-0">Sam Cook</h4>
-                        <p class="md-caption margin-0">@scook</p>
-                        <p class="md-body-1">Intermediary acquisition customer-facing return on investment customer-facing conscientious outsourcing incrementally increasing sales experienced and confident.</p>
-                    </div>
-                </tri-widget>
-                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
-                    <div class="widget-follower-header">
-                        <img src="assets/images/backgrounds/material-backgrounds/mb-bg-30.jpg" alt="some bg" class="display-block">
-                        <img src="assets/images/avatars/avatar-5.png" class="widget-follower-header-avatar"/>
-                    </div>
-                    <div class="widget-follower-text padding-10">
-                        <h4 class="md-title margin-0">Manos proistakis</h4>
-                        <p class="md-caption margin-0">@proistak</p>
-                        <p class="md-body-1">Recruiting key personnel effective management and mentoring of the team acquiring new clients maximised returns in short time frame. </p>
-                    </div>
-                </tri-widget>
-            </div>
-            <div layout="row" layout-xs="column" layout-margin>
-                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
-                    <div class="widget-follower-header">
-                        <img src="assets/images/backgrounds/material-backgrounds/mb-bg-40.jpg" alt="some bg" class="display-block">
-                        <img src="assets/images/avatars/avatar-6.png" class="widget-follower-header-avatar"/>
-                    </div>
-                    <div class="widget-follower-text padding-10">
-                        <h4 class="md-title margin-0">Jane Onions</h4>
-                        <p class="md-caption margin-0">@morris</p>
-                        <p class="md-body-1">Entrepreneurial, brand strategy key relationship management cross-functional; handling customer complaints. Preparing financial data going to the cinema dynamic self starter easy to work with. </p>
-                    </div>
-                </tri-widget>
-                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
-                    <div class="widget-follower-header">
-                        <img src="assets/images/backgrounds/material-backgrounds/mb-bg-07.jpg" alt="some bg" class="display-block">
-                        <img src="assets/images/avatars/avatar-4.png" class="widget-follower-header-avatar"/>
-                    </div>
-                    <div class="widget-follower-text padding-10">
-                        <h4 class="md-title margin-0">Christine Jackson</h4>
-                        <p class="md-caption margin-0">@scook</p>
-                        <p class="md-body-1">Presenting to senior management streamlined operations outside the box. Incrementally increasing sales customer-centric, commercially minded increased revenue customer-facing.</p>
-                    </div>
-                </tri-widget>
-                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
-                    <div class="widget-follower-header">
-                        <img src="assets/images/backgrounds/material-backgrounds/mb-bg-18.jpg" alt="some bg" class="display-block">
-                        <img src="assets/images/avatars/avatar-1.png" class="widget-follower-header-avatar"/>
-                    </div>
-                    <div class="widget-follower-text padding-10">
-                        <h4 class="md-title margin-0">John Langan</h4>
-                        <p class="md-caption margin-0">@proistak</p>
-                        <p class="md-body-1">Recruiting key personnel effective management and mentoring of the team acquiring new clients maximised returns in short time frame. </p>
-                    </div>
-                </tri-widget>
+                <div flex layout="column">
+                    <tri-widget flex class="margin-bottom-10" title="Who to follow" content-layout="column" content-layout-align="space-around" palette-background="triCyan:500">
+                        <md-divider></md-divider>
+                        <md-list >
+                            <md-list-item class="md-2-line" ng-repeat="follow in ::vm.whotofollow">
+                                <img ng-src="{{::follow.avatar}}" class="md-avatar"/>
+                                <div class="md-list-item-text">
+                                    <h3>{{::follow.name}}</h3>
+                                    <h4>@{{::follow.user}}</h4>
+                                    <md-icon md-font-icon="zmdi zmdi-account-add" ng-click="doSecondaryAction($event)" class="md-secondary md-hue-3"></md-icon>
+                                </div>
+                                <md-divider ng-hide="::$last"></md-divider>
+                            </md-list-item>
+                        </md-list>
+                    </tri-widget>
+                    <tri-widget flex title="Trends" content-layout="column" content-layout-align="center start" palette-background="triCyan:500">
+                        <md-divider></md-divider>
+                        <md-list>
+                            <md-list-item ng-repeat="trend in ::vm.trends">
+                                <p linkify="twitter">{{::trend}}</p>
+                                <md-divider ng-hide="::$last"></md-divider>
+                            </md-list-item>
+                        </div>
+                    </tri-widget>
+                </div>
             </div>
         </md-tab-body>
     </md-tab>
