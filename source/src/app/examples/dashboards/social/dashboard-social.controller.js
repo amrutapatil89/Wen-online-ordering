@@ -28,7 +28,7 @@
 
         // Dialog box for modifiers
 
-        function createDialog($event) {
+        function createDialog($event, itemid) {
             // $mdDialog.show({
             //   templateUrl: 'app/examples/dashboards/social/dialog2.tmpl.html',
             //   targetEvent: $event,
@@ -37,11 +37,25 @@
             //   controllerAs: 'vm'
             // })
 
+            // $mdDialog.show({
+            //     templateUrl: 'app/examples/todo/add-todo-dialog.tmpl.html',
+            //     targetEvent: $event,
+            //     controller: 'DialogController',
+            //     controllerAs: 'vm'
+            // })
+
             $mdDialog.show({
-                templateUrl: 'app/examples/todo/add-todo-dialog.tmpl.html',
+                controller: 'ModifierDialogController',
+                controllerAs: 'vm',
+                templateUrl: 'app/examples/dashboards/social/modifier-dialog.tmpl.html',
                 targetEvent: $event,
-                controller: 'DialogController',
-                controllerAs: 'vm'
+                focusOnOpen: false,
+                locals: { 
+                    itemId: {
+                        item : itemid
+                    }
+                }
+
             })
         }
 
