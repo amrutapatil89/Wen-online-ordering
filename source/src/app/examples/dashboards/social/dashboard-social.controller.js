@@ -11,6 +11,7 @@
 
         vm.categories = [];
         vm.items = [];
+        vm.cartItems = [];
         vm.createDialog = createDialog;
 
 
@@ -29,21 +30,6 @@
         // Dialog box for modifiers
 
         function createDialog($event, itemid) {
-            // $mdDialog.show({
-            //   templateUrl: 'app/examples/dashboards/social/dialog2.tmpl.html',
-            //   targetEvent: $event,
-            //   clickOutsideToClose:false,
-            //   controller: ModifierDialogController,
-            //   controllerAs: 'vm'
-            // })
-
-            // $mdDialog.show({
-            //     templateUrl: 'app/examples/todo/add-todo-dialog.tmpl.html',
-            //     targetEvent: $event,
-            //     controller: 'DialogController',
-            //     controllerAs: 'vm'
-            // })
-
             $mdDialog.show({
                 controller: 'ModifierDialogController',
                 controllerAs: 'vm',
@@ -56,8 +42,15 @@
                     }
                 }
 
-            })
+            });
         }
+
+        $http.get("http://52.23.209.206:3000/api/v1/13HRYK02HZM30/items/0PKNFRAEP3524")
+        .then(function(response) {
+            vm.cartItems[0] = response.data;
+        });
+
+
 
         vm.whotofollow = [{
             name: 'Twitch',

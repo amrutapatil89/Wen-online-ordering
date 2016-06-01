@@ -79,10 +79,30 @@
                 </md-whiteframe>
                 <span flex></span>
 
-                <tri-widget flex="30" title="" contacts-widget content-layout="row">
-                    <md-list flex="100">
+                <tri-widget flex="30" title="" contacts-widget content-layout="column">
+                    <md-list >
                         <md-subheader class="md-no-sticky margin-top-10">Cart</md-subheader>
                     </md-list>
+
+                    <md-input-container class="md-block margin-top-10 padding-left-20">
+                        <label class="padding-left-20">Order Type</label> <br>
+                        <md-radio-group ng-model="numCakes" ng-init="numCakes = 1" layout="row">
+                          <md-radio-button value="1" class="md-primary">Delivery</md-radio-button>
+                          <md-radio-button value="2" class="md-primary"> Pickup </md-radio-button>
+                        </md-radio-group>
+                    </md-input-container>
+
+                    <md-divider></md-divider>
+
+                     <md-card-content>
+                        <md-list-item class="md-3-line" ng-repeat="cartItem in vm.cartItems">
+                            <div class="md-list-item-text">
+                                <h3>{{cartItem.name}}</h3>
+                                <h4></h4>
+                            </div>
+                        </md-list-item>
+                    </md-card-content>
+
                 </tri-widget>
                 <span flex></span>
             </div>
