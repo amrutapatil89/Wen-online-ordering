@@ -7,13 +7,13 @@
                         <md-list-item class="md-3-line margin-top-0">
                              <div class="md-list-item-text" style="width:100%">
                                 <h3 layout="row" layout-align="start center" layout-wrap > 
-                                    Sudhindra Chausalkar
+                                    {{userName}}
                                 </h3>
                                 <p layout="row" layout-align="start center" layout-wrap >
-                                Email: sudhindrap.c@gmail.com 
+                                Email: {{email}}
 
                                 <p layout="row" layout-align="start center" layout-wrap > 
-                                    Contact : +1-962-344-1106
+                                    Contact : {{phone}}
                                 </p>
                              </div>
 
@@ -22,17 +22,17 @@
                         <md-list-item class="md-3-line margin-top-0">
                             <div class="md-list-item-text" style="width:100%">
 
-                                <md-card ng-init="change = true" ng-show="change">
+                                <md-card ng-show="change">
                                     <md-card-content>
-                                        <p>Sudhindra P. Chausalkar</p>
-                                        <p>#204, W. Main Road Durham, NC 27701</p>
+                                        <br/><b>{{userName}}</b>
+                                        <br/>{{selectedAddress.address.address1}} {{selectedAddress.address.address2}} {{selectedAddress.address.city}} {{selectedAddress.address.state}} {{selectedAddress.address.zip}}
                                     </md-card-content>
 
                                     <md-divider></md-divider>
 
                                     <md-card-actions layout="row" layout-align="end center">
                                        
-                                        <md-button class="md-primary" ng-click="change = !change">change address</md-button>
+                                        <md-button class="md-primary" ng-click="switchWindow()">change address</md-button>
                                     </md-card-actions>
                                 </md-card>
 
@@ -46,14 +46,14 @@
                                                 </md-card-content>
 
                                                 <md-card-actions layout="row" layout-align="center center">
-                                                    <md-button class="md-primary" ng-click="change = !change"> Use this address</md-button>
+                                                    <md-button class="md-primary" ng-click="setAddress(add)"> Use this address</md-button>
                                                 </md-card-actions>
                                             </md-card>
                                         </md-grid-tile>
 
                                         <md-grid-tile>
                                             <md-card>
-                                                <md-button class="md-primary" ng-click="change = !change">+ Add New Address</md-button>
+                                                <md-button class="md-primary" ng-click="vm.createDialog($event)">+ Add New Address</md-button>
                                             </md-card>
                                         </md-grid-tile>
                                     </md-grid-list>

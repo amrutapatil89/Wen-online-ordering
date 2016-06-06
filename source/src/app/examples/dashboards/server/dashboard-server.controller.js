@@ -9,18 +9,43 @@
     function DashboardServerController($scope, $timeout, $mdToast, $http, $mdDialog) {
         var vm = this;
 
+        $scope.change = false;
+        vm.createDialog = createDialog;
+
         // Get call for users
         $http.get("http://52.23.209.206:3000/api/v1/13HRYK02HZM30/customers/+1-1110000000")
         .then(function(response) {
+
             $scope.userName = response.data.firstName + " " + response.data.lastName;
             $scope.userAddress = response.data.vzMongoAddr;
+            $scope.email = response.data.vzMongoCust.email;
+            $scope.phone = response.data.vzMongoCust.phone;
 
-            // console.log("response: "+JSON.stringify(response));
+            var foundDefaultAddress = false;
+            var addressIndex = 0;
 
-            // console.log("USER name: "+JSON.stringify($scope.userName));
-            // console.log("USERS: "+JSON.stringify($scope.userAddress));
+            //for getting default address
+            response.data.vzMongoAddr.forEach(function(addr){
+
+                addressIndex++;
+
+                if(addr.isDefault) {
+
+                    $scope.selectedAddress = addr;
+                    foundDefaultAddress = true;
+                }
+
+                if(response.data.vzMongoAddr.length == addressIndex) {
+
+                    if(foundDefaultAddress == false) {
+
+                        $scope.selectedAddress = response.data.vzMongoAddr[0];            
+                    }
+                }
+            });
         });
 
+        //for showing dialog box for adding new address by Chetan Purohit
         function createDialog($event) {
             $mdDialog.show({
                 controller: 'AddressDialogController',
@@ -30,6 +55,25 @@
                 focusOnOpen: false
             });
         }
+
+        //for setting the selected address and showing it on UI by Chetan
+        $scope.setAddress = function(add) {
+
+            $scope.selectedAddress = add;
+            $scope.switchWindow();    
+        } //end of setAddress function
+
+        //function for changing value of change variable by Chetan
+        $scope.switchWindow = function() {
+
+            if($scope.change) {
+
+                $scope.change = false;
+            } else {
+
+                $scope.change = true;
+            }
+        }//end of switchWindow function
 
         vm.disks = [{
             icon: 'zmdi zmdi-storage',
