@@ -6,7 +6,7 @@
         .controller('DashboardServerController', DashboardServerController);
 
     /* @ngInject */
-    function DashboardServerController($scope, $timeout, $mdToast, $http, $mdDialog) {
+    function DashboardServerController($scope, $timeout, $mdToast, $http, $mdDialog, $rootScope) {
         var vm = this;
 
         $scope.change = false;
@@ -16,6 +16,7 @@
         $http.get("http://52.23.209.206:3000/api/v1/13HRYK02HZM30/customers/+1-1110000000")
         .then(function(response) {
 
+            $rootScope.userDetails = response;
             $scope.userName = response.data.firstName + " " + response.data.lastName;
             $scope.userAddress = response.data.vzMongoAddr;
             $scope.email = response.data.vzMongoCust.email;

@@ -8,10 +8,10 @@
     </div>
 
     <div class="text-light">
-        <h2 class="font-weight-600 margin-bottom-0 text-light">Carvers</h2>
+        <h2 class="font-weight-600 margin-bottom-0 text-light">{{appDetails.data.appInfo.appName}}</h2>
 
         <p class="font-weight-300 margin-top-0 margin-bottom-0">
-            Our refreshing, thick and creamy Smoothies are blended with real fruit, natural juices and our optional Smoothie CHARGERS. Maintain Health, Trim Down, Boost Energy, Replace a Meal, Bulk Up, or try our Kids Menu. Each Recharge Smoothie is made fresh to order. 
+            {{appDetails.data.appInfo.longDescription}}
             <br>
         </p>
 
@@ -36,7 +36,7 @@
                     <div layout="row">
                     <ul flex="20" class="menu-toggle-list ">
                         <md-list class="margin-right-10">
-                            <md-subheader class="md-button md-ink-ripple side-menu-link md-no-sticky margin-top-10 padding-0" style="color:#444">
+                            <md-subheader class="md-button md-ink-ripple side-menu-link md-no-sticky margin-top-10 padding-0" style="color:#444" ng-click="setSelectedCategory('')">
                                     All Categories
                             </md-subheader>
 
@@ -46,7 +46,7 @@
                             <!-- <button class="md-button md-ink-ripple side-menu-link" ng-show="$first">    All Categories 
                             </button>   --> 
 
-                            <button class="md-button md-ink-ripple side-menu-link">
+                            <button class="md-button md-ink-ripple side-menu-link" ng-click="setSelectedCategory(category.id)">
                                 {{category.name}} 
                             </button>             
                         </li>
@@ -56,7 +56,7 @@
                     <md-list  class="margin-bottom-20">
                         <md-subheader class="md-no-sticky margin-top-10">Menu</md-subheader>
 
-                        <md-list-item class="md-2-line" ng-repeat="item in vm.items">
+                        <md-list-item class="md-2-line" ng-repeat="item in vm.items | filter : sortItemsCategoryWise">
                              <div class="md-list-item-text" style="width:100%">
                                 <h3 layout="row" layout-align="end center" layout-wrap >{{item.name}} 
                                     <div layout="row" layout-align="start center" flex>

@@ -14,6 +14,8 @@
         vm.cartItems = [];
         vm.createDialog = createDialog;
 
+        $scope.selectedCategory = "";
+
 
         // Get call for categories 
         $http.get("http://52.23.209.206:3000/api/v1/13HRYK02HZM30/categories")
@@ -26,6 +28,14 @@
         .then(function(response) {
             vm.items = response.data.elements;
         });
+
+        //for getting store name and description
+        $http.get("http://52.23.209.206:3000/api/v1/apps/E1xXpZUkdg")
+        .then(function(appInfo) {
+            $scope.appDetails = appInfo;
+            console.log("App Details: "+JSON.stringify($scope.appDetails));
+        });
+        
 
         // Dialog box for modifiers
 
@@ -48,16 +58,50 @@
         $http.get("http://52.23.209.206:3000/api/v1/13HRYK02HZM30/items/0PKNFRAEP3524")
         .then(function(response) {
             vm.cartItems[0] = response.data;
-            console.log(JSON.stringify(vm.cartItems[0]));
+            // console.log(JSON.stringify(vm.cartItems[0]));
         });
 
         $http.get("http://52.23.209.206:3000/api/v1/13HRYK02HZM30/items/S7XYK7VEYKN04")
         .then(function(response) {
             vm.cartItems[1] = response.data;
-            console.log(JSON.stringify(vm.cartItems[0]));
+            // console.log(JSON.stringify(vm.cartItems[0]));
         });
 
+        //for setting selected category
+        $scope.setSelectedCategory = function(categoryId) {
 
+            $scope.selectedCategory = categoryId;
+        }
+
+    // filter all fields using common text box. 
+    $scope.sortItemsCategoryWise = function(row) {
+
+        var categoryCount = row.categories.elements.length;
+        var categoryIndex = 0;
+
+        //for handling condition of all categories
+        if($scope.selectedCategory == "") {
+
+            return true;
+        }
+
+        row.categories.elements.forEach(function(category) {
+
+            categoryIndex++;
+
+            if(category.id == $scope.selectedCategory) {
+
+                console.log("Returning true.");
+                return row;
+            }
+
+            if(categoryCount == categoryIndex) {
+
+                return false;
+            }
+
+        });//end of forEach loop    
+    } //end of sortItemsCategoryWise function
 
         vm.whotofollow = [{
             name: 'Twitch',
