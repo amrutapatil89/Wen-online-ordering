@@ -79,28 +79,28 @@
         var categoryCount = row.categories.elements.length;
         var categoryIndex = 0;
 
-        //for handling condition of all categories
+        //In case All Categories is selcted return all of the categories
         if($scope.selectedCategory == "") {
-
-            return true;
+            return row;
         }
+        else if (row.categories.elements.length != 0) {
 
-        row.categories.elements.forEach(function(category) {
+            // checking selected category with multiple categories 
+            // associated with item
+            // In case it is available return the row otherwise do nothing
+            for (var i = 0; i < row.categories.elements.length; i++) {
+                var category = {};
+                category.id = row.categories.elements[i].id;
+                if(category.id == $scope.selectedCategory){
+                    return (row);  
+                    break;                    
+                }
+            }  
 
-            categoryIndex++;
+        }  
 
-            if(category.id == $scope.selectedCategory) {
 
-                console.log("Returning true.");
-                return row;
-            }
-
-            if(categoryCount == categoryIndex) {
-
-                return false;
-            }
-
-        });//end of forEach loop    
+        
     } //end of sortItemsCategoryWise function
 
         vm.whotofollow = [{
