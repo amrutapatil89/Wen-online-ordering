@@ -48,6 +48,13 @@
         $http.get("http://52.23.209.206:3000/api/v1/13HRYK02HZM30/items/0PKNFRAEP3524")
         .then(function(response) {
             vm.cartItems[0] = response.data;
+            console.log(JSON.stringify(vm.cartItems[0]));
+        });
+
+        $http.get("http://52.23.209.206:3000/api/v1/13HRYK02HZM30/items/S7XYK7VEYKN04")
+        .then(function(response) {
+            vm.cartItems[1] = response.data;
+            console.log(JSON.stringify(vm.cartItems[0]));
         });
 
 

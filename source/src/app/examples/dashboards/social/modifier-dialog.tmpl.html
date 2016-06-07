@@ -1,8 +1,8 @@
 <md-dialog aria-label="Mango (Fruit)" flex="60" flex-xs="100">
-    <md-toolbar md-theme="{{triSkin.elements.content}}">
+    <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>
-                <span translate>Add Task</span>
+                <span>{{vm.itemModifiers.name}} <small layout-alignment="end center"> $ {{vm.itemModifiers.price/100}}</small></span>
             </h2>
         </div>
     </md-toolbar>
@@ -12,7 +12,7 @@
     <md-dialog-content class="md-dialog-content">
         <form name="taskForm" novalidate layout="column">
 
-            <h3>{{vm.itemModifiers.name}} <small layout-alignment="end center"> $ {{vm.itemModifiers.price/100}}</small></h3>
+            <h3></h3>
             
             <div ng-repeat="modifiergroup in vm.itemModifiers.modifierGroups.elements">
                 <md-subheader class="md-no-sticky">{{modifiergroup.name}}</md-subheader>

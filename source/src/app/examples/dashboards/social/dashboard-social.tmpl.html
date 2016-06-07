@@ -94,14 +94,45 @@
 
                     <md-divider></md-divider>
 
-                     <md-card-content>
-                        <md-list-item class="md-3-line" ng-repeat="cartItem in vm.cartItems">
-                            <div class="md-list-item-text">
-                                <h3>{{cartItem.name}}</h3>
-                                <h4></h4>
+                     <md-list>
+                        <md-list-item class="" ng-repeat="cartItem in vm.cartItems">
+                            <div class="margin-top-10" layout="row" flex="100" ng-mouseover="hover=true" ng-mouseleave="hover=false">
+
+                                    <span flex="15"> 
+                                        <md-icon md-font-icon="zmdi zmdi-edit material-icon" layout-align="end end" class="" ng-click="vm.createDialog($event, cartItem.id)" ng-show="hover">
+                                        <md-tooltip md-direction="left">
+                                        Edit Item
+                                        </md-tooltip> 
+                                        </md-icon> 
+                                        <span ng-show="!hover">2</span>
+                                    </span>
+
+                                    <span flex="85">
+                                        
+                                        <span layout="row" class="md-body--1">
+                                            <span flex="85" >{{cartItem.name}} </span>
+                                            <span flex>$ {{cartItem.price / 100}}</span>
+                                        </span>
+                                        <span layout="row" class="md-body-1">
+                                            <span flex="85">Grated Parmesan Cheese</span>
+                                            <span flex>$ {{250 / 100}}</span>
+                                        </span>
+                                        <span layout="row" class="md-body-1">
+                                            <span flex="85">Pepperoni</span>
+                                            <span flex>$ {{75 / 100}}</span>
+                                        </span>
+                                        
+                                    </span>
+
                             </div>
                         </md-list-item>
-                    </md-card-content>
+                    </md-list>
+                    
+                    <br>
+
+                    <md-divider></md-divider>
+                    <br>
+                    <span layout="row" layout-align="end end" class="margin-right-10">Total : $ 45.00</span>
 
                 </tri-widget>
                 <span flex></span>
