@@ -56,12 +56,12 @@
                     <md-list  class="margin-bottom-20">
                         <md-subheader class="md-no-sticky margin-top-10">Menu</md-subheader>
 
-                        <md-list-item class="md-2-line" ng-repeat="item in vm.items | filter : sortItemsCategoryWise">
+                        <md-list-item class="md-2-line" ng-repeat="item in vm.items | filter : sortItemsCategoryWise" ng-if="!item.vzCustomData.hideInApp && item.name != 'Delivery Fee'">
                              <div class="md-list-item-text" style="width:100%">
                                 <h3 layout="row" layout-align="end center" layout-wrap >{{item.name}} 
                                     <div layout="row" layout-align="start center" flex>
                                         <span flex></span>
-                                        ${{item.price/100}} &nbsp;&nbsp;
+                                        {{item.price/100 | currency}} &nbsp;&nbsp;
                                         <md-icon md-font-icon="zmdi zmdi-plus-circle-o" layout-align="end end" class="md-primary" ng-click="vm.createDialog($event, item.id)">
                                         <md-tooltip md-direction="right">
                                             Add to cart
@@ -95,7 +95,7 @@
                     <md-divider></md-divider>
 
                      <md-list>
-                        <md-list-item class="" ng-repeat="cartItem in vm.cartItems">
+                        <md-list-item class="" ng-repeat="cartItem in cartItemObject.elements">
                             <div class="margin-top-10" layout="row" flex="100" ng-mouseover="hover=true" ng-mouseleave="hover=false">
 
                                     <span flex="15"> 
@@ -104,24 +104,21 @@
                                         Edit Item
                                         </md-tooltip> 
                                         </md-icon> 
-                                        <span ng-show="!hover">2</span>
+                                        <span ng-show="!hover">{{cartItem.qty}}</span>
                                     </span>
 
                                     <span flex="85">
-                                        
+                                        <!-- for showing item details -->
                                         <span layout="row" class="md-body--1">
                                             <span flex="85" >{{cartItem.name}} </span>
-                                            <span flex>$ {{cartItem.price / 100}}</span>
+                                            <span flex>{{cartItem.cost / 100 | currency}}</span>
                                         </span>
-                                        <span layout="row" class="md-body-1">
+
+                                        <!-- for showing modifier details -->
+                                        <!--<span layout="row" class="md-body-1">
                                             <span flex="85">Grated Parmesan Cheese</span>
                                             <span flex>$ {{250 / 100}}</span>
-                                        </span>
-                                        <span layout="row" class="md-body-1">
-                                            <span flex="85">Pepperoni</span>
-                                            <span flex>$ {{75 / 100}}</span>
-                                        </span>
-                                        
+                                        </span>-->
                                     </span>
 
                             </div>
@@ -132,7 +129,8 @@
 
                     <md-divider></md-divider>
                     <br>
-                    <span layout="row" layout-align="end end" class="margin-right-10">Total : $ 45.00</span>
+
+                    <span layout="row" layout-align="end end" class="margin-right-10">Total : {{orderPrice/100 | currency}}</span>
 
                 </tri-widget>
                 <span flex></span>

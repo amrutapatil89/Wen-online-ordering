@@ -6,8 +6,14 @@
         .controller('DashboardSocialController', DashboardSocialController);
 
     /* @ngInject */
-    function DashboardSocialController($scope, $http, $mdDialog) {
+    function DashboardSocialController($scope, $http, $mdDialog, $rootScope) {
         var vm = this;
+
+        //for initializing cartItemObject for storing added items with modifiers and taxes
+        $rootScope.cartItemObject = {};
+        $rootScope.cartItemObject.elements = [];
+
+        $rootScope.orderPrice = 0;
 
         vm.categories = [];
         vm.items = [];

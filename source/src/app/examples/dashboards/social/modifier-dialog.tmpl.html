@@ -1,9 +1,13 @@
-<md-dialog aria-label="Mango (Fruit)" flex="60" flex-xs="100">
-    <md-toolbar>
-        <div class="md-toolbar-tools">
-            <h2>
-                <span>{{vm.itemModifiers.name}} <small layout-alignment="end center"> $ {{vm.itemModifiers.price/100}}</small></span>
-            </h2>
+<md-dialog flex="60" flex-xs="100">
+    <md-toolbar class="md-whiteframe-z2">
+        <div class="md-toolbar-tools" layout="row" layout-fill>
+            <h2 flex="60">{{vm.itemModifiers.name}}</h2>
+            <span flex="15" layout="row">
+                <input type="button" value="-" style="width:25px; height:25px; margin-right:5px;" ng-click="changeQty('minus')"/>
+                <input type="text" ng-model="quantity" value="0" style="width:40px;"/>
+                <input type="button" value="+" style="width:25px; height:25px; margin-left:5px;" ng-click="changeQty('add')"/>
+            </span>
+            <span flex ng-if="vm.itemModifiers.price >= 0">{{vm.itemModifiers.price/100 | currency}}</span>
         </div>
     </md-toolbar>
 
@@ -11,22 +15,28 @@
 
     <md-dialog-content class="md-dialog-content">
         <form name="taskForm" novalidate layout="column">
-
-            <h3></h3>
-            
             <div ng-repeat="modifiergroup in vm.itemModifiers.modifierGroups.elements">
-                <md-subheader class="md-no-sticky">{{modifiergroup.name}}</md-subheader>
 
-                <md-list-item ng-repeat="modifier in modifiergroup.modifiers.elements">
-                    <md-checkbox ng-model="modifier.selected"></md-checkbox>
-                    <p>{{modifier.name}}</p>
-                </md-list-item>
+                <md-subheader class="md-no-sticky" layout="row" layout-fill>
+                    <span flex="80"><b>{{modifiergroup.name}}</b></span>
+                    <span flex ng-if="modifiergroup.minRequired">&#40;Select minimum {{modifiergroup.minRequired}} & maximum {{modifiergroup.maxAllowed}}&#41;</span>
+                </md-subheader>
+            
+                <md-grid-list md-cols-gt-md="2" md-cols-sm="2" md-cols-md="2" md-row-height="8:1" md-gutter-gt-md="10px" md-gutter-gt-sm="0px" md-gutter="10px">
+                    <md-grid-tile flex="50" ng-repeat="modifier in modifiergroup.modifiers.elements">
+                        <div layout="column" layout-align="start start" layout-fill>
+                            <md-input-container class="md-block" layout="row" layout-align="start start">
+                                <md-checkbox class="md-warn" ng-model="modifier.selected" ng-change="vm.itemModifiers.price = addRemoveModifier(vm.itemModifiers.price, modifier, modifier.selected);">{{modifier.name}}<span ng-if="modifier.price > 0">&nbsp;&#40;{{modifier.price/100 | currency}}&#41;</span></md-checkbox>
+                            </md-input-container>
+                        </div>
+                    </md-grid-tile><br>
+                </md-grid-list>
             </div>
         </form>
     </md-dialog-content>
     <md-dialog-actions layout="row">
         <span flex></span>
-        <md-button ng-click="vm.cancel()">Cancel</md-button>
-        <md-button ng-click="vm.hide()" class="md-primary" ng-disabled="taskForm.$invalid">Ok</md-button>
+        <md-button ng-click="closeDialog()">Cancel</md-button>
+        <md-button ng-click="checkValidationsAndAddToCart(vm.itemModifiers, quantity)" class="md-primary" ng-disabled="taskForm.$invalid">Add to cart</md-button>
     </md-dialog-actions>
 </md-dialog>
