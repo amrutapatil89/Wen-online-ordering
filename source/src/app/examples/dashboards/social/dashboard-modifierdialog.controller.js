@@ -22,7 +22,7 @@
             vm.itemModifiers = response.data;
             $scope.itemModifiersA = response.data;
 
-            console.log("Modifiers: "+JSON.stringify(vm.itemModifiers.modifierGroups.elements));
+            // console.log("Modifiers: "+JSON.stringify(vm.itemModifiers.modifierGroups.elements));
         });
 
         //below function is used for hiding/closing dialog box
@@ -160,101 +160,183 @@
             }
 
             //if item is not having any modifiergroup then it should add that item
-            if(item.modifierGroups.elements.length == 0) {
+            // if(item.modifierGroups.elements.length == 0) {
 
                 $scope.AddItemToCart(item, quantity);
-            }
+            // }
 
-            var modifierGroupIndex = 0;
+            // var modifierGroupIndex = 0;
 
-            //item is having modifier groups, so checking minRequired and maxRequired
-            item.modifierGroups.elements.forEach(function(modifierGroup){
+            // //item is having modifier groups, so checking minRequired and maxRequired
+            // item.modifierGroups.elements.forEach(function(modifierGroup){
 
-                var minimumRequired = 0;
-                var maximumAllowed = 0;
+            //     var minimumRequired = 0;
+            //     var maximumAllowed = 0;
 
-                console.log("Came here 1");
+            //     console.log("Came here 1");
 
-                if(modifierGroup.minRequired != null || modifierGroup.minRequired != undefined || modifierGroup.minRequired != "") {
+            //     if(modifierGroup.minRequired != null || modifierGroup.minRequired != undefined || modifierGroup.minRequired != "") {
 
-                    console.log("Came here 2");
-                    var minimumRequired = modifierGroup.minRequired;    
-                }
+            //         console.log("Came here 2");
+            //         var minimumRequired = modifierGroup.minRequired;    
+            //     }
 
-                if(modifierGroup.maxAllowed != null || modifierGroup.maxAllowed != undefined || modifierGroup.maxAllowed != "") {
+            //     if(modifierGroup.maxAllowed != null || modifierGroup.maxAllowed != undefined || modifierGroup.maxAllowed != "") {
 
-                    console.log("Came here 3");
-                    var maximumAllowed = modifierGroup.maxAllowed;    
-                }
+            //         console.log("Came here 3");
+            //         var maximumAllowed = modifierGroup.maxAllowed;    
+            //     }
 
-                if(minimumRequired > 0 || maximumAllowed > 0) {
+            //     if(minimumRequired > 0 || maximumAllowed > 0) {
 
-                    console.log("Came here 4");
-                    var modifiersCount = modifierGroup.modifiers.elements.length;
+            //         console.log("Came here 4");
+            //         var modifiersCount = modifierGroup.modifiers.elements.length;
 
-                    var modifierIndex = 0;
-                    var selectedCount = 0;
+            //         var modifierIndex = 0;
+            //         var selectedCount = 0;
 
-                    modifierGroup.modifiers.elements.forEach(function(modifier){
+            //         modifierGroup.modifiers.elements.forEach(function(modifier){
 
-                        console.log("Came here 5");
+            //             console.log("Came here 5");
                         
+            //             //for counting number of selected modifiers
+            //             if(modifier.selected) {
 
-                        //for counting number of selected modifiers
-                        if(modifier.selected) {
+            //                 console.log("Came here 6");
+            //                 selectedCount++;
+            //             }
 
-                            console.log("Came here 6");
-                            selectedCount++;
+            //             //for validating number of selected modifiers are satisfying minRequired and maxRequired or not
+            //             modifierIndex++;
+
+            //             if(modifiersCount == modifierIndex) {
+
+            //                 console.log("Came here 7");
+            //                 if(minimumRequired > 0 && minimumRequired > selectedCount) {
+
+            //                     return;
+            //                 }
+
+            //                 if(maximumAllowed > 0 && maximumAllowed < selectedCount) {
+
+            //                     return;
+            //                 }
+
+            //                 modifierGroupIndex++;
+
+            //                 console.log("Minimum requirement: "+minimumRequired);
+            //                 console.log("Maximum allowed: "+maximumAllowed);
+
+            //                 //if modifier selection is proper then add that item to the cart
+            //                 if(modifierGroupCount == modifierGroupIndex) {
+
+            //                     console.log("Calling add item");
+            //                     $scope.AddItemToCart(item, quantity);
+            //                 }
+            //             }
+            //         });
+            //     } else {
+
+            //         //if item is not having any restriction on modifier selection
+            //         console.log("Calling add item2");
+            //         $scope.AddItemToCart(item, quantity);
+            //     }
+
+            // });
+
+        }
+
+        var matchModifiersAndAddItem = function(item, modifiersArray, quantity) {
+
+            // console.log("Modifiers array: "+JSON.stringify(modifiersArray));
+
+            var itemMatchedFlag = false;
+
+            $rootScope.cartItemObject.elements.forEach(function(cartItem, cartItemIndex){
+
+                //checking for the item is present or not
+                if(cartItem.id == item.id && !itemMatchedFlag) {
+
+                    //item is present, now checking for the modifier length
+                    if(cartItem.modifiers.length == modifiersArray.length) {
+
+                        //for saving the number of modifiers matching
+                        var matchedCount = 0;
+
+                        //now checking for the modifiers
+                        modifiersArray.forEach(function(itemModifier, itemModifierIndex) {
+
+                            //this flag will be set to true if the modifier is found
+                            var modifierFoundFlag = false;
+
+                            if(!modifierFoundFlag) {
+
+                                cartItem.modifiers.forEach(function(cartModifier, cartModifierIndex){
+
+                                    // console.log("itemModifier.id: "+itemModifier.id);
+                                    // console.log("cartModifier.id: "+cartModifier.id);
+
+                                    if(itemModifier.id == cartModifier.id) {
+
+                                        modifierFoundFlag = true;
+                                        matchedCount++;
+                                        
+                                        //if matchedCount is equal to number of modifiers then just increase the quantity
+                                        if(matchedCount == modifiersArray.length) {
+
+                                            itemMatchedFlag = true;
+                                            // console.log("I am increasing quantity."+cartModifierIndex);
+                                            $rootScope.cartItemObject.elements[cartItemIndex].qty = $rootScope.cartItemObject.elements[cartItemIndex].qty + quantity;
+                                            $rootScope.cartItemObject.elements[cartItemIndex].cost = $rootScope.cartItemObject.elements[cartItemIndex].price * $rootScope.cartItemObject.elements[cartItemIndex].qty;
+                                            $mdDialog.hide();
+                                            return;
+                                        }
+                                    } else if(cartItemIndex == $rootScope.cartItemObject.elements.length - 1 
+                                        && cartModifierIndex == cartItem.modifiers.length - 1 
+                                        && !itemMatchedFlag  && modifiersArray.length - 1 == itemModifierIndex) {
+
+                                        //if item is not found in the cart then add that item in the cart
+                                        if(matchedCount != modifiersArray.length) {
+
+                                            // console.log("I am adding item 3");
+                                            addNewItemToCartObjects(item);
+                                            $mdDialog.hide();
+                                            return;
+                                        }
+                                    }
+                                });
+                            } 
+                        });//end of cartItem modifiers forEach loop
+                    } else {
+
+                        if(cartItemIndex == $rootScope.cartItemObject.elements.length - 1) {
+
+                            // console.log("I am adding item 1");
+                            addNewItemToCartObjects(item);
+                            return;
                         }
-
-                        //for validating number of selected modifiers are satisfying minRequired and maxRequired or not
-                        modifierIndex++;
-
-                        if(modifiersCount == modifierIndex) {
-
-                            console.log("Came here 7");
-                            if(minimumRequired > 0 && minimumRequired > selectedCount) {
-
-                                return;
-                            }
-
-                            if(maximumAllowed > 0 && maximumAllowed < selectedCount) {
-
-                                return;
-                            }
-
-                            modifierGroupIndex++;
-
-                            console.log("Minimum requirement: "+minimumRequired);
-                            console.log("Maximum allowed: "+maximumAllowed);
-
-                            //if modifier selection is proper then add that item to the cart
-                            if(modifierGroupCount == modifierGroupIndex) {
-
-                                console.log("Calling add item");
-                                $scope.AddItemToCart(item, quantity);
-                            }
-                        }
-                    });
+                    }
                 } else {
 
-                    //if item is not having any restriction on modifier selection
-                    console.log("Calling add item2");
-                    $scope.AddItemToCart(item, quantity);
+                    if(cartItemIndex == $rootScope.cartItemObject.elements.length - 1 && !itemMatchedFlag) {
+
+                        // console.log("I am adding item 2");
+                        addNewItemToCartObjects(item);
+                        return;
+                    }
                 }
-
             });
-
         }
 
         //for adding items in cart by Chetan Purohit on 8th May 2016
         //this data is structured as per requirement for validate API
         $scope.AddItemToCart = function(item, quantity) {
 
-            console.log("Cart function called."+JSON.stringify(item));
+            // console.log("Cart function called."+JSON.stringify(item));
 
             if($rootScope.cartItemObject.elements.length == 0) {
 
+                // console.log("I am adding item 3");
                 addNewItemToCartObjects(item);
                 return;
             }
@@ -263,10 +345,14 @@
 
             //if there are some items then check the presence
             var cartItemIndex = 0;
+            var matchingItemFoundFlag = false;
+            var itemFound = false;
 
             $rootScope.cartItemObject.elements.forEach(function(cartItem){
 
-                if(cartItem.id == item.id) {
+                if(cartItem.id == item.id && !matchingItemFoundFlag) {
+
+                    matchingItemFoundFlag = true;
 
                     //item is present
                     if(item.modifierGroups.elements.length == 0) {
@@ -278,48 +364,40 @@
                         return;
                     } else {
 
-                        //item is having some modifiers so check the presence according to modifers
-                        item.modifierGroups.elements.forEach(function(modifierGroup){
+                        var modifiersArray = [];
 
-                            modifierGroup.modifiers.elements.forEach(function(modifier){
+                        // console.log("item with modifiers 1");
 
-                                //if the modifier is selected then check the presence
+                        //adding modifiers to an array for matching with the existing items in the cart
+                        item.modifierGroups.elements.forEach(function(modifierGroup, modifierGroupIndex){
+
+                            // console.log("item with modifiers 2"+modifierGroupIndex);
+
+                            modifierGroup.modifiers.elements.forEach(function(modifier, modifierIndex){
+
+                                // console.log("item with modifiers 3");
+                                // console.log("Entered here: "+modifierIndex);
                                 if(modifier.selected) {
 
-                                    var isModifierFound = false;
-                                    var modifierIndex = 0;
+                                    modifiersArray.push(modifier);
+                                }//end of modifier selected checking if
 
-                                    $rootScope.cartItemObject.elements[cartItemIndex].modifiers.forEach(function(itemModifier){
+                                //for checking if all the modifiers are iterated or not for modifierGroup
+                                if(modifierIndex == modifierGroup.modifiers.elements.length - 1 && modifierGroupIndex == item.modifierGroups.elements.length - 1) {
 
-                                        if(itemModifier.id == modifier.id && itemModifier.modifierGroup.id == modifierGroup.id) {
-
-                                            isModifierFound = true;
-                                            $rootScope.cartItemObject.elements[cartItemIndex].qty++;
-                                            $rootScope.cartItemObject.elements[cartItemIndex].cost = $rootScope.cartItemObject.elements[cartItemIndex].price * $rootScope.cartItemObject.elements[cartItemIndex].qty;
-                                        }
-
-                                        modifierIndex++;
-
-                                        if(modifierIndex == $rootScope.cartItemObject.elements[cartItemIndex].modifiers.length) {
-
-                                            //if this is the last modifier in the added items and selected modifier is not found then add that item
-                                            if(!isModifierFound) {
-
-                                                addNewItemToCartObjects(item);
-                                                return;
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                        });//end of modifierGroup forEach
+                                    console.log("I am calling match and add.");
+                                    matchModifiersAndAddItem(item, modifiersArray, quantity);
+                                }//end of modifiers ended or not checking if
+                            });//end of modifers forEach for every modifierGroup
+                        });//end of modifierGroups forEach
                     }
                 }
 
                 cartItemIndex++;
 
-                if(cartItemIndex == $rootScope.cartItemObject.elements.length) {
+                if(cartItemIndex == $rootScope.cartItemObject.elements.length && !matchingItemFoundFlag) {
 
+                    console.log("I am adding item 5");
                     addNewItemToCartObjects(item);
                 }
             }); //end of forEach            

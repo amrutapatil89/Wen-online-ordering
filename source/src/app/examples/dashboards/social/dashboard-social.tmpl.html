@@ -110,15 +110,17 @@
                                     <span flex="85">
                                         <!-- for showing item details -->
                                         <span layout="row" class="md-body--1">
-                                            <span flex="85" >{{cartItem.name}} </span>
+                                            <span flex="85" >{{cartItem.name}}</span>
                                             <span flex>{{cartItem.cost / 100 | currency}}</span>
                                         </span>
 
                                         <!-- for showing modifier details -->
-                                        <!--<span layout="row" class="md-body-1">
-                                            <span flex="85">Grated Parmesan Cheese</span>
-                                            <span flex>$ {{250 / 100}}</span>
-                                        </span>-->
+                                        <div ng-repeat="modifier in cartItem.modifiers">
+                                            <span layout="row" class="md-body-1">
+                                                <span flex="85">{{modifier.name}}</span>
+                                                <span flex>{{modifier.price/100 | currency}}</span>
+                                            </span>
+                                        </div>
                                     </span>
 
                             </div>
