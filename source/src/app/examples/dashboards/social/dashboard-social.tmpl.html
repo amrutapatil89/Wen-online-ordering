@@ -3,11 +3,11 @@
         layout-align="start center" 
         style="background: url(assets/images/backgrounds/clavo/default.png) no-repeat; background-size: cover;">
 
-    <div class="margin-right-20 margin-bottom-50">
+    <div class="margin-right-20 margin-bottom-20">
         <img src="assets/images/backgrounds/clavo/store_logo.png" alt="girl-avatar" class="make-round" width="100"/>
     </div>
 
-    <div class="text-light">
+    <div class="text-light" layout="column" layout-fill>
         <h2 class="font-weight-600 margin-bottom-0 text-light">{{appDetails.data.appInfo.appName}}</h2>
 
         <p class="font-weight-300 margin-top-0 margin-bottom-0">
@@ -15,7 +15,7 @@
             <br>
         </p>
 
-        <p style="bottom:0; top:80px;background: rgba(255,255,255,0.7);bottom: 0;text-align: left;margin-left: -140px;margin-right: -20px; margin-bottom:-20px;color:#fff;padding-left:140px;">
+        <p style="bottom:0; top:80px;background: rgba(255,255,255,0.7);bottom: 0;text-align: left;margin-left: -140px;margin-right: -20px; margin-bottom:-40px;color:#fff;padding-left:140px;">
             <md-icon md-font-icon="zmdi zmdi-pin color-inherit"></md-icon> 
             4819 Emperor, Suite 4000 Blvd, Durham, NC, 27703. 
             <md-button md-no-ink class="md-accent" aria-label="flat button"> 
@@ -143,16 +143,7 @@
         <md-tab-label layout="column">
             <span>Info</span>
         </md-tab-label>
-        <md-tab-body><br>
-        <h4 class="md-title margin-0">
-            <md-icon md-font-icon="zmdi zmdi-cutlery color-inherit"></md-icon>
-            Carvers
-        </h4>
-        <p class="md-caption margin-0">
-            <md-icon md-font-icon="zmdi zmdi-pin color-inherit"></md-icon> 
-                4819 Emperor, Suite 4000 Blvd, Durham, NC, 27703. 
-        </p>
-        <p class="md-body-1">A detailed description of your store, it may contain information about your cuisine, dishes, specialty, facilities you provide etc. Thanks for making this editable.</p>
+        <md-tab-body>
             <div layout="row" layout-xs="column" layout-margin>
                 <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
               
