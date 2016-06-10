@@ -62,7 +62,7 @@
                                     <div layout="row" layout-align="start center" flex>
                                         <span flex></span>
                                         {{item.price/100 | currency}} &nbsp;&nbsp;
-                                        <md-icon md-font-icon="zmdi zmdi-plus-circle-o" layout-align="end end" class="md-primary" ng-click="vm.createDialog($event, item.id)">
+                                        <md-icon md-font-icon="zmdi zmdi-plus-circle-o" layout-align="end end" class="md-primary" ng-click="vm.createDialog($event, item.id, 'add')">
                                         <md-tooltip md-direction="right">
                                             Add to cart
                                         </md-tooltip>
@@ -99,7 +99,7 @@
                             <div class="margin-top-10" layout="row" flex="100" ng-mouseover="hover=true" ng-mouseleave="hover=false">
 
                                     <span flex="15"> 
-                                        <md-icon md-font-icon="zmdi zmdi-edit material-icon" layout-align="end end" class="" ng-click="vm.createDialog($event, cartItem.id)" ng-show="hover">
+                                        <md-icon md-font-icon="zmdi zmdi-edit material-icon" layout-align="end end" class="" ng-click="vm.createDialog($event, cartItem.cartId, 'edit')" ng-show="hover">
                                         <md-tooltip md-direction="left">
                                         Edit Item
                                         </md-tooltip> 

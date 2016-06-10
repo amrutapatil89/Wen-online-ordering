@@ -2,10 +2,10 @@
     <md-toolbar class="md-whiteframe-z2">
         <div class="md-toolbar-tools" layout="row" layout-fill>
             <h2 flex="60">{{vm.itemModifiers.name}}</h2>
-            <span flex="15" layout="row">
-                <input type="button" value="-" style="width:25px; height:25px; margin-right:5px;" ng-click="changeQty('minus')"/>
-                <input type="text" ng-model="quantity" value="0" style="width:40px;"/>
-                <input type="button" value="+" style="width:25px; height:25px; margin-left:5px;" ng-click="changeQty('add')"/>
+            <span flex="15" layout="row" ng-if="vm.itemModifiers.price >= 0">
+                <input type="button" value="-" style="width:25px; height:25px; margin-right:5px;margin-top:10px;" ng-click="changeQty('minus')"/>
+                <input type="text" ng-model="quantity" value="0" style="width:40px;margin-top:7px;"/>
+                <input type="button" value="+" style="width:25px; height:25px; margin-left:5px;margin-top:10px;" ng-click="changeQty('add')"/>
             </span>
             <span flex ng-if="vm.itemModifiers.price >= 0">{{vm.itemModifiers.price/100 | currency}}</span>
         </div>

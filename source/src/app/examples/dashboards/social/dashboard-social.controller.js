@@ -45,20 +45,55 @@
 
         // Dialog box for modifiers
 
-        function createDialog($event, itemid) {
-            $mdDialog.show({
-                controller: 'ModifierDialogController',
-                controllerAs: 'vm',
-                templateUrl: 'app/examples/dashboards/social/modifier-dialog.tmpl.html',
-                targetEvent: $event,
-                focusOnOpen: false,
-                locals: { 
-                    itemId: {
-                        item : itemid
-                    }
-                }
+        function createDialog($event, itemId, type) {
 
-            });
+            console.log("type: "+type);
+
+            //type is used for checking if the dialog has to be created for add item or edit item
+            if(type == "add") {
+
+                console.log("In add call.");
+                //this call has been done for adding item, so simply passing the item to dialog box
+                $mdDialog.show({
+                    controller: 'ModifierDialogController',
+                    controllerAs: 'vm',
+                    templateUrl: 'app/examples/dashboards/social/modifier-dialog.tmpl.html',
+                    targetEvent: $event,
+                    focusOnOpen: false,
+                    locals: { 
+                        itemId: {
+                            item : itemId
+                        }
+                    }
+
+                });    
+            } else {
+
+                //this call has been done for editing item
+                //so item should have all the original details + already selected modifiers and quantity details
+
+                console.log("In edit call.");
+
+                //for getting itemId from cartItemId
+                var selectedItemId = $rootScope.cartItemObject.elements[itemId].id;
+
+                //this call has been done for adding item, so simply passing the item to dialog box
+                $mdDialog.show({
+                    controller: 'ModifierDialogController',
+                    controllerAs: 'vm',
+                    templateUrl: 'app/examples/dashboards/social/modifier-dialog.tmpl.html',
+                    targetEvent: $event,
+                    focusOnOpen: false,
+                    locals: { 
+                        itemId: {
+                            item : selectedItemId,
+                            cartId: itemId
+                        }
+                    }
+
+                }); 
+            }
+            
         }
 
         $http.get("http://52.23.209.206:3000/api/v1/13HRYK02HZM30/items/0PKNFRAEP3524")
