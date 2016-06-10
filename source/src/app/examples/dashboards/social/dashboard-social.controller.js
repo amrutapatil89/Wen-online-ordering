@@ -87,25 +87,30 @@
                 console.log("In edit call.");
 
                 //for getting itemId from cartItemId
-                var selectedItemId = $rootScope.cartItemObject.elements[itemId].id;
 
-                //this call has been done for adding item, so simply passing the item to dialog box
-                $mdDialog.show({
-                    controller: 'ModifierDialogController',
-                    controllerAs: 'vm',
-                    templateUrl: 'app/examples/dashboards/social/modifier-dialog.tmpl.html',
-                    targetEvent: $event,
-                    focusOnOpen: false,
-                    locals: { 
-                        itemId: {
-                            item : selectedItemId,
-                            cartId: itemId
-                        }
+                $rootScope.cartItemObject.elements.forEach(function(cartItem, cartItemIndex) {
+
+                    if(cartItem.cartId == itemId) {
+
+                        var selectedItemId = cartItem.id;
+
+                        //this call has been done for adding item, so simply passing the item to dialog box
+                        $mdDialog.show({
+                            controller: 'ModifierDialogController',
+                            controllerAs: 'vm',
+                            templateUrl: 'app/examples/dashboards/social/modifier-dialog.tmpl.html',
+                            targetEvent: $event,
+                            focusOnOpen: false,
+                            locals: { 
+                                itemId: {
+                                    item : selectedItemId,
+                                    cartId: itemId
+                                }
+                            }
+                        }); 
                     }
-
-                }); 
+                });
             }
-            
         }
 
         $http.get("http://52.23.209.206:3000/api/v1/13HRYK02HZM30/items/0PKNFRAEP3524")
@@ -149,12 +154,24 @@
                     break;                    
                 }
             }  
-
         }  
-
-
-        
     } //end of sortItemsCategoryWise function
+
+    //for deleting item from cart or closing dialog box on cancel or remove from cart button
+    $scope.deleteItemFromCart = function(cartItemId) {
+
+        //cart item index can be changed after deleting some items
+        //so removing items after finding the correct index
+        $rootScope.cartItemObject.elements.forEach(function(cartItem, cartItemIndex) {
+
+            if(cartItem.cartId == cartItemId) {
+
+                $rootScope.cartItemObject.elements.splice(cartItemIndex, 1);
+            }
+        });
+        
+        $mdDialog.hide();
+    }//end of deleteCloseDialog function
 
         vm.whotofollow = [{
             name: 'Twitch',

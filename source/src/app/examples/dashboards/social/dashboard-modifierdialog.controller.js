@@ -13,6 +13,9 @@
         $scope.itemid = itemId;
         $scope.quantity = 1;
 
+        $scope.addEditButtonText = "";
+        $scope.cancelDeleteButtonText = "";
+
         var getModifierUrl =   "http://52.23.209.206:3000/api/v1/13HRYK02HZM30/items/" + $scope.itemid.item;
 
         $scope.passItemToUI = function(item) {
@@ -20,57 +23,91 @@
             if($scope.itemid.cartId >= 0) {
 
                 //this call is done for editing item
-                var selectedItem = $rootScope.cartItemObject.elements[$scope.itemid.cartId];
 
-                console.log("selected item: "+JSON.stringify(item));
+                $rootScope.cartItemObject.elements.forEach(function(cartItem) {
 
-                //for adding selected to previously selected modifiers
-                if(item.modifierGroups.elements.length > 0) {
+                    if(cartItem.cartId == $scope.itemid.cartId) {
 
-                    item.modifierGroups.elements.forEach(function(modifierGroup, modifierGroupIndex) {
+                        console.log("selected item: "+JSON.stringify(item));
+                        var selectedItem = cartItem;
 
-                        modifierGroup.modifiers.elements.forEach(function(modifier, modifierIndex){
+                        //for adding selected to previously selected modifiers
+                        if(item.modifierGroups.elements.length > 0) {
 
-                            //for checking if the currently selected modifier is already selected or not
-                            selectedItem.modifiers.forEach(function(selectedModifier, selectedModifierIndex) {
+                            item.modifierGroups.elements.forEach(function(modifierGroup, modifierGroupIndex) {
 
-                                if(modifier.id == selectedModifier.id) {
+                                modifierGroup.modifiers.elements.forEach(function(modifier, modifierIndex){
 
-                                    item.modifierGroups.elements[modifierGroupIndex].modifiers.elements[modifierIndex].selected = true;
-                                }
+                                    //for checking if the currently selected modifier is already selected or not
+                                    selectedItem.modifiers.forEach(function(selectedModifier, selectedModifierIndex) {
 
-                                //for checking if this is the last modifier of last modifierGroup
-                                if(item.modifierGroups.elements.length - 1 == modifierGroupIndex 
-                                    && modifierGroup.modifiers.elements.length - 1 == modifierIndex 
-                                    && selectedItem.modifiers.length - 1 == selectedModifierIndex) {
+                                        if(modifier.id == selectedModifier.id) {
 
-                                    console.log("item: "+JSON.stringify(item));
-                                    item.price = selectedItem.price;
-                                    vm.itemModifiers = item;
-                                    $scope.itemModifiersA = item;
-                                    $scope.quantity = selectedItem.qty;
-                                }
-                            });
-                        });
+                                            item.modifierGroups.elements[modifierGroupIndex].modifiers.elements[modifierIndex].selected = true;
+                                        }
 
-                    });    
-                } else {
+                                        //for checking if this is the last modifier of last modifierGroup
+                                        if(item.modifierGroups.elements.length - 1 == modifierGroupIndex 
+                                            && modifierGroup.modifiers.elements.length - 1 == modifierIndex 
+                                            && selectedItem.modifiers.length - 1 == selectedModifierIndex) {
 
-                    //item is not having any modifiers
-                    //pass only quantity
-                    vm.itemModifiers = item;
-                    $scope.itemModifiersA = item;
-                    $scope.quantity = selectedItem.qty;
-                }
+                                            console.log("item: "+JSON.stringify(item));
+                                            item.price = selectedItem.price;
+                                            vm.itemModifiers = item;
+                                            $scope.itemModifiersA = item;
+                                            $scope.quantity = selectedItem.qty;
+                                            $scope.addEditButtonText = "Update item";
+                                            $scope.cancelDeleteButtonText = "Remove from cart";
+                                        }
+                                    });
+                                });
+
+                            });    
+                        } else {
+
+                            //item is not having any modifiers
+                            //pass only quantity
+                            vm.itemModifiers = item;
+                            $scope.itemModifiersA = item;
+                            $scope.quantity = selectedItem.qty;
+                            $scope.addEditButtonText = "Update item";
+                            $scope.cancelDeleteButtonText = "Remove from cart";
+                        }
+                    }
+                });
+
             } else {
 
                 //this call is done for add item
                 vm.itemModifiers = item;
                 $scope.itemModifiersA = item;
-                console.log("Passing item from add");
+                $scope.addEditButtonText = "Add to cart";
+                $scope.cancelDeleteButtonText = "Cancel";
             }
 
         }//end of passItemToUI function
+
+        //for deleting item from cart or closing dialog box on cancel or remove from cart button
+        $scope.deleteCloseDialog = function(type) {
+
+            if(type == "Remove from cart") {
+
+                //cart item index can be changed after deleting some items
+                //so removing items after finding the correct index
+                $rootScope.cartItemObject.elements.forEach(function(cartItem, cartItemIndex) {
+
+                    if(cartItem.cartId == $scope.itemid.cartId) {
+
+                        $rootScope.cartItemObject.elements.splice(cartItemIndex, 1);
+                    }
+                });
+                
+                $mdDialog.hide();
+            } else {
+
+                $mdDialog.hide();
+            }
+        }//end of deleteCloseDialog function
 
         // Get call for categories 
         $http.get(getModifierUrl)
