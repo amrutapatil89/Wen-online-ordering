@@ -1,13 +1,14 @@
 <md-dialog flex="60" flex-xs="100">
     <md-toolbar class="md-whiteframe-z2">
         <div class="md-toolbar-tools" layout="row" layout-fill>
-            <h2 flex="60">{{vm.itemModifiers.name}}</h2>
-            <span flex="15" layout="row" ng-if="vm.itemModifiers.price >= 0">
-                <input type="button" value="-" style="width:25px; height:25px; margin-right:5px;margin-top:10px;" ng-click="changeQty('minus')"/>
-                <input type="text" ng-model="quantity" value="0" style="width:40px;margin-top:7px;"/>
-                <input type="button" value="+" style="width:25px; height:25px; margin-left:5px;margin-top:10px;" ng-click="changeQty('add')"/>
+            <h2 flex="95" class="padding-top-10">{{vm.itemModifiers.name}}</h2>
+            <span flex="5" layout="row" class="padding-top-10 padding-left-10"> 
+                 <a href="" ng-click="closeDialog()">
+                    <md-icon md-font-icon="zmdi zmdi-close" class="">
+                    </md-icon> 
+                 </a>
             </span>
-            <span flex ng-if="vm.itemModifiers.price >= 0">{{vm.itemModifiers.price/100 | currency}}</span>
+           
         </div>
     </md-toolbar>
 
@@ -15,6 +16,56 @@
 
     <md-dialog-content class="md-dialog-content">
         <form name="taskForm" novalidate layout="column">
+
+            <div layout="row" class="margin-bottom-10">
+                <span flex="50" class="margin-right-10"> 
+                        <md-subheader class="md-no-sticky" layout="row">
+                            Quantity
+                        </md-subheader>  
+
+                        <span layout="row">
+                             <!-- <input type="button" value="-" style="width:25px; height:25px; margin-right:5px;margin-top:10px;" ng-click="changeQty('minus')"/>
+                            <input type="text" ng-model="quantity" value="0" style="width:40px;margin-top:7px;"/>
+                            <input type="button" value="+" style="width:25px; height:25px; margin-left:5px;margin-top:10px;" ng-click="changeQty('add')"/> -->
+
+                            <span flex="10" class="margin-top-20 md-primary">
+                                <a href=""><md-icon md-font-icon="zmdi zmdi-minus-circle-outline" class="md-primary" ng-click="changeQty('minus')">
+                                  <md-tooltip md-direction="left">
+                                  Remove Item
+                                  </md-tooltip> 
+                              </md-icon> </a>
+                            </span>
+
+                            <span flex="20">
+                                <md-input-container>
+                                <label>Qty</label>
+                                <input ng-model="quantity" type="number">
+                              </md-input-container>
+                            </span>
+                            <span flex="10" class="margin-top-20 md-primary">
+                                <a href=""><md-icon md-font-icon="zmdi zmdi-plus-circle-o" class="md-primary" ng-click="changeQty('add')">
+                                  <md-tooltip md-direction="right">
+                                  Add Item
+                                  </md-tooltip> 
+                              </md-icon> </a>
+                            </span>
+
+                        </span>
+                </span>
+                <span flex>
+                    
+                    <md-subheader class="md-no-sticky" layout="row">
+                            Total
+                    </md-subheader> 
+
+                    <div ng-if="vm.itemModifiers.price >= 0" class="md-title padding-left-10" style="margin-top:10px">{{vm.itemModifiers.price/100 | currency}}</div>
+                </span>
+
+            </div>
+            
+
+
+
             <div ng-repeat="modifiergroup in vm.itemModifiers.modifierGroups.elements">
 
                 <md-subheader class="md-no-sticky" layout="row" layout-fill>
@@ -26,7 +77,7 @@
                     <md-grid-tile flex="50" ng-repeat="modifier in modifiergroup.modifiers.elements">
                         <div layout="column" layout-align="start start" layout-fill>
                             <md-input-container class="md-block" layout="row" layout-align="start start">
-                                <md-checkbox class="md-warn" ng-model="modifier.selected" ng-change="vm.itemModifiers.price = addRemoveModifier(vm.itemModifiers.price, modifier, modifier.selected);">{{modifier.name}}<span ng-if="modifier.price > 0">&nbsp;&#40;{{modifier.price/100 | currency}}&#41;</span></md-checkbox>
+                                <md-checkbox class="md-primary" ng-model="modifier.selected" ng-change="vm.itemModifiers.price = addRemoveModifier(vm.itemModifiers.price, modifier, modifier.selected);">{{modifier.name}}<span ng-if="modifier.price > 0">&nbsp;&#40;{{modifier.price/100 | currency}}&#41;</span></md-checkbox>
                             </md-input-container>
                         </div>
                     </md-grid-tile><br>
@@ -36,7 +87,8 @@
     </md-dialog-content>
     <md-dialog-actions layout="row">
         <span flex></span>
-        <md-button ng-click="deleteCloseDialog(cancelDeleteButtonText)">{{cancelDeleteButtonText}}</md-button>
-        <md-button ng-click="checkValidationsAndAddToCart(vm.itemModifiers, quantity)" class="md-primary" ng-disabled="taskForm.$invalid">{{addEditButtonText}}</md-button>
+
+        <md-button ng-click="deleteCloseDialog(cancelDeleteButtonText)">Cancel</md-button>
+        <md-button ng-click="checkValidationsAndAddToCart(vm.itemModifiers, quantity)"  class="md-primary" ng-disabled="taskForm.$invalid">Add to cart : &nbsp;{{vm.itemModifiers.price/100 | currency}}</md-button>
     </md-dialog-actions>
 </md-dialog>
