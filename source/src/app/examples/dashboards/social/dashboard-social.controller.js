@@ -19,6 +19,9 @@
         vm.items = [];
         vm.cartItems = [];
         vm.createDialog = createDialog;
+        vm.storeHours=[{"name":"Monday","hours":[{"start":"10.00","end":"11.30"}]},{"name":"Tuesday"},{"name":"Wednesday"},{"name":"Thursday"},{"name":"Friday"},{"name":"Saturday"},{"name":"Sunday"}];
+        vm.paymentTypes=[{"name":"CREDIT CARD"},{"name":"CASH"}]
+        vm.offers= [];
 
         $scope.selectedCategory = "";
 
@@ -42,6 +45,15 @@
             console.log("App Details: "+JSON.stringify($scope.appDetails));
         });
         
+
+        // Getting offers 
+        $http.get("http://52.23.209.206:3001/api/v1/KE91B9500TF28/valid_discounts")
+        .then(function(appInfo) {
+            vm.offers = appInfo.data.elements;
+            console.log("Offers Details: "+JSON.stringify(vm.offers));
+        });
+
+
 
         // Dialog box for modifiers
 

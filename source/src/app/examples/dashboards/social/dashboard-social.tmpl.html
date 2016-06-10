@@ -143,76 +143,76 @@
         <md-tab-label layout="column">
             <span>Info</span>
         </md-tab-label>
-        <md-tab-body>
+        <md-tab-body><br>
+        <h4 class="md-title margin-0">
+            <md-icon md-font-icon="zmdi zmdi-cutlery color-inherit"></md-icon>
+            Carvers
+        </h4>
+        <p class="md-caption margin-0">
+            <md-icon md-font-icon="zmdi zmdi-pin color-inherit"></md-icon> 
+                4819 Emperor, Suite 4000 Blvd, Durham, NC, 27703. 
+        </p>
+        <p class="md-body-1">A detailed description of your store, it may contain information about your cuisine, dishes, specialty, facilities you provide etc. Thanks for making this editable.</p>
             <div layout="row" layout-xs="column" layout-margin>
                 <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
-                    <div class="widget-follower-header">
-                        <img src="assets/images/backgrounds/material-backgrounds/mb-bg-26.jpg" alt="some bg" class="display-block">
-                        <img src="assets/images/avatars/avatar-2.png" class="widget-follower-header-avatar"/>
-                    </div>
+              
                     <div class="widget-follower-text padding-10">
-                        <h4 class="md-title margin-0">Morris Onions</h4>
-                        <p class="md-caption margin-0">@morris</p>
-                        <p class="md-body-1">Senior Software Test Engineer at Progressive, Indie Game Developer, Cleveland Game Devs member, a cyberpunk before it was cool & a geek Dad.</p>
+                                                <h4 class="md-title margin-0">
+                            <md-icon md-font-icon="zmdi zmdi-time color-inherit"></md-icon>
+                            Delivery hours
+                        </h4>
+                            
+                        <md-list-item ng-repeat="item in vm.storeHours">
+                            <p>{{item.name}}</p>
+                            <span>11.00 AM&nbsp;-&nbsp;10.00 PM</span>
+                        </md-list-item>
+                        <md-list-item>
+                        <md-icon md-font-icon="zmdi zmdi-hourglass-alt color-inherit"></md-icon>
+                            Delivery Time : 35 min
+                        </md-list-item>
+                        <md-list-item>
+                        <md-icon md-font-icon="zmdi zmdi-bike color-inherit"></md-icon>
+                            Delivery Fee : $2
+                        </md-list-item>
+
                     </div>
                 </tri-widget>
+               
                 <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
-                    <div class="widget-follower-header">
-                        <img src="assets/images/backgrounds/material-backgrounds/mb-bg-12.jpg" alt="some bg" class="display-block">
-                        <img src="assets/images/avatars/avatar-6.png" class="widget-follower-header-avatar"/>
-                    </div>
+                    
                     <div class="widget-follower-text padding-10">
-                        <h4 class="md-title margin-0">Sam Cook</h4>
-                        <p class="md-caption margin-0">@scook</p>
-                        <p class="md-body-1">Intermediary acquisition customer-facing return on investment customer-facing conscientious outsourcing incrementally increasing sales experienced and confident.</p>
+                                                <h4 class="md-title margin-0">
+                            <md-icon md-font-icon="zmdi zmdi-time color-inherit"></md-icon>
+                            Pick Up hours
+                        </h4>
+                        <md-list-item ng-repeat="item in vm.storeHours">
+                            <p>{{item.name}}</p>&nbsp;
+                            <span ng-repeat="hr in item.hours"> {{hr.start}}&nbsp;-&nbsp;{{hr.end}}</span>
+                        </md-list-item>
+                        <md-list-item>
+                        <md-icon md-font-icon="zmdi zmdi-hourglass-alt color-inherit"></md-icon>
+                            Pickup Time : 45 min
+                        </md-list-item>
+
                     </div>
                 </tri-widget>
-                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
-                    <div class="widget-follower-header">
-                        <img src="assets/images/backgrounds/material-backgrounds/mb-bg-30.jpg" alt="some bg" class="display-block">
-                        <img src="assets/images/avatars/avatar-5.png" class="widget-follower-header-avatar"/>
-                    </div>
+
+                 <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="start">
+                    
                     <div class="widget-follower-text padding-10">
-                        <h4 class="md-title margin-0">Manos proistakis</h4>
-                        <p class="md-caption margin-0">@proistak</p>
-                        <p class="md-body-1">Recruiting key personnel effective management and mentoring of the team acquiring new clients maximised returns in short time frame. </p>
+                                                    <h4 class="md-title margin-0">
+                            <md-icon md-font-icon="zmdi zmdi-money color-inherit"></md-icon>
+                            Payment Type Accepted
+                        </h4>
+                        <md-list-item ng-repeat="item in vm.paymentTypes">
+                            <md-icon md-font-icon="zmdi zmdi-check color-inherit"></md-icon>
+                            <p>{{item.name}}</p>
+                        </md-list-item>
+
+
                     </div>
                 </tri-widget>
-            </div>
-            <div layout="row" layout-xs="column" layout-margin>
-                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
-                    <div class="widget-follower-header">
-                        <img src="assets/images/backgrounds/material-backgrounds/mb-bg-40.jpg" alt="some bg" class="display-block">
-                        <img src="assets/images/avatars/avatar-6.png" class="widget-follower-header-avatar"/>
-                    </div>
-                    <div class="widget-follower-text padding-10">
-                        <h4 class="md-title margin-0">Jane Onions</h4>
-                        <p class="md-caption margin-0">@morris</p>
-                        <p class="md-body-1">Entrepreneurial, brand strategy key relationship management cross-functional; handling customer complaints. Preparing financial data going to the cinema dynamic self starter easy to work with. </p>
-                    </div>
-                </tri-widget>
-                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
-                    <div class="widget-follower-header">
-                        <img src="assets/images/backgrounds/material-backgrounds/mb-bg-07.jpg" alt="some bg" class="display-block">
-                        <img src="assets/images/avatars/avatar-4.png" class="widget-follower-header-avatar"/>
-                    </div>
-                    <div class="widget-follower-text padding-10">
-                        <h4 class="md-title margin-0">Christine Jackson</h4>
-                        <p class="md-caption margin-0">@scook</p>
-                        <p class="md-body-1">Presenting to senior management streamlined operations outside the box. Incrementally increasing sales customer-centric, commercially minded increased revenue customer-facing.</p>
-                    </div>
-                </tri-widget>
-                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
-                    <div class="widget-follower-header">
-                        <img src="assets/images/backgrounds/material-backgrounds/mb-bg-18.jpg" alt="some bg" class="display-block">
-                        <img src="assets/images/avatars/avatar-1.png" class="widget-follower-header-avatar"/>
-                    </div>
-                    <div class="widget-follower-text padding-10">
-                        <h4 class="md-title margin-0">John Langan</h4>
-                        <p class="md-caption margin-0">@proistak</p>
-                        <p class="md-body-1">Recruiting key personnel effective management and mentoring of the team acquiring new clients maximised returns in short time frame. </p>
-                    </div>
-                </tri-widget>
+
             </div>
         </md-tab-body>
     </md-tab>
@@ -222,50 +222,14 @@
         </md-tab-label>
         <md-tab-body>
             <div layout="row" layout-xs="column" layout-margin>
-                <tri-widget class="flex" flex="70" flex-xs="100" title="Favorites" content-layout="column" content-layout-align="start center">
-                    <md-divider></md-divider>
-                    <md-list>
-                        <md-list-item class="md-2-line" ng-repeat="fave in ::vm.favorites">
-                            <img ng-src="{{::fave.avatar}}" class="md-avatar"/>
-                            <div class="md-list-item-text">
-                                <div layout="row">
-                                    <span flex class="md-subhead text-dark">
-                                        {{::fave.name}}
-                                        <span class="text-gray">@{{::fave.user}}</span>
-                                    </span>
-                                    <span class="md-caption" am-time-ago="fave.date"></span>
-                                </div>
-                                <p linkify="twitter">{{::fave.tweet}}</p>
-                            </div>
-                            <md-divider></md-divider>
-                        </md-list-item>
-                    </md-list>
-                </tri-widget>
-                <div flex layout="column">
-                    <tri-widget flex class="margin-bottom-10" title="Who to follow" content-layout="column" content-layout-align="space-around" palette-background="triCyan:500">
-                        <md-divider></md-divider>
-                        <md-list >
-                            <md-list-item class="md-2-line" ng-repeat="follow in ::vm.whotofollow">
-                                <img ng-src="{{::follow.avatar}}" class="md-avatar"/>
-                                <div class="md-list-item-text">
-                                    <h3>{{::follow.name}}</h3>
-                                    <h4>@{{::follow.user}}</h4>
-                                    <md-icon md-font-icon="zmdi zmdi-account-add" ng-click="doSecondaryAction($event)" class="md-secondary md-hue-3"></md-icon>
-                                </div>
-                                <md-divider ng-hide="::$last"></md-divider>
-                            </md-list-item>
-                        </md-list>
-                    </tri-widget>
-                    <tri-widget flex title="Trends" content-layout="column" content-layout-align="center start" palette-background="triCyan:500">
-                        <md-divider></md-divider>
-                        <md-list>
-                            <md-list-item ng-repeat="trend in ::vm.trends">
-                                <p linkify="twitter">{{::trend}}</p>
-                                <md-divider ng-hide="::$last"></md-divider>
-                            </md-list-item>
-                        </div>
-                    </tri-widget>
-                </div>
+                                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start" ng-repeat="obj in vm.offers">
+                    <div class="widget-follower-text padding-10">
+                    <h4 class="md-title margin-0">{{obj.name}}</h4>
+                    <p class="md-caption margin-0">Code : {{obj.code}}</p>
+                    <span class="md-caption" am-time-ago="obj.startDate"></span>
+
+                    </div>
+
             </div>
         </md-tab-body>
     </md-tab>
