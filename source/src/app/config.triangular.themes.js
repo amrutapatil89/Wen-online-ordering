@@ -157,7 +157,9 @@
         .primaryPalette('orange' , {
             'default': '800'
         })
-        .accentPalette('lime')
+        .accentPalette('green', {
+            'default': '500'
+        })
         .warnPalette('amber');
 
         triThemingProvider.theme('white-orange')
@@ -169,7 +171,7 @@
 
         triSkinsProvider.skin('zesty-orange', 'Zesty Orange')
         .sidebarTheme('orange')
-        .toolbarTheme('white-orange')
+        .toolbarTheme('orange')
         .logoTheme('orange')
         .contentTheme('orange');
 
@@ -220,6 +222,6 @@
         /**
          *  SET DEFAULT SKIN
          */
-        triSkinsProvider.setSkin('cyan-cloud');
+        triSkinsProvider.setSkin('zesty-orange');
     }
 })();
