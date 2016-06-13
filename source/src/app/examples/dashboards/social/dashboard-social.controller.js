@@ -12,8 +12,20 @@
         //for initializing cartItemObject for storing added items with modifiers and taxes
         $rootScope.cartItemObject = {};
         $rootScope.cartItemObject.elements = [];
-
         $rootScope.orderPrice = 0;
+
+        //below is the url prefix required for all the APIs
+        var urlPrefix = "http://52.23.209.206:3000";
+
+        //below object stores url for API calls
+        var urlObject = {
+
+            categories: urlPrefix + "/api/v1/13HRYK02HZM30/categories",
+            items: urlPrefix + "/api/v1/13HRYK02HZM30/items",
+            store: urlPrefix + "/api/v1/apps/E1xXpZUkdg",
+            discount: "http://52.23.209.206:3001/api/v1/KE91B9500TF28/valid_discounts",
+
+        };
 
         vm.categories = [];
         vm.items = [];
@@ -27,19 +39,19 @@
 
 
         // Get call for categories 
-        $http.get("http://52.23.209.206:3000/api/v1/13HRYK02HZM30/categories")
+        $http.get(urlObject.categories)
         .then(function(response) {
             vm.categories = response.data.elements;
         });
 
         // Get call for items 
-        $http.get("http://52.23.209.206:3000/api/v1/13HRYK02HZM30/items")
+        $http.get(urlObject.items)
         .then(function(response) {
             vm.items = response.data.elements;
         });
 
         //for getting store name and description
-        $http.get("http://52.23.209.206:3000/api/v1/apps/E1xXpZUkdg")
+        $http.get(urlObject.store)
         .then(function(appInfo) {
             $scope.appDetails = appInfo;
             console.log("App Details: "+JSON.stringify($scope.appDetails));
@@ -47,7 +59,7 @@
         
 
         // Getting offers 
-        $http.get("http://52.23.209.206:3001/api/v1/KE91B9500TF28/valid_discounts")
+        $http.get(urlObject.discount)
         .then(function(appInfo) {
             vm.offers = appInfo.data.elements;
             console.log("Offers Details: "+JSON.stringify(vm.offers));
@@ -127,13 +139,13 @@
             }
         }
 
-        $http.get("http://52.23.209.206:3000/api/v1/13HRYK02HZM30/items/0PKNFRAEP3524")
+        $http.get(urlObject.items + "0PKNFRAEP3524")
         .then(function(response) {
             vm.cartItems[0] = response.data;
             // console.log(JSON.stringify(vm.cartItems[0]));
         });
 
-        $http.get("http://52.23.209.206:3000/api/v1/13HRYK02HZM30/items/S7XYK7VEYKN04")
+        $http.get(urlObject.items + "S7XYK7VEYKN04")
         .then(function(response) {
             vm.cartItems[1] = response.data;
             // console.log(JSON.stringify(vm.cartItems[0]));

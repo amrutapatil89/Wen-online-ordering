@@ -12,8 +12,17 @@
         $scope.change = false;
         vm.createDialog = createDialog;
 
+        //below is the url prefix required for all the APIs
+        var urlPrefix = "http://52.23.209.206:3000";
+
+        //below object stores url for API calls
+        var urlObject = {
+
+            customer: urlPrefix + "/api/v1/13HRYK02HZM30/customers/+1-1110000000"
+        };
+
         // Get call for users
-        $http.get("http://52.23.209.206:3000/api/v1/13HRYK02HZM30/customers/+1-1110000000")
+        $http.get(urlObject.customer)
         .then(function(response) {
 
             $rootScope.userDetails = response;

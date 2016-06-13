@@ -16,7 +16,15 @@
         $scope.addEditButtonText = "";
         $scope.cancelDeleteButtonText = "";
 
-        var getModifierUrl =   "http://52.23.209.206:3000/api/v1/13HRYK02HZM30/items/" + $scope.itemid.item;
+        //below is the url prefix required for all the APIs
+        var urlPrefix = "http://52.23.209.206:3000";
+
+        //below object stores all the urls required to call the APIs
+        var urlObject = {
+            getModifierUrl: urlPrefix + "/api/v1/13HRYK02HZM30/items/"
+        }
+
+        var getModifierUrl =   urlObject.getModifierUrl + $scope.itemid.item;
 
         $scope.passItemToUI = function(item) {
 
