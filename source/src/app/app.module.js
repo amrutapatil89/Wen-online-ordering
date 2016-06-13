@@ -23,6 +23,6 @@
 
         // set a constant for the API we are connecting to
         .constant('API_CONFIG', {
-            'url':  'http://triangular-api.oxygenna.com/'
+            'url':  'http://52.23.209.206:3003/api/v1/'
         });
 })();
