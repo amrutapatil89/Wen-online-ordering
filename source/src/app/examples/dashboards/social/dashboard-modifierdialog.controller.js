@@ -56,6 +56,7 @@
                                             vm.itemModifiers = item;
                                             $scope.itemModifiersA = item;
                                             $scope.quantity = selectedItem.qty;
+
                                             $scope.addEditButtonText = "Update item";
                                             $scope.cancelDeleteButtonText = "Remove from cart";
                                         }
@@ -239,103 +240,135 @@
 
         } //end of addNewItemToCartObjects function
 
-        $scope.checkValidationsAndAddToCart = function(item, quantity) {
+        $scope.checkValidationsAndAddToCart = function(item, quantity, addEditButtonText) {
 
-            var modifierGroupCount = item.modifierGroups.elements.length;
+            //for checking if the item is to be updated or added to the cart
+            //this is done on the basis of value for the addEditButtonText
+            //if the modifier dialog box is opened for adding item then the addEditButtonText holds 'Add to cart'
+            //if the modifier dialog box is opened for updating item then it holds 'Update item'
+    
+            if(addEditButtonText == "Add to cart") {
 
-            //item loading in dialog box takes time. If user tries to press 'Add to cart' button before that then it should not react
-            if(item.name == undefined || item.name == null || item.name == "") {
+                //this box is opened for adding item to cart
 
-                return;
-            }
+                var modifierGroupCount = item.modifierGroups.elements.length;
 
-            //if item is not having any modifiergroup then it should add that item
-            if(item.modifierGroups.elements.length == 0) {
+                //item loading in dialog box takes time. If user tries to press 'Add to cart' button before that then it should not react
+                if(item.name == undefined || item.name == null || item.name == "") {
 
-                $scope.AddItemToCart(item, quantity);
-            }
-
-            var modifierGroupIndex = 0;
-
-            //item is having modifier groups, so checking minRequired and maxRequired
-            item.modifierGroups.elements.forEach(function(modifierGroup, modifierGroupIndex){
-
-                var minimumRequired = 0;
-                var maximumAllowed = 0;
-
-                // console.log("Came here 1");
-
-                if(modifierGroup.minRequired != null || modifierGroup.minRequired != undefined || modifierGroup.minRequired != "") {
-
-                    // console.log("Came here 2");
-                    var minimumRequired = modifierGroup.minRequired;    
+                    return;
                 }
 
-                if(modifierGroup.maxAllowed != null || modifierGroup.maxAllowed != undefined || modifierGroup.maxAllowed != "") {
+                //if item is not having any modifiergroup then item should be added to cart
+                if(item.modifierGroups.elements.length == 0) {
 
-                    // console.log("Came here 3");
-                    var maximumAllowed = modifierGroup.maxAllowed;    
+                    $scope.AddItemToCart(item, quantity);
                 }
 
-                if(minimumRequired > 0 || maximumAllowed > 0) {
+                var modifierGroupIndex = 0;
 
-                    // console.log("Came here 4");
-                    var modifiersCount = modifierGroup.modifiers.elements.length;
+                //item is having modifier groups, so checking minRequired and maxRequired
+                item.modifierGroups.elements.forEach(function(modifierGroup, modifierGroupIndex){
 
-                    var modifierIndex = 0;
-                    var selectedCount = 0;
+                    var minimumRequired = 0;
+                    var maximumAllowed = 0;
 
-                    modifierGroup.modifiers.elements.forEach(function(modifier){
+                    // console.log("Came here 1");
 
-                        // console.log("Came here 5");
+                    if(modifierGroup.minRequired != null || modifierGroup.minRequired != undefined || modifierGroup.minRequired != "") {
+
+                        // console.log("Came here 2");
+                        var minimumRequired = modifierGroup.minRequired;    
+                    }
+
+                    if(modifierGroup.maxAllowed != null || modifierGroup.maxAllowed != undefined || modifierGroup.maxAllowed != "") {
+
+                        // console.log("Came here 3");
+                        var maximumAllowed = modifierGroup.maxAllowed;    
+                    }
+
+                    if(minimumRequired > 0 || maximumAllowed > 0) {
+
+                        // console.log("Came here 4");
+                        var modifiersCount = modifierGroup.modifiers.elements.length;
+
+                        var modifierIndex = 0;
+                        var selectedCount = 0;
+
+                        modifierGroup.modifiers.elements.forEach(function(modifier){
+
+                            // console.log("Came here 5");
+                            
+                            //for counting number of selected modifiers
+                            if(modifier.selected) {
+
+                                // console.log("Came here 6");
+                                selectedCount++;
+                            }
+
+                            //for validating number of selected modifiers are satisfying minRequired and maxRequired or not
+                            modifierIndex++;
+
+                            if(modifiersCount == modifierIndex) {
+
+                                // console.log("Came here 7");
+                                if(minimumRequired > 0 && minimumRequired > selectedCount) {
+
+                                    return;
+                                }
+
+                                if(maximumAllowed > 0 && maximumAllowed < selectedCount) {
+
+                                    return;
+                                }
+
+                                modifierGroupIndex++;
+
+                                // console.log("Minimum requirement: "+minimumRequired);
+                                // console.log("Maximum allowed: "+maximumAllowed);
+
+                                //if modifier selection is proper then add that item to the cart
+                                if(modifierGroupCount == modifierGroupIndex) {
+
+                                    // console.log("Calling add item");
+                                    $scope.AddItemToCart(item, quantity);
+                                }
+                            }
+                        });
+                    } else {
+
+                        //if item is not having any restriction on modifier selection
+                        if(item.modifierGroups.elements.length-1 == modifierGroupIndex) {
+                            
+                            // console.log("Calling add item2");
+                            $scope.AddItemToCart(item, quantity);    
+                        }
                         
-                        //for counting number of selected modifiers
-                        if(modifier.selected) {
+                    }
+                });
+            } else {
 
-                            // console.log("Came here 6");
-                            selectedCount++;
-                        }
+                //this box is opened for updating item in the cart
 
-                        //for validating number of selected modifiers are satisfying minRequired and maxRequired or not
-                        modifierIndex++;
+                //check if the modifiergroup exist or not
+                //if not then just update the quantity
+                if(item.modifierGroups.elements.length == 0) {
 
-                        if(modifiersCount == modifierIndex) {
-
-                            // console.log("Came here 7");
-                            if(minimumRequired > 0 && minimumRequired > selectedCount) {
-
-                                return;
-                            }
-
-                            if(maximumAllowed > 0 && maximumAllowed < selectedCount) {
-
-                                return;
-                            }
-
-                            modifierGroupIndex++;
-
-                            // console.log("Minimum requirement: "+minimumRequired);
-                            // console.log("Maximum allowed: "+maximumAllowed);
-
-                            //if modifier selection is proper then add that item to the cart
-                            if(modifierGroupCount == modifierGroupIndex) {
-
-                                // console.log("Calling add item");
-                                $scope.AddItemToCart(item, quantity);
-                            }
-                        }
-                    });
+                    $rootScope.cartItemObject.elements[$scope.itemid.cartId].qty = quantity;
+                    $rootScope.cartItemObject.elements[$scope.itemid.cartId].cost = $rootScope.cartItemObject.elements[$scope.itemid.cartId].price * quantity;
+                    $mdDialog.hide();
                 } else {
 
-                    //if item is not having any restriction on modifier selection
-                    if(item.modifierGroups.elements.length-1 == modifierGroupIndex) {
-                        
-                        // console.log("Calling add item2");
-                        $scope.AddItemToCart(item, quantity);    
-                    }
-                    
+                    //item has modifiers, so now check modifiers are same as previous or not
+                    //if modifiers are not changed then update quantity
+                    //if modifiers are changed then find the if the same item with latest selected modifiers is available in the cart
+                    //if available then add quantity of updated item to that item and delete updated item from cart
+                    //if not available any matching item to cart then update old item
+                    item.cartId = $scope.itemid.cartId;
+                    $scope.AddItemToCart(item, quantity);
                 }
-            });
+            }
+            
         }
 
         var matchModifiersAndAddItem = function(item, modifiersArray, quantity) {
@@ -372,10 +405,39 @@
                                         if(matchedCount == modifiersArray.length) {
 
                                             itemMatchedFlag = true;
-                                            $rootScope.cartItemObject.elements[cartItemIndex].qty = $rootScope.cartItemObject.elements[cartItemIndex].qty + quantity;
-                                            $rootScope.cartItemObject.elements[cartItemIndex].cost = $rootScope.cartItemObject.elements[cartItemIndex].price * $rootScope.cartItemObject.elements[cartItemIndex].qty;
-                                            $mdDialog.hide();
-                                            return;
+
+                                            //for checking if the item is to be updated or added
+                                            //this is identified by checking whether item is having cartId or not
+                                            //if having cartId then just update item as per update conditions
+                                            if(item.cartId != undefined && item.cartId != null && item.cartId != "") {
+
+                                                if(item.cartId == cartItem.cartId) {
+
+                                                    //item has no change for modifiers
+                                                    //only update the quantity and price
+                                                    $rootScope.cartItemObject.elements[cartItemIndex].qty = quantity;
+                                                    $rootScope.cartItemObject.elements[cartItemIndex].cost = $rootScope.cartItemObject.elements[cartItemIndex].price * quantity;
+                                                    $mdDialog.hide();
+                                                } else {
+
+                                                    //item is not the same item which was previously added and opened for update
+                                                    //changed modifiers is similar to another item
+                                                    //so just add the quantity to that matching item and updated the price
+                                                    //delete the selected item to update
+                                                    $rootScope.cartItemObject.elements[cartItemIndex].qty = $rootScope.cartItemObject.elements[cartItemIndex].qty + quantity;
+                                                    $rootScope.cartItemObject.elements[cartItemIndex].cost = $rootScope.cartItemObject.elements[cartItemIndex].price * $rootScope.cartItemObject.elements[cartItemIndex].qty;
+                                                    $scope.deleteCloseDialog('Remove from cart');
+                                                    $mdDialog.hide();
+                                                    return;
+                                                }
+                                            } else {
+
+                                                //call is done for adding item
+                                                $rootScope.cartItemObject.elements[cartItemIndex].qty = $rootScope.cartItemObject.elements[cartItemIndex].qty + quantity;
+                                                $rootScope.cartItemObject.elements[cartItemIndex].cost = $rootScope.cartItemObject.elements[cartItemIndex].price * $rootScope.cartItemObject.elements[cartItemIndex].qty;
+                                                $mdDialog.hide();
+                                                return;
+                                            }
                                         }
                                     } else if(cartItemIndex == $rootScope.cartItemObject.elements.length - 1 
                                         && cartModifierIndex == cartItem.modifiers.length - 1 
