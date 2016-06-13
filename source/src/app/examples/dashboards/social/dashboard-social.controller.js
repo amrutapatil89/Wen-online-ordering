@@ -17,14 +17,16 @@
         //below is the url prefix required for all the APIs
         var urlPrefix = "http://52.23.209.206:3000";
 
+        $rootScope.merchantId = "13HRYK02HZM30";
+
         //below object stores url for API calls
         var urlObject = {
-
-            categories: urlPrefix + "/api/v1/13HRYK02HZM30/categories",
-            items: urlPrefix + "/api/v1/13HRYK02HZM30/items",
+            merchant: urlPrefix + "/api/v1/" + $rootScope.merchantId,
+            categories: urlPrefix + "/api/v1/" + $rootScope.merchantId + "/categories",
+            items: urlPrefix + "/api/v1/" + $rootScope.merchantId + "/items",
             store: urlPrefix + "/api/v1/apps/E1xXpZUkdg",
             discount: "http://52.23.209.206:3001/api/v1/KE91B9500TF28/valid_discounts",
-
+            stores: urlPrefix + "/api/v1/accounts/4y_TUf5Wl/merchants"
         };
 
         vm.categories = [];
@@ -37,6 +39,10 @@
 
         $scope.selectedCategory = "";
 
+        $http.get(urlObject.merchant)
+        .then(function(response) {
+            $rootScope.merchantInfo = response.data;
+        });
 
         // Get call for categories 
         $http.get(urlObject.categories)
@@ -80,6 +86,22 @@
                 focusOnOpen: false
 
             });    
+        }
+
+
+        $scope.openLocationsDialog = function($event) {
+
+            console.log("create locations dialog called.");
+
+            //this call has been done for adding item, so simply passing the item to dialog box
+            $mdDialog.show({
+                controller: 'LocationsDialogController',
+                controllerAs: 'vm',
+                templateUrl: 'app/examples/dashboards/social/dashboard-locationsdialog.html',
+                targetEvent: $event,
+                focusOnOpen: false
+
+            });   
         }
 
         // Dialog box for modifiers
@@ -139,13 +161,13 @@
             }
         }
 
-        $http.get(urlObject.items + "0PKNFRAEP3524")
+        $http.get(urlObject.items + "/0PKNFRAEP3524")
         .then(function(response) {
             vm.cartItems[0] = response.data;
             // console.log(JSON.stringify(vm.cartItems[0]));
         });
 
-        $http.get(urlObject.items + "S7XYK7VEYKN04")
+        $http.get(urlObject.items + "/S7XYK7VEYKN04")
         .then(function(response) {
             vm.cartItems[1] = response.data;
             // console.log(JSON.stringify(vm.cartItems[0]));

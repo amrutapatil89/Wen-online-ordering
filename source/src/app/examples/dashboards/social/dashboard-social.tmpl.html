@@ -1,4 +1,4 @@
-<div    class="dashboard-social-header padding-20 padding-top-100 overlay-gradient-30" 
+<div class="dashboard-social-header padding-20 padding-top-100 overlay-gradient-30" 
         layout="row" 
         layout-align="start center" 
         style="background: url(assets/images/backgrounds/clavo/default.png) no-repeat; background-size: cover;">
@@ -8,7 +8,7 @@
     </div>
 
     <div class="text-light" layout="column" layout-fill>
-        <h2 class="font-weight-600 margin-bottom-0 text-light">{{appDetails.data.appInfo.appName}}</h2>
+        <h2 class="font-weight-600 margin-bottom-0 text-light">{{merchantInfo.jsonData.name}}</h2>
 
         <p class="font-weight-300 margin-top-0 margin-bottom-0">
             {{appDetails.data.appInfo.longDescription}}
@@ -17,8 +17,10 @@
 
         <p style="bottom:0; top:80px;background: rgba(255,255,255,0.7);bottom: 0;text-align: left;margin-left: -140px;margin-right: -20px; margin-bottom:-40px;color:#fff;padding-left:140px;">
             <md-icon md-font-icon="zmdi zmdi-pin color-inherit"></md-icon> 
-            4819 Emperor, Suite 4000 Blvd, Durham, NC, 27703. 
-            <md-button md-no-ink class="md-accent" aria-label="flat button"> 
+            {{merchantInfo.jsonData.address.address1}} {{merchantInfo.jsonData.address.address2}} 
+            {{merchantInfo.jsonData.address.address3}} {{merchantInfo.jsonData.address.city}} 
+            {{merchantInfo.jsonData.address.country}} {{merchantInfo.jsonData.address.state}} {{merchantInfo.jsonData.address.zip}}
+            <md-button md-no-ink class="md-accent" aria-label="flat button" ng-click="openLocationsDialog()"> 
                 CHANGE LOCATION
             </md-button> 
         </p>

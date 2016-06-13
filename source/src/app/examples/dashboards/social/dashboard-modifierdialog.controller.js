@@ -36,7 +36,7 @@
 
                     if(cartItem.cartId == $scope.itemid.cartId) {
 
-                        console.log("selected item: "+JSON.stringify(item));
+                        // console.log("selected item: "+JSON.stringify(item));
                         var selectedItem = cartItem;
 
                         //for adding selected to previously selected modifiers
@@ -165,6 +165,7 @@
 
         var addNewItemToCartObjects = function(item, type) {
 
+            console.log("My type is "+type);
             // console.log("Came here.");
             //here cartId is taken which can help while editing item, it is not needed in validate POST call
             //for creating object of items
@@ -245,9 +246,13 @@
 
                                 if(cartItem.cartId == itemObj.cartId) {
 
-                                    $rootScope.cartItemObject.elements.qty = itemObj.qty;
-                                    $rootScope.cartItemObject.elements.cost = itemObj.cost;
-                                    $rootScope.cartItemObject.elements.modifiers = itemObj.modifiers;
+                                    console.log("cartItem is matched.");
+
+                                    $rootScope.cartItemObject.elements[cartItemIndex].qty = itemObj.qty;
+                                    $rootScope.cartItemObject.elements[cartItemIndex].cost = itemObj.cost;
+                                    $rootScope.cartItemObject.elements[cartItemIndex].modifiers = itemObj.modifiers;
+
+                                    console.log("Modifiers: "+JSON.stringify(itemObj.modifiers));
                                 }
                             });
 
@@ -449,7 +454,7 @@
                                             //for checking if the item is to be updated or added
                                             //this is identified by checking whether item is having cartId or not
                                             //if having cartId then just update item as per update conditions
-                                            if(item.cartId != undefined && item.cartId != null && item.cartId != "") {
+                                            if(item.cartId >= 0) {
 
                                                 if(item.cartId == cartItem.cartId) {
 
@@ -487,7 +492,7 @@
                                         if(matchedCount != modifiersArray.length) {
 
                                             //for handling situation of update item
-                                            if(item.cartId != undefined && item.cartId != null && item.cartId != "") {
+                                            if(item.cartId >= 0) {
 
                                                 //this call has been done for update
                                                 addNewItemToCartObjects(item, 'update');
@@ -495,6 +500,8 @@
                                                 return;
 
                                             } else {
+
+                                                console.log("I am in add call 1");
 
                                                 //this call has been done for adding new item
                                                 addNewItemToCartObjects(item, 'add');
@@ -508,11 +515,22 @@
                         });//end of cartItem modifiers forEach loop
                     } else {
 
-                        //if items modifiers length is not matching and this is the last item then add item to the cart
+                        //if items modifiers length is not matching and this is the last item then add/update item to the cart
                         if(cartItemIndex == $rootScope.cartItemObject.elements.length - 1) {
 
-                            addNewItemToCartObjects(item);
-                            return;
+                            if(item.cartId >= 0) {
+
+                                //this call has been done for update
+                                addNewItemToCartObjects(item, 'update');
+                                $mdDialog.hide();
+                                return;
+                            } else {
+
+                                console.log("I am in add call 2");
+                                addNewItemToCartObjects(item, 'add');
+                                return;    
+                            }
+                            
                         }
                     }
                 } else {
@@ -520,7 +538,8 @@
                     //if the item is not present in the cart and the cart item list is ended then add new item to the cart
                     if(cartItemIndex == $rootScope.cartItemObject.elements.length - 1 && !itemMatchedFlag) {
 
-                        addNewItemToCartObjects(item);
+                        console.log("I am in add call 3");
+                        addNewItemToCartObjects(item, 'add');
                         return;
                     }
                 }
@@ -532,11 +551,11 @@
         $scope.AddItemToCart = function(item, quantity) {
 
             // console.log("Cart function called."+JSON.stringify(item));
-
             if($rootScope.cartItemObject.elements.length == 0) {
 
                 // console.log("I am adding item 3");
-                addNewItemToCartObjects(item);
+                console.log("I am in add call 4");
+                addNewItemToCartObjects(item, 'add');
                 return;
             }
 
@@ -584,7 +603,7 @@
                                 //for checking if all the modifiers are iterated or not for modifierGroup
                                 if(modifierIndex == modifierGroup.modifiers.elements.length - 1 && modifierGroupIndex == item.modifierGroups.elements.length - 1) {
 
-                                    // console.log("I am calling match and add.");
+                                    console.log("I am calling match and add.");
                                     matchModifiersAndAddItem(item, modifiersArray, quantity);
                                 }//end of modifiers ended or not checking if
                             });//end of modifers forEach for every modifierGroup
