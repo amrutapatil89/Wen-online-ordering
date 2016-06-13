@@ -54,9 +54,23 @@
         });
 
 
+        //Login dialog box
+        $scope.createLoginDialog = function($event) {
+
+            console.log("create dialog called.");
+
+            //this call has been done for adding item, so simply passing the item to dialog box
+            $mdDialog.show({
+                controller: 'LoginDialogController',
+                controllerAs: 'vm',
+                templateUrl: 'app/examples/dashboards/social/login-dialog.tmpl.html',
+                targetEvent: $event,
+                focusOnOpen: false
+
+            });    
+        }
 
         // Dialog box for modifiers
-
         function createDialog($event, itemId, type) {
 
             console.log("type: "+type);

@@ -155,13 +155,12 @@
             }
         }//end of addRemoveModifier function
 
-        var addNewItemToCartObjects = function(item) {
+        var addNewItemToCartObjects = function(item, type) {
 
             // console.log("Came here.");
             //here cartId is taken which can help while editing item, it is not needed in validate POST call
             //for creating object of items
             var itemObj = {
-                cartId: $rootScope.cartItemObject.elements.length,
                 id: item.id,
                 name: item.name,
                 price: item.price,
@@ -175,6 +174,20 @@
 
             itemObj.modifiers = [];
 
+            //for adding cartId
+            //if this is update call then assign previous cartId
+            //else add new cartId
+            if(type == 'update') {
+
+                //this is an update call
+                itemObj.cartId = item.cartId;
+            } else {
+
+                itemObj.cartId = $rootScope.cartItemObject.elements.length;
+            }
+            
+            //for adding item code
+            //this is optional and we are getting this from Clover
             if(item.code) {
 
                 itemObj.code = item.code;
@@ -188,7 +201,6 @@
 
                 //item is not having modifiers so directly add item to objects
                 //if code is available for item then it will be added otherwise blank is set
-                
 
                 $rootScope.cartItemObject.elements.push(itemObj);
 
@@ -215,9 +227,29 @@
                     //if this is the last modifier group then the item should be added to the cart item object
                     if(modifierGroupIndex == item.modifierGroups.elements.length) {
 
-                        $rootScope.cartItemObject.elements.push(itemObj);
-                        // console.log("Item added to cart: "+JSON.stringify($rootScope.cartItemObject.elements));
-                        $mdDialog.hide();
+                        //if type is update then just update the item at the previous location
+                        //if type is add then add the item to the last location
+
+                        if(type == 'update') {
+
+                            //this is an update call
+                            $rootScope.cartItemObject.elements.forEach(function(cartItem, cartItemIndex) {
+
+                                if(cartItem.cartId == itemObj.cartId) {
+
+                                    $rootScope.cartItemObject.elements.qty = itemObj.qty;
+                                    $rootScope.cartItemObject.elements.cost = itemObj.cost;
+                                    $rootScope.cartItemObject.elements.modifiers = itemObj.modifiers;
+                                }
+                            });
+
+                        } else {
+
+                            //this is add item call
+                            $rootScope.cartItemObject.elements.push(itemObj);
+                            // console.log("Item added to cart: "+JSON.stringify($rootScope.cartItemObject.elements));
+                            $mdDialog.hide();    
+                        }
                     }
                 });
             }
@@ -446,9 +478,21 @@
                                         //if item is not found in the cart then add that item in the cart
                                         if(matchedCount != modifiersArray.length) {
 
-                                            addNewItemToCartObjects(item);
-                                            $mdDialog.hide();
-                                            return;
+                                            //for handling situation of update item
+                                            if(item.cartId != undefined && item.cartId != null && item.cartId != "") {
+
+                                                //this call has been done for update
+                                                addNewItemToCartObjects(item, 'update');
+                                                $mdDialog.hide();
+                                                return;
+
+                                            } else {
+
+                                                //this call has been done for adding new item
+                                                addNewItemToCartObjects(item, 'add');
+                                                $mdDialog.hide();
+                                                return;
+                                            }
                                         }
                                     }
                                 });

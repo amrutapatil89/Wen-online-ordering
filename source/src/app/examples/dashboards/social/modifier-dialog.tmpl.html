@@ -58,7 +58,7 @@
                             Total
                     </md-subheader> 
 
-                    <div ng-if="vm.itemModifiers.price >= 0" class="md-title padding-left-10" style="margin-top:10px">{{vm.itemModifiers.price/100 | currency}}</div>
+                    <div ng-if="vm.itemModifiers.price >= 0" class="md-title padding-left-10" style="margin-top:10px">{{(vm.itemModifiers.price * quantity)/100 | currency}}</div>
                 </span>
 
             </div>
@@ -89,6 +89,6 @@
         <span flex></span>
 
         <md-button ng-click="deleteCloseDialog(cancelDeleteButtonText)">{{cancelDeleteButtonText}}</md-button>
-        <md-button ng-click="checkValidationsAndAddToCart(vm.itemModifiers, quantity, addEditButtonText)"  class="md-primary" ng-disabled="taskForm.$invalid">{{addEditButtonText}}<span ng-if="cancelDeleteButtonText == 'Cancel'"> : {{vm.itemModifiers.price/100 | currency}}</span></md-button>
+        <md-button ng-click="checkValidationsAndAddToCart(vm.itemModifiers, quantity, addEditButtonText)"  class="md-primary" ng-disabled="taskForm.$invalid">{{addEditButtonText}}<span ng-if="cancelDeleteButtonText == 'Cancel'"> : {{(vm.itemModifiers.price * quantity)/100 | currency}}</span></md-button>
     </md-dialog-actions>
 </md-dialog>
