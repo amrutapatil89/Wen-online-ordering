@@ -1,0 +1,26 @@
+// Main
+
+// Menu Container
+.dashboard-container {
+  .layout-margin {
+    margin: 0px;
+  }
+  // until layout is fixed in material we need to add this
+  // https://github.com/angular/material/issues/5014
+  .layout-margin > .widget {
+    margin: 8px;
+  }
+}
+
+.merchant-main-branding{
+  background: url(../assets/images/backgrounds/clavo/default.png) no-repeat; background-size: cover;
+}
+
+// - Checkout Container
+
+// Social Dashboard
+.tabs-tall {
+  md-pagination-wrapper, md-tabs-canvas {
+    height: 72px;
+  }
+}
