@@ -6,12 +6,23 @@
         .run(runFunction);
 
     /* @ngInject */
-    function runFunction($rootScope, $state) {
+    function runFunction($rootScope, $state, $location) {
 
         // default redirect if access is denied
         function redirectError() {
             $state.go('500');
         }
+
+        // init call to get merchant data
+        function init(){
+
+            if ($location.$$host == "localhost") {
+                $rootScope.merchant = "13HRYK02HZM30";
+                console.log(""+$location.$$host);
+            } 
+        }
+
+        init();
 
         // watches
 
