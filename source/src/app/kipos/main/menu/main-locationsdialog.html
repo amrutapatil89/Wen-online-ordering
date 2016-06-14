@@ -1,0 +1,54 @@
+<md-dialog flex="60" flex-xs="100" style="height:80%">
+    <md-toolbar class="md-whiteframe-z2">
+        <div class="md-toolbar-tools" layout="row" layout-fill>
+            <h2 flex="95" class="padding-top-10">Locations</h2>
+            <span flex="5" layout="row" class="padding-top-10 padding-left-10"> 
+                <a href="" ng-click="closeDialog()">
+                    <md-icon md-font-icon="zmdi zmdi-close" class="">
+                    </md-icon> 
+                </a>
+            </span>
+        </div>
+    </md-toolbar>
+
+    <md-divider></md-divider>
+
+    <md-dialog-content class="md-dialog-content" layout="column" layout-fill >
+        <md-grid-list md-cols-gt-md="3" md-cols-sm="2" md-cols-md="3" md-row-height="4:3" md-gutter-gt-md="16px" md-gutter-gt-sm="0px" md-gutter="0px" style="margin-top:20px;">
+                <md-grid-tile ng-repeat="merchant in merchants">
+                    <md-card>
+                        <md-card-content ng-init="formattedPhoneNumber = formatPhoneNumber(merchant.jsonData.address.phoneNumber); hours = getHours(merchant.jsonData.opening_hours.elements)">
+                            <ui-gmap-google-map center="vm.labeledMap.center" zoom="vm.labeledMap.zoom" options="vm.labeledMap.options">
+                                <ui-gmap-marker coords="vm.labeledMap.marker.coords" idkey="vm.labeledMap.marker.id" options="vm.labeledMap.marker.options">
+                                    <ui-gmap-window show="'true'">
+                                 <!--        <div>{{vm.labelTitle}}</div> -->
+                                    </ui-gmap-window>
+                                </ui-gmap-marker>
+                            </ui-gmap-google-map>
+                            <b>{{merchant.jsonData.name}}</b>
+                            <br/>{{merchant.jsonData.address.address1}} {{merchant.jsonData.address.address2}} 
+                            {{merchant.jsonData.address.address3}} {{merchant.jsonData.address.city}} 
+                            {{merchant.jsonData.address.country}} {{merchant.jsonData.address.state}} {{merchant.jsonData.address.zip}}
+                            <br/><b>{{formattedPhoneNumber}}</b>
+                            <span ng-if="hours == 'Store is closed today.'"><br/><br/>Store is closed today.</span>
+                            <span ng-if="hours != 'Store is closed today.'"><br/><br/>Open between {{hours.start}} to {{hours.end}}</span>
+                            
+                        </md-card-content>
+
+                        <md-card-actions layout="row" layout-align="end end">
+                            <md-button class="md-primary" ng-click="setLocation(merchant.merchantId)" ng-if="merchant.merchantId != merchantId">Use this location</md-button>
+
+                            <md-button class="md-primary" ng-click="setLocation(merchant.merchantId)" ng-if="merchant.merchantId == merchantId">Selected location</md-button>
+                        </md-card-actions>
+                    </md-card>
+                </md-grid-tile>
+            </md-grid-list>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <span flex></span>
+
+        <md-button ng-click="deleteCloseDialog(cancelDeleteButtonText)">{{cancelDeleteButtonText}}</md-button>
+        <md-button ng-click="checkValidationsAndAddToCart(vm.itemModifiers, quantity, addEditButtonText)"  class="md-primary" ng-disabled="taskForm.$invalid">{{addEditButtonText}}<span ng-if="cancelDeleteButtonText == 'Cancel'"> : {{(vm.itemModifiers.price * quantity)/100 | currency}}</span></md-button>
+    </md-dialog-actions>
+</md-dialog>

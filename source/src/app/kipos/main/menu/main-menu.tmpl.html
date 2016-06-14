@@ -1,6 +1,265 @@
-<div    class="dashboard-social-header padding-20 padding-top-100 overlay-gradient-30 merchant-main-branding" 
+<div class="dashboard-social-header padding-20 padding-top-100 overlay-gradient-30" 
         layout="row" 
-        layout-align="start center">
+        layout-align="start center" 
+        style="background: url(assets/images/backgrounds/clavo/default.png) no-repeat; background-size: cover;">
 
+    <div class="margin-right-20 margin-bottom-20">
+        <img src="assets/images/backgrounds/clavo/store_logo.png" alt="girl-avatar" class="make-round" width="100"/>
+    </div>
 
+    <div class="text-light" layout="column" layout-fill>
+        <h2 class="font-weight-600 margin-bottom-0 text-light">{{merchantInfo.jsonData.name}}</h2>
+
+        <p class="font-weight-300 margin-top-0 margin-bottom-0">
+            {{appDetails.data.appInfo.longDescription}}
+            <br>
+        </p>
+
+        <p style="bottom:0; top:80px;background: rgba(255,255,255,0.7);bottom: 0;text-align: left;margin-left: -140px;margin-right: -20px; margin-bottom:-40px;color:#fff;padding-left:140px;">
+            <md-icon md-font-icon="zmdi zmdi-pin color-inherit"></md-icon> 
+            {{merchantInfo.jsonData.address.address1}} {{merchantInfo.jsonData.address.address2}} 
+            {{merchantInfo.jsonData.address.address3}} {{merchantInfo.jsonData.address.city}} 
+            {{merchantInfo.jsonData.address.country}} {{merchantInfo.jsonData.address.state}} {{merchantInfo.jsonData.address.zip}}
+            <md-button md-no-ink class="md-accent" aria-label="flat button" ng-click="openLocationsDialog()"> 
+                CHANGE LOCATION
+            </md-button> 
+        </p>
+     </div>
 </div>
+
+<md-tabs md-dynamic-height md-border-bottom class="md-white tabs-default padding-20" style="margin-top:0px;">
+    <md-tab>
+        <md-tab-label layout="column">
+            <span> Menu </span>
+        </md-tab-label>
+        <md-tab-body>
+            <div layout="row" layout-xs="column" layout-align="center top" class="margin-top-20">
+                 <md-whiteframe flex="66" title="" contacts-widget content-layout="row" >
+                    <div layout="row">
+                    <ul flex="20" class="menu-toggle-list ">
+                        <md-list class="margin-right-10">
+                            <md-subheader class="md-button md-ink-ripple side-menu-link md-no-sticky margin-top-10 padding-0" style="color:#444" ng-click="setSelectedCategory('')">
+                                    All Categories
+                            </md-subheader>
+
+                        </md-list>
+
+                        <li ng-repeat="category in vm.categories" href="" style="color:grey;" class="margin-right-10">
+                            <!-- <button class="md-button md-ink-ripple side-menu-link" ng-show="$first">    All Categories 
+                            </button>   --> 
+
+                            <button class="md-button md-ink-ripple side-menu-link" ng-click="setSelectedCategory(category.id)">
+                                {{category.name}} 
+                            </button>             
+                        </li>
+                    </ul>
+
+                    <tri-widget flex="80">
+                                              
+                    <md-list  class="margin-bottom-20">
+                    <md-subheader class="md-no-sticky padding-top-10 padding-left-10" style="color:#000;" >Menu</md-subheader> 
+
+
+                        <md-list-item class="md-2-line" ng-repeat="item in vm.items | filter : sortItemsCategoryWise" ng-if="!item.vzCustomData.hideInApp && item.name != 'Delivery Fee'">
+                             <div class="md-list-item-text" style="width:100%">
+                                <h3 layout="row" layout-align="end center" layout-wrap >{{item.name}} 
+                                    <div layout="row" layout-align="start center" flex>
+                                        <span flex></span>
+                                        {{item.price/100 | currency}} &nbsp;&nbsp;
+                                        <md-icon md-font-icon="zmdi zmdi-plus-circle-o" layout-align="end end" class="md-primary" ng-click="vm.createDialog($event, item.id, 'add')">
+                                        <md-tooltip md-direction="right">
+                                            Add to cart
+                                        </md-tooltip>
+                                        </md-icon>
+                                    </div>
+                                </h3>
+                                <p>{{item.vzCustomData.description}}</p>
+                             </div>
+                            <md-divider ng-hide="$last"></md-divider>
+                        </md-list-item>
+                    </md-list>
+                </tri-widget>
+                    </div>
+                </md-whiteframe>
+                <span flex></span>
+
+                <tri-widget flex="30" title="" contacts-widget content-layout="column">
+                    <md-list >
+                      <md-subheader class="md-no-sticky padding-top-10 padding-left-10" style="color:#000;" >Cart</md-subheader>   
+                    </md-list>
+
+                    <md-input-container class="md-block margin-top-10 padding-left-20">
+                        <label class="padding-left-20">Order Type</label> <br>
+                        <md-radio-group ng-model="numCakes" ng-init="numCakes = 1" layout="row">
+                          <md-radio-button value="1" class="md-primary">Delivery</md-radio-button>
+                          <md-radio-button value="2" class="md-primary"> Pickup </md-radio-button>
+                        </md-radio-group>
+                    </md-input-container>
+                     <md-divider></md-divider>
+
+                    
+
+                     <md-list>
+
+                    <md-list-item class="md-body-1 margin-top-30" layout="column" layout-align="center center" layout-fill ng-show="cartItemObject.elements.length==0" >
+                            <div layout="row" flex layout-fill layout-align="center center" style="height:150px; background:rgb(250,250,250); font-size:18px;"> Add Menu items into your cart</div>
+
+                        </md-list-item>
+                        <md-list-item class="" ng-repeat="cartItem in cartItemObject.elements">
+                            <div class="margin-top-10 margin-bottom-10" layout="row" flex="100" ng-mouseover="hover=true" ng-mouseleave="hover=false">
+                                    
+                                    <span flex="100">
+                                        <!-- for showing item details -->
+                                        <span layout="row" class="md-subhead">
+                                            <span flex="10"> 
+                                                 <md-icon md-font-icon="zmdi zmdi-edit material-icon" layout-align="end end" class="" ng-click="vm.createDialog($event, cartItem.cartId, 'edit')" ng-show="hover">
+                                                  <md-tooltip md-direction="left">
+                                                  Edit Item
+                                                  </md-tooltip> 
+                                                  </md-icon> 
+                                                  <span ng-show="!hover">{{cartItem.qty}}x</span>
+                                              </span>
+                                            <span flex="65">
+                                                {{cartItem.name}} 
+                                               
+                                            </span>
+                                            <!-- <span flex> -->
+<!-- 
+                                                 <md-icon md-font-icon="zmdi zmdi-minus-circle-outline" layout-align="end end" class="md-primary" ng-click="vm.createDialog($event, cartItem.cartId, 'edit')" >
+                                                  <md-tooltip md-direction="left">
+                                                  Remove Item
+                                                  </md-tooltip> 
+                                                  </md-icon> -->
+
+                                              <!-- </span> -->
+                                            <span flex="25">{{cartItem.cost / 100 | currency}}  
+                                                <md-icon md-font-icon="zmdi zmdi-close-circle-o" layout-align="end end" class="" ng-click="deleteItemFromCart(cartItem.cartId)" ng-show="hover">
+                                                  <md-tooltip md-direction="right">
+                                                  Delete Item
+                                                  </md-tooltip> 
+                                                  </md-icon>
+                                             </span>
+                                        </span>
+
+                                        <!-- for showing modifier details -->
+                                        <div ng-repeat="modifier in cartItem.modifiers">
+                                            <span layout="row" class="md-caption" style="color:#999">
+                                                <span flex="10"></span>
+                                                <span flex="65">{{modifier.name}}</span>
+                                                <span flex="25">{{modifier.price/100 | currency}}</span>
+                                            </span>
+                                        </div>
+                                    </span>
+                            </div>
+                            <md-divider></md-divider>
+                        </md-list-item>
+                    </md-list>
+                    
+                    <br>
+
+                    <span layout="column" layout-align="start start" class="margin-left-20" ng-show="cartItemObject.elements.length>0" >
+                        <span  class="md-subheader"  flex style="color:#666"> Delivery Fee :  </span>
+                        <span  class="md-caption"flex> {{3000/100 | currency}}</span>
+                    </span>
+
+                    <span layout="column" layout-align="start start" class="margin-left-20 margin-top-10" ng-show="cartItemObject.elements.length>0" >
+                        <span  class="md-subheader"  flex style="color:#666"> Total :  </span>
+                        <span  class="md-caption"flex> {{ 250 | currency}}</span>
+                    </span>
+
+                    <span layout="column" layout-align="start end" class="margin-left-20 margin-top-10" ng-show="cartItemObject.elements.length>0" >
+                        <md-button class="md-primary" ng-click="createLoginDialog($event)">Proceed</md-button>
+                    </span>
+
+                </tri-widget>
+                <span flex></span>
+            </div>
+        </md-tab-body>
+    </md-tab>
+    <md-tab>
+        <md-tab-label layout="column">
+            <span>Info</span>
+        </md-tab-label>
+        <md-tab-body>
+            <div layout="row" layout-xs="column" layout-margin>
+                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
+              
+                    <div class="widget-follower-text padding-10">
+                                                <h4 class="md-title margin-0">
+                            <md-icon md-font-icon="zmdi zmdi-time color-inherit"></md-icon>
+                            Delivery hours
+                        </h4>
+                            
+                        <md-list-item ng-repeat="item in vm.storeHours">
+                            <p>{{item.name}}</p>
+                            <span>11.00 AM&nbsp;-&nbsp;10.00 PM</span>
+                        </md-list-item>
+                        <md-list-item>
+                        <md-icon md-font-icon="zmdi zmdi-hourglass-alt color-inherit"></md-icon>
+                            Delivery Time : 35 min
+                        </md-list-item>
+                        <md-list-item>
+                        <md-icon md-font-icon="zmdi zmdi-bike color-inherit"></md-icon>
+                            Delivery Fee : $2
+                        </md-list-item>
+
+                    </div>
+                </tri-widget>
+               
+                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
+                    
+                    <div class="widget-follower-text padding-10">
+                                                <h4 class="md-title margin-0">
+                            <md-icon md-font-icon="zmdi zmdi-time color-inherit"></md-icon>
+                            Pick Up hours
+                        </h4>
+                        <md-list-item ng-repeat="item in vm.storeHours">
+                            <p>{{item.name}}</p>&nbsp;
+                            <span ng-repeat="hr in item.hours"> {{hr.start}}&nbsp;-&nbsp;{{hr.end}}</span>
+                        </md-list-item>
+                        <md-list-item>
+                        <md-icon md-font-icon="zmdi zmdi-hourglass-alt color-inherit"></md-icon>
+                            Pickup Time : 45 min
+                        </md-list-item>
+
+                    </div>
+                </tri-widget>
+
+                 <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="start">
+                    
+                    <div class="widget-follower-text padding-10">
+                                                    <h4 class="md-title margin-0">
+                            <md-icon md-font-icon="zmdi zmdi-money color-inherit"></md-icon>
+                            Payment Type Accepted
+                        </h4>
+                        <md-list-item ng-repeat="item in vm.paymentTypes">
+                            <md-icon md-font-icon="zmdi zmdi-check color-inherit"></md-icon>
+                            <p>{{item.name}}</p>
+                        </md-list-item>
+
+
+                    </div>
+                </tri-widget>
+
+            </div>
+        </md-tab-body>
+    </md-tab>
+    <md-tab>
+        <md-tab-label layout="column">
+            <span>Offers</span>
+        </md-tab-label>
+        <md-tab-body>
+            <div layout="row" layout-xs="column">
+                <md-card flex="33" ng-repeat="obj in vm.offers">
+                    <div class="widget-follower-text padding-10">
+                    <h4 class="md-title margin-0">{{obj.name}}</h4>
+                    <p class="md-caption margin-0">Code : {{obj.code}}</p>
+                    <span class="md-caption" am-time-ago="obj.startDate"> </span> 
+                    <p layout="row" layout-align="end end" class="margin-0"><md-button class="md-primary">Start Order</md-button></p>
+                    </div>
+                </md-card>
+            </div>
+        </md-tab-body>
+    </md-tab>
+</md-tabs>
+
