@@ -13,7 +13,7 @@
             $state.go('500');
         }
 
-        // init call to get merchant data
+        // Init call to get merchant data based on url
         function init(){
 
             if ($location.$$host == "localhost") {

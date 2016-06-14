@@ -1,3 +1,229 @@
 <div flex layout="column" layout-margin>
-    <h2>Checkout</h2>
-</div>
+            <div layout="row" layout-margin>
+                <tri-widget flex="60" title="" contacts-widget content-layout="row">
+
+                    <md-list flex>
+                    <h2> &nbsp;&nbsp; Your Details</h2><md-divider></md-divider>
+                        <md-list-item class="md-3-line margin-top-0">
+                             <div class="md-list-item-text" style="width:100%">
+                                <h3 layout="row" layout-align="start center" layout-wrap > 
+                                    {{userName}}
+                                </h3>
+                                <p layout="row" layout-align="start center" layout-wrap >
+                                Email: {{email}}
+
+                                <p layout="row" layout-align="start center" layout-wrap > 
+                                    Contact : {{phone}}
+                                </p>
+                             </div>
+
+                        </md-list-item> <br>
+                        <h2> &nbsp;&nbsp; Delivery Address</h2><md-divider></md-divider>
+                        <md-list-item class="md-3-line margin-top-0">
+                            <div class="md-list-item-text" style="width:100%">
+
+                                <md-card ng-show="change">
+                                    <md-card-content>
+                                        <b>{{userName}}</b>
+                                        <br/>{{selectedAddress.address.address1}} {{selectedAddress.address.address2}} {{selectedAddress.address.city}} {{selectedAddress.address.state}} {{selectedAddress.address.zip}}
+                                    </md-card-content>
+                                    <md-card-actions layout="row" layout-align="end end">
+                                        <md-button class="md-primary" ng-click="switchWindow()">change address</md-button>
+                                    </md-card-actions>
+                                </md-card>
+
+                                <div ng-show="!change" >
+                                    <md-grid-list md-cols-gt-md="3" md-cols-sm="2" md-cols-md="3" md-row-height="4:3" md-gutter-gt-md="16px" md-gutter-gt-sm="0px" md-gutter="0px">
+                                        <md-grid-tile ng-repeat="add in userAddress">
+                                            <md-card>
+                                                <md-card-content>
+                                                    <b>{{userName}}</b>
+                                                    <br/>{{add.address.address1}} {{add.address.address2}} {{add.address.city}} {{add.address.state}} {{add.address.zip}}
+                                                </md-card-content>
+
+                                                <md-card-actions layout="row" layout-align="end end">
+                                                    <md-button class="md-primary" ng-click="setAddress(add)"> Use this address</md-button>
+                                                </md-card-actions>
+                                            </md-card>
+                                        </md-grid-tile>
+
+                                        <md-grid-tile>
+                                            <md-card>
+                                            <md-card-content layout="row" layout-align="center center">
+                                                <br>
+                                                <md-button class="md-primary" ng-click="vm.createDialog($event)">+ Add New Address</md-button>
+                                                <br>
+                                             <md-card-content>
+                                            </md-card>
+                                        </md-grid-tile>
+                                    </md-grid-list>
+                                </div>
+                            </div>
+
+                        </md-list-item> <br>
+                        <h2> &nbsp;&nbsp; Payment Details</h2><md-divider></md-divider>
+                        <md-list-item class="md-3-line margin-top-0">
+                            
+                             <div class="md-list-item-text" layout="row" flex="" style="width:100%">
+                                 <md-input-container>
+                               <md-radio-group ng-model="numCakes" ng-init="numCakes = 1" layout="row">
+                              <md-radio-button value="1" class="md-primary">Pay online</md-radio-button>
+                              <md-radio-button value="2" class="md-primary"> Cash on Delivery </md-radio-button>
+                            </md-radio-group>
+                            </md-input-container>                    <md-divider></md-divider>
+
+                             </div> <br>
+
+                        </md-list-item> <br>
+
+                        <md-list-item ng-show="numCakes == 1"> 
+                        <md-content class="md-padding" flex="100">
+                            <form name="billingForm" flex="100">
+                                <div>
+                                    <md-input-container class="md-block">
+                                        <label translate>Credit card number</label>
+                                        <input name="cardNumber" ng-model="wizardController.data.billing.number" required>
+                                        <div ng-messages="billingForm.cardNumber.$error" md-auto-hide="false" ng-show="billingForm.cardNumber.$touched">
+                                            <div ng-message when="required">
+                                                <span translate>This field is required</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container class="md-block">
+                                        <label translate>Name on card</label>
+                                        <input name="cardName" ng-model="wizardController.data.billing.name" required>
+                                        <div ng-messages="billingForm.cardName.$error" md-auto-hide="false" ng-show="billingForm.cardName.$touched">
+                                            <div ng-message when="required">
+                                                <span translate>This field is required</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                                <div layout layout-xs="column" flex>
+                                    <md-input-container flex>
+                                        <label translate>Expiry date (MM)</label>
+                                        <input name="cardMonth" ng-model="wizardController.data.billing.cardMonth" ng-minlength="2" ng-maxlength="2" ng-pattern="/^(0?[1-9]|1[012])$/" required>
+                                        <div ng-messages="billingForm.cardMonth.$error" md-auto-hide="false" ng-show="billingForm.cardMonth.$touched">
+                                            <div ng-message when="required">
+                                                <span translate>This field is required</span>
+                                            </div>
+                                            <div ng-message when="maxlength">
+                                                <span translate>Month must be in the format MM</span>
+                                            </div>
+                                            <div ng-message when="minlength">
+                                                <span translate>Month must be in the format MM</span>
+                                            </div>
+                                            <div ng-message when="pattern">
+                                                <span translate>Month must be in the format MM</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex>
+                                        <label translate>Expiry date (YYYY)</label>
+                                        <input name="cardYear" ng-model="wizardController.data.billing.cardYear" ng-minlength="4" ng-maxlength="4" ng-pattern="/^[0-9]+$/" required>
+                                        <div ng-messages="billingForm.cardYear.$error" md-auto-hide="false" ng-show="billingForm.cardYear.$touched">
+                                            <div ng-message when="required">
+                                                <span translate>This field is required</span>
+                                            </div>
+                                            <div ng-message when="maxlength">
+                                                <span translate>Year must be in the format YYYY</span>
+                                            </div>
+                                            <div ng-message when="minlength">
+                                                <span translate>Year must be in the format YYYY</span>
+                                            </div>
+                                            <div ng-message when="pattern">
+                                                <span translate>Year must be in the format YYYY</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                            </form>
+                        </md-content>
+
+                        </md-list-item> <br>
+
+                  
+                    <md-subheader class="md-no-sticky" layout="row" layout-align="end center">
+                    <h2>Total : $28.60  &nbsp;&nbsp; </h2>
+                    <md-button class="md-raised md-primary margin-left-10 margin-right-0 margin-top-10 margin-bottom-10" href="#/dashboards/social">Pay</md-button> </md-subheader>
+
+                    </md-list>
+
+                </tri-widget>
+                <md-card flex>
+                <h2>&nbsp;&nbsp;Order Details</h2><md-divider></md-divider>
+
+                <md-card-content>
+                    <md-input-container class="md-block margin-top-0">
+                    <label>Order Type</label> <br>
+                        <!-- <md-select placeholder="Pick" ng-model="numCakes" ng-init="numCakes = 1">
+                        <md-option value="1">Delivery</md-option>
+                        <md-option value="2">Pickup</md-option>
+                    </md-select> -->
+                    <md-radio-group ng-model="numCakes" ng-init="numCakes = 1" layout="row">
+                      <md-radio-button value="1" class="md-primary">Delivery</md-radio-button>
+                      <md-radio-button value="2" class="md-primary"> Pickup </md-radio-button>
+                    </md-radio-group>
+                    </md-input-container>                    <md-divider></md-divider>
+
+                    <H4>Estimated time for delivery 45 min. 
+                    <md-switch class="md-primary" ng-model="switches.primary" aria-label="Primary Switch" ng-init="switches.primary = true">
+                            Delivery for later
+                        </md-switch>
+                    <md-datepicker ng-model="myDate" ng-show="switches.primary" md-placeholder="Enter date"></md-datepicker>
+                    </H4>
+
+                    </md-card-content>
+
+                    <md-card-content>
+                    <h3>Items</h3>
+                        <div layout="row" flex ng-mouseover="hover=true" ng-mouseleave="hover=false">
+                            <div flex="40"> 
+                                 Fountain Drinks</div>
+                            <div flex>$5.00</div>
+                            <div flex>1</div>
+                            <div flex>$5.00</div>
+                        </div>
+                        <div layout="row" flex>
+                            <div flex="40"> <!-- <md-icon md-font-icon="zmdi zmdi-edit material-icon" layout-align="end end" class="" ng-click="vm.openModifiers($event)"></md-icon> --> Double Chicken</div>
+                            <div flex>$7.00</div>
+                            <div flex>2</div>
+                            <div flex>$14.00</div>
+                            <!-- <div flex="5"><md-icon md-font-icon="zmdi zmdi-delete"></md-icon></div> -->
+                        </div>
+                        <div layout="row" flex>
+                            <div flex="40"> <!-- <md-icon md-font-icon="zmdi zmdi-edit material-icon" layout-align="end end" class="" ng-click="vm.openModifiers($event)"></md-icon> --> Fountain Drinks</div>
+                            <div flex>$3.5.00</div>
+                            <div flex>2</div>
+                            <div flex>$7.00</div>
+                            <!-- <div flex="5"><md-icon md-font-icon="zmdi zmdi-delete"></md-icon></div> -->
+                        </div>
+                        <md-divider></md-divider>
+                        <br>
+
+                        Sub total: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$26.00  <br>
+                        Tax: &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; $02.60 <br>
+                        Grand total: &nbsp;&nbsp; $28.60  <br><br>
+                        <md-divider></md-divider>
+
+                        <label>Have a coupon</label>
+                          <input ng-model="user.donation" type="text">
+                          <md-icon md-svg-src="img/icons/ic_euro_24px.svg"></md-icon>
+                          <md-button flex="60" class="md-primary" aria-label="flat button">Offers </md-button>
+                          
+
+                         <md-input-container class="md-block margin-top-50">
+                        <label>Additional Notes (max 140 characters)</label>
+                        <textarea ng-model="tweet" md-maxlength="140" rows="5" md-select-on-focus></textarea>
+                        <p class="md-caption">If you want to add any special instructions for the store</p>
+                    </md-input-container>
+                    </md-card-content>
+                    <md-card-actions layout="coloumn" layout-align="end end">
+                    </md-card-actions>
+
+            </md-card>
+            </div>
+            <br>
+            <br>
+
+         </div>

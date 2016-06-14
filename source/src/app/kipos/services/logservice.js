@@ -23,7 +23,7 @@ angular
                     type: "POST",
                     data: angular.toJson({
                             level: "Error",
-                            meta:{
+                            meta:{      
                                 errorUrl       : $window.location.href,
                                 merchantId     : $window.sessionStorage.merchant,
                                 errorBody      : message.data,
