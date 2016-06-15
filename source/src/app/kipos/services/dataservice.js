@@ -21,7 +21,7 @@
                         } else {
                             // invalid response
                         
-                            debugLogService.error({ message: serverError, data: response } );
+                            LogService.error({ message: serverError, data: response } );
 
                             return $q.reject(response.data);
                         }

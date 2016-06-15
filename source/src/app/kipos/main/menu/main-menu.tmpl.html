@@ -182,44 +182,47 @@
         </md-tab-label>
         <md-tab-body>
             <div layout="row" layout-xs="column" layout-margin>
-                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
+                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="start">
               
                     <div class="widget-follower-text padding-10">
                                                 <h4 class="md-title margin-0">
                             <md-icon md-font-icon="zmdi zmdi-time color-inherit"></md-icon>
-                            Delivery hours
+                            Delivery Hours
                         </h4>
                             
-                        <md-list-item ng-repeat="item in vm.storeHours">
+                        <md-list-item ng-repeat="item in vm.orderTypes.deliveryHours">
                             <p>{{item.name}}</p>
-                            <span>11.00 AM&nbsp;-&nbsp;10.00 PM</span>
+                            <span ng-if="item.hours.length != 0" ng-repeat="hr in item.hours">{{hoursConversion(hr.start)}}&nbsp;-&nbsp;{{hoursConversion(hr.end)}}</span>
+                            <span ng-if="item.hours.length == 0">CLOSE</span>
                         </md-list-item>
                         <md-list-item>
                         <md-icon md-font-icon="zmdi zmdi-hourglass-alt color-inherit"></md-icon>
-                            Delivery Time : 35 min
+                            Delivery Time : {{vm.orderTypes.delivery.avgOrderTime}}&nbsp;min
                         </md-list-item>
                         <md-list-item>
                         <md-icon md-font-icon="zmdi zmdi-bike color-inherit"></md-icon>
-                            Delivery Fee : $2
+                            Delivery Fee : $&nbsp;{{vm.orderTypes.delivery.fee/100}}
                         </md-list-item>
 
                     </div>
                 </tri-widget>
                
-                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="center start">
+                <tri-widget class="widget-follower" flex content-layout="column" content-layout-align="start">
                     
                     <div class="widget-follower-text padding-10">
                                                 <h4 class="md-title margin-0">
                             <md-icon md-font-icon="zmdi zmdi-time color-inherit"></md-icon>
-                            Pick Up hours
+                            PickUp Hours
                         </h4>
-                        <md-list-item ng-repeat="item in vm.storeHours">
-                            <p>{{item.name}}</p>&nbsp;
-                            <span ng-repeat="hr in item.hours"> {{hr.start}}&nbsp;-&nbsp;{{hr.end}}</span>
+                        <md-list-item ng-repeat="item in vm.orderTypes.pickupHours">
+                            <p>{{item.name}}</p>
+                            <span ng-if="item.hours.length != 0" ng-repeat="hr in item.hours">{{hoursConversion(hr.start)}}&nbsp;-&nbsp;{{hoursConversion(hr.end)}}</span>
+                            <span ng-if="item.hours.length == 0">CLOSE</span>
+
                         </md-list-item>
                         <md-list-item>
                         <md-icon md-font-icon="zmdi zmdi-hourglass-alt color-inherit"></md-icon>
-                            Pickup Time : 45 min
+                            Pickup Time : {{vm.orderTypes.pickup.vzCustomData.estimatedTakeoutTime}}&nbsp;min
                         </md-list-item>
 
                     </div>
@@ -234,7 +237,7 @@
                         </h4>
                         <md-list-item ng-repeat="item in vm.paymentTypes">
                             <md-icon md-font-icon="zmdi zmdi-check color-inherit"></md-icon>
-                            <p>{{item.name}}</p>
+                            {{item}}
                         </md-list-item>
 
 
@@ -250,12 +253,15 @@
         </md-tab-label>
         <md-tab-body>
             <div layout="row" layout-xs="column">
-                <md-card flex="33" ng-repeat="obj in vm.offers">
+                    <p ng-if="vm.offers.length== 0" style="color:orange" layout="row" layout-align="center start" class="margin-0"><md-label class="md-primary"><br>No Offers Available</md-label></p>
+                    <md-card flex="33" ng-repeat="obj in vm.offers">
                     <div class="widget-follower-text padding-10">
                     <h4 class="md-title margin-0">{{obj.name}}</h4>
                     <p class="md-caption margin-0">Code : {{obj.code}}</p>
                     <span class="md-caption" am-time-ago="obj.startDate"> </span> 
-                    <p layout="row" layout-align="end end" class="margin-0"><md-button class="md-primary">Start Order</md-button></p>
+                    <p layout="row" layout-align="end end" class="margin-0"><md-button class="md-primary" ng-click="addOffer(obj)">Start Order</md-button></p>
+                    <p style="background-color:orange;color:white" layout="row" layout-align="center start" class="margin-0"><md-label class="md-primary"> Offer Expires on : {{obj.endDate}}</md-label></p>
+
                     </div>
                 </md-card>
             </div>

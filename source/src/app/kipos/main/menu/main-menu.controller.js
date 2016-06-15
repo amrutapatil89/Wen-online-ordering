@@ -14,6 +14,7 @@
         $rootScope.cartItemObject = {};
         $rootScope.cartItemObject.elements = [];
         $rootScope.orderPrice = 0;
+        $scope.weeks=["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
 
         //below is the url prefix required for all the APIs
         var urlPrefix = "http://52.23.209.206:3000";
@@ -26,23 +27,53 @@
             categories: urlPrefix + "/api/v1/" + $rootScope.merchantId + "/categories",
             items: urlPrefix + "/api/v1/" + $rootScope.merchantId + "/items",
             store: urlPrefix + "/api/v1/apps/E1xXpZUkdg",
-            discount: "http://52.23.209.206:3001/api/v1/KE91B9500TF28/valid_discounts",
-            stores: urlPrefix + "/api/v1/accounts/4y_TUf5Wl/merchants"
+            discount: urlPrefix + "/api/v1/" + $rootScope.merchantId + "/valid_discounts",
+            stores: urlPrefix + "/api/v1/accounts/4y_TUf5Wl/merchants",
+            ordertypes: urlPrefix+ "/api/v1/"+$rootScope.merchantId +"/order_types"
         };
 
         vm.categories = [];
         vm.items = [];
         vm.cartItems = [];
         vm.createDialog = createDialog;
-        vm.storeHours=[{"name":"Monday","hours":[{"start":"10.00","end":"11.30"}]},{"name":"Tuesday"},{"name":"Wednesday"},{"name":"Thursday"},{"name":"Friday"},{"name":"Saturday"},{"name":"Sunday"}];
-        vm.paymentTypes=[{"name":"CREDIT CARD"},{"name":"CASH"}]
+        vm.storeHours=[{"name":"Monday","hours":[{"start":"100","end":"1130"}]},{"name":"Tuesday","hours":[{"start":"1400","end":"1130"}]},{"name":"Wednesday"},{"name":"Thursday"},{"name":"Friday"},{"name":"Saturday"},{"name":"Sunday"}];
+        vm.paymentTypes=["CASH"];
         vm.offers= [];
+        vm.orderTypes={};
+        vm.orderTypes.businessHours =[];
 
         $scope.selectedCategory = "";
 
         $http.get(urlObject.merchant)
         .then(function(response) {
+
             $rootScope.merchantInfo = response.data;
+
+            // Identifying order type and storing respective details in objects
+            angular.forEach(response.data.jsonData.opening_hours.elements, function(value, key) {
+
+                    // Parsing store hours and storing it in array
+                    angular.forEach(value, function(value, key) {
+
+                        // Valdiation to get only week related details
+                        if ($scope.weeks.indexOf(key) > -1){
+
+                            var hoursObject={};
+                            hoursObject.name = key.toUpperCase();
+                            hoursObject.hours = value.elements;
+
+                            //Pushing store timing details in array for displaying on UI
+                            vm.orderTypes.businessHours.push(hoursObject);
+
+                        }
+
+                    });
+
+            }); // End of for each
+
+            // Assigning the payment types supported by merchant
+            vm.paymentTypes = response.data.paymentType;
+
         });
 
         // Get call for categories 
@@ -61,17 +92,9 @@
         $http.get(urlObject.store)
         .then(function(appInfo) {
             $scope.appDetails = appInfo;
-            console.log("App Details: "+JSON.stringify($scope.appDetails));
+            //console.log("App Details: "+JSON.stringify($scope.appDetails));
         });
         
-
-        // Getting offers 
-        $http.get(urlObject.discount)
-        .then(function(appInfo) {
-            vm.offers = appInfo.data.elements;
-            console.log("Offers Details: "+JSON.stringify(vm.offers));
-        });
-
 
         //Login dialog box
         $scope.createLoginDialog = function($event) {
@@ -179,6 +202,157 @@
 
             $scope.selectedCategory = categoryId;
         }
+
+        // Getting order types for merchant
+        DataService.getData(urlObject.ordertypes)
+        .then(function(data){
+
+                //Variables to store order types details
+                vm.orderTypes.delivery={};
+                vm.orderTypes.pickup ={};
+
+                //Variables to store Store Hours
+                vm.orderTypes.deliveryHours =[];
+                vm.orderTypes.pickupHours =[];
+
+                // Identifying order type and storing respective details in objects
+                angular.forEach(data.elements, function(value, key) {
+ 
+                    if (value.label.indexOf("delivery") >= 0) {
+
+                        /* Assigning the complete pick order type object which holds useful details like
+                        minOrderAmount,maxOrderAmount,maxRadius,etc */
+                        vm.orderTypes.delivery= value;
+
+                        // If order type have business hours, assign bussiness hours read from merchants
+                        if(value.hoursAvailable.indexOf("BUSINESS") >= 0){
+
+                            vm.orderTypes.deliveryHours= vm.orderTypes.businessHours;
+
+                        }
+                        else
+                        {
+                            // Parsing store hours and storing it in array
+                            angular.forEach(value.hours, function(value, key) {
+
+                                // Valdiation to get only week related details
+                                if ($scope.weeks.indexOf(key) > -1){
+
+                                    var hoursObject={};
+                                    hoursObject.name = key.toUpperCase();
+                                    hoursObject.hours = value.elements;
+
+                                    //Pushing store timing details in array for displaying on UI
+                                    vm.orderTypes.deliveryHours.push(hoursObject);
+
+                                }
+
+                            });
+                        }
+
+                    }else{
+
+                        /* Assigning the complete pick order type object which holds useful details like
+                        minOrderAmount,maxOrderAmount,maxRadius,etc */
+                        vm.orderTypes.pickup = value;
+
+                        // If order type have business hours, assign bussiness hours read from merchants
+                        if(value.hoursAvailable.indexOf("BUSINESS") >= 0){
+
+                            vm.orderTypes.pickupHours= vm.orderTypes.businessHours;
+
+                        }
+                        else
+                        {
+                            // Parsing store hours and storing it in array
+                            angular.forEach(value.hours, function(value, key) {
+
+                                // Valdiation to get only week related details
+                                if ($scope.weeks.indexOf(key) > -1){
+
+                                    var hoursObject={};
+                                    hoursObject.name = key.toUpperCase();
+                                    hoursObject.hours = value.elements;
+                                    
+                                    //Pushing store timing details in array for displaying on UI
+                                    vm.orderTypes.pickupHours.push(hoursObject);
+
+                                }
+
+                            });
+                        }       
+                    }
+
+                }); // foreach end
+
+        },function (error) {
+
+                    console.log("Error reading order types:"+JSON.stringify(error));
+
+        });
+
+        // Getting data for offers
+        DataService.getData(urlObject.discount)
+        .then(function(data){
+
+                //console.log("Data:"+JSON.stringify(CartService.getMyCart()));
+                vm.offers = data.elements;
+
+        },function (error) {
+
+                    console.log("Error:"+JSON.stringify(error));
+
+        });
+
+
+    // Function converts time to 12 hour format 
+    $scope.hoursConversion = function(hrs){
+
+        //console.log("HoursConversion:"+JSON.stringify(hrs));
+        //console.log("Hours length:"+hrs.toString().length);
+
+        // Coverting storetime to string
+        var hours = hrs.toString();
+
+        /* As we are getting the store timings in below format, we have added addtional logic to 
+           get timings in better format"
+           EG:  100-1.00 AM
+                30-12.30 AM,
+                0-12.00 AM,
+                1130-11.30 AM,
+                1530-03.30 PM,
+                2200-10.00 PM.
+
+        */
+        if(hours.length == 3){
+
+            var hr = hours.substring(0, 1);
+            var min = hours.substring(1, 3);
+            return hr+":"+min+" AM";
+        }
+        else if (hours.length == 4) {
+            
+            var hr = hours.substring(0, 2);
+            var min = hours.substring(2, 4);
+
+            if(hr > 12)
+                var hr= hr-12;
+            return hr+":"+min+" PM";
+        }
+        else if(hours.length == 1){
+
+            return "12:00 AM";
+
+        }
+        else if(hours.length == 2){
+
+            return "12:30 AM";
+
+        }
+        else
+            return "NA";
+
+    }
 
     // filter all fields using common text box. 
     $scope.sortItemsCategoryWise = function(row) {
