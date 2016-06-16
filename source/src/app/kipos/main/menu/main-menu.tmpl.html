@@ -37,12 +37,24 @@
                  <md-whiteframe flex="66" title="" contacts-widget content-layout="row" >
                     <div layout="row">
                     <ul flex="20" class="menu-toggle-list ">
-                        <md-list class="margin-right-10">
+                        <div layout="column" class="margin-right-10" layout-align="center center" ng-hide="vm.loadingCategories" layout-fill>
+                            <md-progress-circular md-mode="indeterminate" md-diameter="30px"></md-progress-circular>
+                        </div>
+
+                        <div layout="column" class="margin-right-10 md-caption" layout-align="center center" ng-show="vm.errorInCategories">
+                            {{categoryErrorMessage}}
+                            <md-button ng-click="vm.fetchCategories()"> Retry </md-button>
+                        </div>
+
+
+
+                        <md-list class="margin-right-10" ng-show="vm.loadingCategories && !vm.errorInCategories">
                             <md-subheader class="md-button md-ink-ripple side-menu-link md-no-sticky margin-top-10 padding-0" style="color:#444" ng-click="setSelectedCategory('')">
                                     All Categories
                             </md-subheader>
 
                         </md-list>
+
 
                         <li ng-repeat="category in vm.categories" href="" style="color:grey;" class="margin-right-10">
                             <!-- <button class="md-button md-ink-ripple side-menu-link" ng-show="$first">    All Categories 

@@ -23,6 +23,6 @@
 
         // set a constant for the API we are connecting to
         .constant('API_CONFIG', {
-            'url':  'http://52.23.209.206:3003/api/v1/'
+            'url':  'http://52.23.209.206:3000/api/v1/'
         });
 })();

@@ -6,9 +6,124 @@
         .controller('MainMenuController', MainMenuController);
 
     /* @ngInject */
-    function MainMenuController($scope, $timeout, $mdToast, $mdDialog, $rootScope, $state, $location, $http, DataService) {
+    function MainMenuController($scope, $q, $timeout, $mdToast, $mdDialog, $rootScope, $state, $location, $http, API_CONFIG, DataService, MerchantService) {
        
         var vm = this;
+
+        // Data objects 
+        vm.merchant;
+        vm.brandingInfo;
+
+        // Functions
+        vm.fetchCategories          = fetchCategories;
+        vm.fetchItems               = fetchItems;
+        vm.createDialog             = createDialog;
+        vm.getMerchantData          = getMerchantData;
+
+        // Arrays 
+        vm.categories               = [];
+        vm.items                    = [];
+        vm.cartItems                = [];
+
+        // Loading indicators
+        vm.loadingCategories;
+        vm.loadingItems;
+        vm.loadingCart;
+        vm.loadingCartUpdate;
+        vm.loadingCartcalculations;
+        vm.loadingOffersApplied;
+        vm.loadingBranding;
+        vm.loadingPaymentInProgress;
+
+        // UI Error messages toggle
+        vm.errorInCategories;
+        vm.loadingItems;
+        vm.loadingCart;
+        vm.loadingCartUpdate;
+        vm.loadingCartcalculations;
+        vm.loadingOffersApplied;
+        vm.loadingBranding;
+        vm.loadingPaymentInProgress;
+
+
+        // Default error messages
+        $rootScope.categoryErrorMessage    = "Could not fetch categories. Please try again";
+        $rootScope.itemErrorMessage        = "Could not fetch items. Please try again";
+
+
+        // Initial service call
+        vm.getMerchantId    = MerchantService.getMerchantId();
+
+        // Only after the merchant id fetch initial merchant Information 
+        vm.getMerchantId.then(function(id){
+            $rootScope.merchantId = id;
+            vm.getMerchantData(id);
+        });
+
+        // Once initial merchant information is received 
+        // fetch :
+        //          - Categories
+        //          - Items
+        //          - Account Information
+        //          - Branding Information
+
+
+        function getMerchantData(id){
+            MerchantService.getMerchantData(id).then(function(result){
+
+                // Merchant data is received 
+                vm.merchant = result;
+                
+                // FETCH FUNCTIONS
+
+                // Fetch categories 
+                vm.fetchCategories(API_CONFIG.url + $rootScope.merchantId + "/categories");
+                // Fetch items
+                vm.fetchItems(API_CONFIG.url + $rootScope.merchantId + "/items");
+                // Fetch Branding
+
+
+            });
+        }
+
+        // function to fetch categories
+        function fetchCategories(url){
+
+             vm.loadingCategories = true;
+            
+            // Directly assigning value to categories object 
+            // as there are no dependency on other calls;
+            DataService.getData(url)
+            .then(function(categories){
+                vm.categories = categories.elements;
+            })
+            .catch(function(){
+                vm.loadingCategories = false;
+                return $rootScope.categoryErrorMessage;
+            });
+
+        }// end of fetchCategories
+
+        // function to fetch items
+        function fetchItems(url){
+
+            // Directly assigning value to items object 
+            // as there are no dependency on other calls;
+            DataService.getData(url)
+            .then(function(items){
+                vm.items = items.elements;
+            })
+            .catch(function(){
+                return $rootScope.itemsErrorMessage;
+            });
+
+        }// end of fetchItems
+
+
+
+
+
+
 
         //for initializing cartItemObject for storing added items with modifiers and taxes
         $rootScope.cartItemObject = {};
@@ -19,7 +134,7 @@
         //below is the url prefix required for all the APIs
         var urlPrefix = "http://52.23.209.206:3000";
 
-        $rootScope.merchantId = "13HRYK02HZM30";
+        // $rootScope.merchantId = "13HRYK02HZM30";
 
         //below object stores url for API calls
         var urlObject = {
@@ -32,12 +147,10 @@
             ordertypes: urlPrefix+ "/api/v1/"+$rootScope.merchantId +"/order_types"
         };
 
-        vm.categories = [];
-        vm.items = [];
-        vm.cartItems = [];
-        vm.createDialog = createDialog;
+
         vm.storeHours=[{"name":"Monday","hours":[{"start":"100","end":"1130"}]},{"name":"Tuesday","hours":[{"start":"1400","end":"1130"}]},{"name":"Wednesday"},{"name":"Thursday"},{"name":"Friday"},{"name":"Saturday"},{"name":"Sunday"}];
         vm.paymentTypes=["CASH"];
+
         vm.offers= [];
         vm.orderTypes={};
         vm.orderTypes.businessHours =[];
@@ -74,18 +187,6 @@
             // Assigning the payment types supported by merchant
             vm.paymentTypes = response.data.paymentType;
 
-        });
-
-        // Get call for categories 
-        $http.get(urlObject.categories)
-        .then(function(response) {
-            vm.categories = response.data.elements;
-        });
-
-        // Get call for items 
-        $http.get(urlObject.items)
-        .then(function(response) {
-            vm.items = response.data.elements;
         });
 
         //for getting store name and description

@@ -6,7 +6,7 @@
         .run(runFunction);
 
     /* @ngInject */
-    function runFunction($rootScope, $state, $location) {
+    function runFunction($rootScope, $state, $location, API_CONFIG, MerchantService) {
 
         // default redirect if access is denied
         function redirectError() {
@@ -15,11 +15,7 @@
 
         // Init call to get merchant data based on url
         function init(){
-
-            if ($location.$$host == "localhost") {
-                $rootScope.merchant = "13HRYK02HZM30";
-                console.log(""+$location.$$host);
-            } 
+            MerchantService.getMerchantId() ;
         }
 
         init();
