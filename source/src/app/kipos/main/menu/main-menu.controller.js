@@ -14,16 +14,16 @@
         vm.merchant;
         vm.brandingInfo;
 
+        // Arrays 
+        vm.categories               = [];
+        vm.items                    = [];
+        vm.cartItems                = [];
+
         // Functions
         vm.fetchCategories          = fetchCategories;
         vm.fetchItems               = fetchItems;
         vm.createDialog             = createDialog;
         vm.getMerchantData          = getMerchantData;
-
-        // Arrays 
-        vm.categories               = [];
-        vm.items                    = [];
-        vm.cartItems                = [];
 
         // Loading indicators
         vm.loadingCategories;

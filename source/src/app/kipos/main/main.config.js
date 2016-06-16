@@ -25,12 +25,6 @@
             templateUrl: 'app/kipos/main/checkout/main-checkout.tmpl.html',
             controller: 'MainCheckoutController',
             controllerAs: 'vm'
-            //  data: {
-            //     layout: {
-            //         contentClass: 'layout-column'
-            //     }
-            // }
         });
-
     }
 })();

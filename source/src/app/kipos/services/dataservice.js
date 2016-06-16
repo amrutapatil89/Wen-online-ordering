@@ -6,10 +6,12 @@
         .factory('DataService', DataService);
 // debugLogService
     function DataService($http, $q, $timeout, LogService) {
-        var serverError = "Invalid response from Server";
-        var requestFailError = "Request was rejected from server";
+
+        var serverError        = "Invalid response from Server";
+        var requestFailError    = "Request was rejected from server";
         var data;
         var obj;
+        
         return {
             getData: function(url) {
                 // the $http API is based on the deferred/promise APIs exposed by the $q service
