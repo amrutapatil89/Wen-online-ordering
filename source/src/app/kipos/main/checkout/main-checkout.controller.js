@@ -6,12 +6,13 @@
         .controller('MainCheckoutController', MainCheckoutController);
 
     /* @ngInject */
-    function MainCheckoutController($scope, $timeout, $mdToast, $state, $http, $mdDialog, $rootScope) {
+    function MainCheckoutController($scope, $timeout, $mdToast, $mdDialog, $state, $http, $rootScope) {
       
       var vm = this;
 
         $scope.change = false;
         vm.createDialog = createDialog;
+        vm.createLoginDialog = createLoginDialog();
 
         //below is the url prefix required for all the APIs
         var urlPrefix = "http://52.23.209.206:3000";
@@ -66,6 +67,17 @@
                 focusOnOpen: false
             });
         }
+
+        function createLoginDialog($event) {
+            $mdDialog.show({
+                controller: 'LoginDialogController',
+                controllerAs: 'vm',
+                templateUrl: 'app/kipos/main/login/login-dialog.tmpl.html',
+                targetEvent: $event,
+                focusOnOpen: false
+            });
+        }
+
 
         //for setting the selected address and showing it on UI by Chetan
         $scope.setAddress = function(add) {
