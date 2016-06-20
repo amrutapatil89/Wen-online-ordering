@@ -21,7 +21,7 @@
                     function fetchMerchantId (url){
 
                            return $timeout(function() {
-                                merchantId = "13HRYK02HZM30";
+                                merchantId = "0SANW0S8MWQ1E";
 
                                 $window.sessionStorage.merchantId = merchantId;
                                 $rootScope.merchantId = merchantId;
