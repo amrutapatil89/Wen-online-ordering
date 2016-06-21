@@ -36,7 +36,7 @@
 
 
         // Data Functions
-        vm.fetchLocationAccount     = fetchLocationAccount;
+        vm.fetchLocationAccount      = fetchLocationAccount;
         vm.fetchLocationBranding    = fetchLocationBranding;
         vm.fetchCategories          = fetchCategories;
         vm.fetchItems               = fetchItems;
