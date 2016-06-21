@@ -4,22 +4,22 @@
         style="background: url(assets/images/backgrounds/clavo/default.png) no-repeat; background-size: cover;">
 
     <div class="margin-right-20 margin-bottom-20">
-        <img src="assets/images/backgrounds/clavo/store_logo.png" alt="girl-avatar" class="make-round" width="100"/>
+        <!-- <img src="assets/images/backgrounds/clavo/store_logo.png" alt="girl-avatar" class="make-round" width="100"/> -->
     </div>
 
     <div class="text-light" layout="column" layout-fill>
-        <h2 class="font-weight-600 margin-bottom-0 text-light">{{merchantInfo.jsonData.name}}</h2>
+        <h2 class="font-weight-600 margin-bottom-0 text-light">{{vm.locationBranding.appInfo.appName}}</h2>
 
         <p class="font-weight-300 margin-top-0 margin-bottom-0">
-            {{appDetails.data.appInfo.longDescription}}
+            {{vm.locationBranding.appInfo.longDescription}}
             <br>
         </p>
 
         <p style="bottom:0; top:80px;background: rgba(255,255,255,0.7);bottom: 0;text-align: left;margin-left: -140px;margin-right: -20px; margin-bottom:-40px;color:#fff;padding-left:140px;">
             <md-icon md-font-icon="zmdi zmdi-pin color-inherit"></md-icon> 
-            {{merchantInfo.jsonData.address.address1}} {{merchantInfo.jsonData.address.address2}} 
-            {{merchantInfo.jsonData.address.address3}} {{merchantInfo.jsonData.address.city}} 
-            {{merchantInfo.jsonData.address.country}} {{merchantInfo.jsonData.address.state}} {{merchantInfo.jsonData.address.zip}}
+            {{vm.locationBranding.jsonData.address.address1}} {{vm.locationBranding.jsonData.address.address2}} 
+            {{vm.locationBranding.jsonData.address.address3}} {{vm.locationBranding.jsonData.address.city}} 
+            {{vm.locationBranding.jsonData.address.country}} {{vm.locationBranding.jsonData.address.state}} {{vm.locationBranding.jsonData.address.zip}}
             <md-button md-no-ink class="md-accent" aria-label="flat button" ng-click="openLocationsDialog()"> 
                 CHANGE LOCATION
             </md-button> 
