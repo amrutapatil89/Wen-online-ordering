@@ -6,7 +6,7 @@
         .controller('ModifierDialogController', ModifierDialogController);
 
     /* @ngInject */
-    function ModifierDialogController($scope, $mdDialog, $http, itemId, $rootScope) {
+    function ModifierDialogController($scope, $mdDialog, $http, itemId, $rootScope, DataService, CartService, API_CONFIG) {
 
         var vm = this;
         vm.itemModifiers = {};
@@ -16,15 +16,11 @@
         $scope.addEditButtonText = "";
         $scope.cancelDeleteButtonText = "";
 
-        //below is the url prefix required for all the APIs
-        var urlPrefix = "http://52.23.209.206:3000";
-
         //below object stores all the urls required to call the APIs
         var urlObject = {
-            getModifierUrl: urlPrefix + "/api/v1/13HRYK02HZM30/items/"
+            getModifierUrl: API_CONFIG.url + $rootScope.merchantId + "/items/" + $scope.itemid.item,
+            validate: API_CONFIG.url + $rootScope.merchantId + "/orders/validate"
         }
-
-        var getModifierUrl =   urlObject.getModifierUrl + $scope.itemid.item;
 
         $scope.passItemToUI = function(item) {
 
@@ -119,7 +115,7 @@
         }//end of deleteCloseDialog function
 
         // Get call for categories 
-        $http.get(getModifierUrl)
+        $http.get(urlObject.getModifierUrl)
         .then(function(response) {
 
             $scope.passItemToUI(response.data);
@@ -146,144 +142,117 @@
         }//end of changeQty function
 
         //for adding and removing modifier price in item price by Chetan Purohit on 8th May 2016
-        $scope.addRemoveModifier = function(itemPrice, modifier, selected) {
+        $scope.addRemoveModifier = function(item, modifier, selected) {
+
+            console.log("Item: "+JSON.stringify(item));
+            console.log("Modifier: "+JSON.stringify(modifier));
 
             var modifiedItemPrice = 0;
 
             if(selected) {
 
                 //if the checkbox is selected then it will add the modifier price in the item price
-                modifiedItemPrice = parseInt(itemPrice) + parseInt(modifier.price);
+                if(item.cost >= 0) {
+
+                    modifiedItemPrice = parseInt(item.cost) + parseInt(modifier.price);    
+                } else {
+
+                    modifiedItemPrice = parseInt(item.price) + parseInt(modifier.price);
+                }
+                
+                console.log("Modified price: "+modifiedItemPrice);
                 return modifiedItemPrice;
             } else {
 
                 //if the checkbox is unchecked then it
-                modifiedItemPrice = parseInt(itemPrice) - parseInt(modifier.price);
+                if(item.cost >= 0) {
+
+                    modifiedItemPrice = parseInt(item.cost) - parseInt(modifier.price);    
+                } else {
+
+                    modifiedItemPrice = parseInt(item.price) - parseInt(modifier.price);
+                }
+                console.log("Modified price: "+modifiedItemPrice);
                 return modifiedItemPrice;
             }
         }//end of addRemoveModifier function
 
-        var addNewItemToCartObjects = function(item, type) {
+        //below function will make 'validate' API call for the items present in the cart
+        //it will get all the calculations done from the middle tear server for the items
+        //we will use these calculations to display on the UI as well as for the POST order call
+        //this function is written by Chetan Purohit on 7th May 2016
+        var performCalculations = function() {
 
-            console.log("My type is "+type);
-            // console.log("Came here.");
-            //here cartId is taken which can help while editing item, it is not needed in validate POST call
-            //for creating object of items
-            var itemObj = {
-                id: item.id,
-                name: item.name,
-                price: item.price,
-                priceType: item.priceType,
-                defaultTaxRates: item.defaultTaxRates,
-                qty: $scope.quantity,
-                cost: item.price * $scope.quantity,
-                isRevenue: item.isRevenue,
-                taxRates: item.taxRates
-            };
+            var lineItemsArray = [];
+            var count = 1;
+            var cartItemLength = $rootScope.cartItemObject.elements.length;
 
-            itemObj.modifiers = [];
+            console.log("Cart length: "+cartItemLength);
 
-            //for adding cartId
-            //if this is update call then assign previous cartId
-            //else add new cartId
-            if(type == 'update') {
+            //preparing object(payload) to send for validate API call
+            //for preparing lineItems we have to separate each and every quantity of the item in an array
+            $rootScope.cartItemObject.elements.forEach(function(cartItem, cartItemIndex) {
 
-                //this is an update call
-                itemObj.cartId = item.cartId;
-            } else {
+                //creating lineItemObject for every item
+                //it will be added quantity time in the array later
+                var lineItemObject = {
+                    "id": cartItem.id,
+                    "name": cartItem.name,
+                    "code": cartItem.code,
+                    "price": cartItem.price,
+                    "priceType": cartItem.priceType,
+                    "defaultTaxRates": cartItem.defaultTaxRates,
+                    "cost": cartItem.cost,
+                    "isRevenue": cartItem.isRevenue,
+                    "taxRates": cartItem.taxRates
+                };
 
-                itemObj.cartId = $rootScope.cartItemObject.elements.length;
-            }
-            
-            //for adding item code
-            //this is optional and we are getting this from Clover
-            if(item.code) {
+                //for adding modifiers of the object if any are available
+                if(cartItem.modifiers.length > 0) {
 
-                itemObj.code = item.code;
-            } else {
+                    //for removing the 'selected' field from modifiers object as Clover is not accepting it
+                    for(var index = 0; index < cartItem.modifiers.length; index++) {
 
-                itemObj.code = "";
-            }
+                        delete cartItem.modifiers[index].selected;
 
-            //for adding modifiers if item having any and selected
-            if(item.modifierGroups.elements.length == 0) {
+                        if(index == cartItem.modifiers.length - 1) {
 
-                //item is not having modifiers so directly add item to objects
-                //if code is available for item then it will be added otherwise blank is set
-
-                $rootScope.cartItemObject.elements.push(itemObj);
-
-                // console.log("Item added to cart: "+JSON.stringify($rootScope.cartItemObject.elements));
-                $mdDialog.hide();
-            } else {
-
-                var modifierGroupIndex = 0;
-
-                //for checking all the modifier group objects
-                item.modifierGroups.elements.forEach(function(modifierGroup){
-
-                    modifierGroup.modifiers.elements.forEach(function(modifier){
-
-                        //if the modifier is selected then add to modifiers object
-                        if(modifier.selected) {
-
-                            itemObj.modifiers.push(modifier);
-                        }
-                    });
-
-                    modifierGroupIndex++;
-
-                    //if this is the last modifier group then the item should be added to the cart item object
-                    if(modifierGroupIndex == item.modifierGroups.elements.length) {
-
-                        //if type is update then just update the item at the previous location
-                        //if type is add then add the item to the last location
-
-                        if(type == 'update') {
-
-                            //this is an update call
-                            $rootScope.cartItemObject.elements.forEach(function(cartItem, cartItemIndex) {
-
-                                if(cartItem.cartId == itemObj.cartId) {
-
-                                    console.log("cartItem is matched.");
-
-                                    $rootScope.cartItemObject.elements[cartItemIndex].qty = itemObj.qty;
-                                    $rootScope.cartItemObject.elements[cartItemIndex].cost = itemObj.cost;
-                                    $rootScope.cartItemObject.elements[cartItemIndex].modifiers = itemObj.modifiers;
-
-                                    console.log("Modifiers: "+JSON.stringify(itemObj.modifiers));
-                                }
-                            });
-
-                        } else {
-
-                            //this is add item call
-                            $rootScope.cartItemObject.elements.push(itemObj);
-                            // console.log("Item added to cart: "+JSON.stringify($rootScope.cartItemObject.elements));
-                            $mdDialog.hide();    
+                            lineItemObject.modifiers = {};
+                            lineItemObject.modifiers.elements  = [];
+                            lineItemObject.modifiers.elements  = cartItem.modifiers;
                         }
                     }
-                });
-            }
-            
-            // $http.post(url, data)
-            // .success(function(data, status, config) {
-            //     // this callback will be called asynchronously
-            //     // when the response is available
-            //     if (typeof data === 'object') {
+                }
 
-            //         console.log("Success of post: "+data);
-            //         return deferredObj.resolve(data);
-            //     } else {
+                //following for loop will add the item quantity times in the lineItems array
+                for(var index = 0; index < cartItem.qty; index++) {
 
-            //         // invalid response
-            //         console.log("invalid response");
-            //         return deferredObj.reject(data);
-            //     }
-            // }); //end of validate API POST call
+                    count = count + 1;
 
-        } //end of addNewItemToCartObjects function
+                    lineItemsArray.push(lineItemObject);
+
+                    //if this is the last item in the cart and the last quantity index then we have to make object
+                    //and we have to call 'validate' API
+                    if(cartItemIndex == $rootScope.cartItemObject.elements.length - 1 && index == cartItem.qty - 1) {
+
+                        //for creating object to call validate API
+                        var validateObject = {
+
+                            "orderTypeId":"0GKGA85CK06WG",
+                            "lineItems": lineItemsArray
+                        };
+
+                        console.log("Validate Payload: "+JSON.stringify(validateObject));
+
+                        //making 'validate' API POST call from here
+                        DataService.postData(urlObject.validate, validateObject)
+                        .then(function(data){
+
+                        });
+                    }//end of if condition
+                }//end of for
+            });//end of cartItem forEach loop
+        }//end of performCalculations function
 
         $scope.checkValidationsAndAddToCart = function(item, quantity, addEditButtonText) {
 
@@ -307,7 +276,7 @@
                 //if item is not having any modifiergroup then item should be added to cart
                 if(item.modifierGroups.elements.length == 0) {
 
-                    $scope.AddItemToCart(item, quantity);
+                    CartService.addItemToCart(item, $scope.quantity);
                 }
 
                 var modifierGroupIndex = 0;
@@ -376,7 +345,7 @@
                                 if(modifierGroupCount == modifierGroupIndex) {
 
                                     // console.log("Calling add item");
-                                    $scope.AddItemToCart(item, quantity);
+                                    CartService.addItemToCart(item, $scope.quantity);
                                 }
                             }
                         });
@@ -386,7 +355,7 @@
                         if(item.modifierGroups.elements.length-1 == modifierGroupIndex) {
                             
                             // console.log("Calling add item2");
-                            $scope.AddItemToCart(item, quantity);    
+                            CartService.addItemToCart(item, $scope.quantity);    
                         }
                         
                     }
@@ -410,215 +379,9 @@
                     //if available then add quantity of updated item to that item and delete updated item from cart
                     //if not available any matching item to cart then update old item
                     item.cartId = $scope.itemid.cartId;
-                    $scope.AddItemToCart(item, quantity);
+                    CartService.addItemToCart(item, $scope.quantity);
                 }
-            }
-            
+            }   
         }
-
-        var matchModifiersAndAddItem = function(item, modifiersArray, quantity) {
-
-            var itemMatchedFlag = false;
-
-            $rootScope.cartItemObject.elements.forEach(function(cartItem, cartItemIndex){
-
-                //checking for the item is present or not
-                if(cartItem.id == item.id && !itemMatchedFlag) {
-
-                    //item is present, now checking for the modifier length
-                    if(cartItem.modifiers.length == modifiersArray.length) {
-
-                        //for saving the number of modifiers matching
-                        var matchedCount = 0;
-
-                        //now checking for the modifiers
-                        modifiersArray.forEach(function(itemModifier, itemModifierIndex) {
-
-                            //this flag will be set to true if the modifier is found
-                            var modifierFoundFlag = false;
-
-                            if(!modifierFoundFlag) {
-
-                                cartItem.modifiers.forEach(function(cartModifier, cartModifierIndex){
-
-                                    if(itemModifier.id == cartModifier.id) {
-
-                                        modifierFoundFlag = true;
-                                        matchedCount++;
-                                        
-                                        //if matchedCount is equal to number of modifiers then just increase the quantity
-                                        if(matchedCount == modifiersArray.length) {
-
-                                            itemMatchedFlag = true;
-
-                                            //for checking if the item is to be updated or added
-                                            //this is identified by checking whether item is having cartId or not
-                                            //if having cartId then just update item as per update conditions
-                                            if(item.cartId >= 0) {
-
-                                                if(item.cartId == cartItem.cartId) {
-
-                                                    //item has no change for modifiers
-                                                    //only update the quantity and price
-                                                    $rootScope.cartItemObject.elements[cartItemIndex].qty = quantity;
-                                                    $rootScope.cartItemObject.elements[cartItemIndex].cost = $rootScope.cartItemObject.elements[cartItemIndex].price * quantity;
-                                                    $mdDialog.hide();
-                                                } else {
-
-                                                    //item is not the same item which was previously added and opened for update
-                                                    //changed modifiers is similar to another item
-                                                    //so just add the quantity to that matching item and updated the price
-                                                    //delete the selected item to update
-                                                    $rootScope.cartItemObject.elements[cartItemIndex].qty = $rootScope.cartItemObject.elements[cartItemIndex].qty + quantity;
-                                                    $rootScope.cartItemObject.elements[cartItemIndex].cost = $rootScope.cartItemObject.elements[cartItemIndex].price * $rootScope.cartItemObject.elements[cartItemIndex].qty;
-                                                    $scope.deleteCloseDialog('Remove from cart');
-                                                    $mdDialog.hide();
-                                                    return;
-                                                }
-                                            } else {
-
-                                                //call is done for adding item
-                                                $rootScope.cartItemObject.elements[cartItemIndex].qty = $rootScope.cartItemObject.elements[cartItemIndex].qty + quantity;
-                                                $rootScope.cartItemObject.elements[cartItemIndex].cost = $rootScope.cartItemObject.elements[cartItemIndex].price * $rootScope.cartItemObject.elements[cartItemIndex].qty;
-                                                $mdDialog.hide();
-                                                return;
-                                            }
-                                        }
-                                    } else if(cartItemIndex == $rootScope.cartItemObject.elements.length - 1 
-                                        && cartModifierIndex == cartItem.modifiers.length - 1 
-                                        && !itemMatchedFlag  && modifiersArray.length - 1 == itemModifierIndex) {
-
-                                        //if item is not found in the cart then add that item in the cart
-                                        if(matchedCount != modifiersArray.length) {
-
-                                            //for handling situation of update item
-                                            if(item.cartId >= 0) {
-
-                                                //this call has been done for update
-                                                addNewItemToCartObjects(item, 'update');
-                                                $mdDialog.hide();
-                                                return;
-
-                                            } else {
-
-                                                console.log("I am in add call 1");
-
-                                                //this call has been done for adding new item
-                                                addNewItemToCartObjects(item, 'add');
-                                                $mdDialog.hide();
-                                                return;
-                                            }
-                                        }
-                                    }
-                                });
-                            } 
-                        });//end of cartItem modifiers forEach loop
-                    } else {
-
-                        //if items modifiers length is not matching and this is the last item then add/update item to the cart
-                        if(cartItemIndex == $rootScope.cartItemObject.elements.length - 1) {
-
-                            if(item.cartId >= 0) {
-
-                                //this call has been done for update
-                                addNewItemToCartObjects(item, 'update');
-                                $mdDialog.hide();
-                                return;
-                            } else {
-
-                                console.log("I am in add call 2");
-                                addNewItemToCartObjects(item, 'add');
-                                return;    
-                            }
-                            
-                        }
-                    }
-                } else {
-
-                    //if the item is not present in the cart and the cart item list is ended then add new item to the cart
-                    if(cartItemIndex == $rootScope.cartItemObject.elements.length - 1 && !itemMatchedFlag) {
-
-                        console.log("I am in add call 3");
-                        addNewItemToCartObjects(item, 'add');
-                        return;
-                    }
-                }
-            });
-        }
-
-        //for adding items in cart by Chetan Purohit on 8th May 2016
-        //this data is structured as per requirement for validate API
-        $scope.AddItemToCart = function(item, quantity) {
-
-            // console.log("Cart function called."+JSON.stringify(item));
-            if($rootScope.cartItemObject.elements.length == 0) {
-
-                // console.log("I am adding item 3");
-                console.log("I am in add call 4");
-                addNewItemToCartObjects(item, 'add');
-                return;
-            }
-
-            //for checking if the minimum and maximum modifiers are selected or not
-
-            //if there are some items then check the presence
-            var cartItemIndex = 0;
-            var matchingItemFoundFlag = false;
-            var itemFound = false;
-
-            $rootScope.cartItemObject.elements.forEach(function(cartItem){
-
-                if(cartItem.id == item.id && !matchingItemFoundFlag) {
-
-                    matchingItemFoundFlag = true;
-
-                    //item is present
-                    if(item.modifierGroups.elements.length == 0) {
-
-                        //item is not having modifiers so simply increase the quantity
-                        $rootScope.cartItemObject.elements[cartItemIndex].qty = $rootScope.cartItemObject.elements[cartItemIndex].qty + quantity;
-                        $rootScope.cartItemObject.elements[cartItemIndex].cost = $rootScope.cartItemObject.elements[cartItemIndex].price * $rootScope.cartItemObject.elements[cartItemIndex].qty;
-                        $mdDialog.hide();
-                        return;
-                    } else {
-
-                        var modifiersArray = [];
-
-                        // console.log("item with modifiers 1");
-
-                        //adding modifiers to an array for matching with the existing items in the cart
-                        item.modifierGroups.elements.forEach(function(modifierGroup, modifierGroupIndex){
-
-                            // console.log("item with modifiers 2"+modifierGroupIndex);
-
-                            modifierGroup.modifiers.elements.forEach(function(modifier, modifierIndex){
-
-                                // console.log("item with modifiers 3");
-                                // console.log("Entered here: "+modifierIndex);
-                                if(modifier.selected) {
-
-                                    modifiersArray.push(modifier);
-                                }//end of modifier selected checking if
-
-                                //for checking if all the modifiers are iterated or not for modifierGroup
-                                if(modifierIndex == modifierGroup.modifiers.elements.length - 1 && modifierGroupIndex == item.modifierGroups.elements.length - 1) {
-
-                                    console.log("I am calling match and add.");
-                                    matchModifiersAndAddItem(item, modifiersArray, quantity);
-                                }//end of modifiers ended or not checking if
-                            });//end of modifers forEach for every modifierGroup
-                        });//end of modifierGroups forEach
-                    }
-                }
-
-                cartItemIndex++;
-
-                if(cartItemIndex == $rootScope.cartItemObject.elements.length && !matchingItemFoundFlag) {
-
-                    // console.log("I am adding item 5");
-                    addNewItemToCartObjects(item);
-                }
-            }); //end of forEach            
-        }//end of AddItemToCart function
     }
 })();

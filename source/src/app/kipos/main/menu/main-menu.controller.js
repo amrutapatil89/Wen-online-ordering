@@ -43,7 +43,7 @@
         vm.getMerchantData          = getMerchantData;
         vm.fetchOffers              = fetchOffers;
         vm.fetchOrderTypes          = fetchOrderTypes;
-        // vm.createDialog             = createDialog;
+        vm.createDialog             = createDialog;
 
 
         // Utility Objects
@@ -87,6 +87,9 @@
         $rootScope.categoryErrorMessage    = "Could not fetch categories. Please try again";
         $rootScope.itemErrorMessage        = "Could not fetch items. Please try again";
 
+        //cart items details
+        $rootScope.cartItemObject = {};
+        $rootScope.cartItemObject.elements = [];
 
         // Initial service call
         vm.getMerchantId    = MerchantService.getMerchantId();
@@ -250,13 +253,6 @@
             });
         }
 
-
-
-
-
-
-
-
         // Utility Functions
 
         function setDeliveryBusinessHours(value){
@@ -409,6 +405,61 @@
                 }  
             }  
         } //End of filterItemsByCategory function
+
+        // Dialog box for modifiers
+        function createDialog($event, itemId, type) {
+
+            //type is used for checking if the dialog has to be created for add item or edit item
+            if(type == "add") {
+
+                console.log("In add call.");
+                //this call has been done for adding item, so simply passing the item to dialog box
+                $mdDialog.show({
+                    controller: 'ModifierDialogController',
+                    controllerAs: 'vm',
+                    templateUrl: 'app/kipos/main/menu/modifier-dialog.tmpl.html',
+                    targetEvent: $event,
+                    focusOnOpen: false,
+                    locals: { 
+                        itemId: {
+                            item : itemId
+                        }
+                    }
+
+                });    
+            } else {
+
+                //this call has been done for editing item
+                //so item should have all the original details + already selected modifiers and quantity details
+
+                console.log("In edit call.");
+
+                //for getting itemId from cartItemId
+
+                $rootScope.cartItemObject.elements.forEach(function(cartItem, cartItemIndex) {
+
+                    if(cartItem.cartId == itemId) {
+
+                        var selectedItemId = cartItem.id;
+
+                        //this call has been done for adding item, so simply passing the item to dialog box
+                        $mdDialog.show({
+                            controller: 'ModifierDialogController',
+                            controllerAs: 'vm',
+                            templateUrl: 'app/kipos/main/menu/modifier-dialog.tmpl.html',
+                            targetEvent: $event,
+                            focusOnOpen: false,
+                            locals: { 
+                                itemId: {
+                                    item : selectedItemId,
+                                    cartId: itemId
+                                }
+                            }
+                        }); 
+                    }
+                });
+            }
+        }
 
 
     }

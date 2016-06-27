@@ -77,7 +77,7 @@
                     <md-grid-tile flex="50" ng-repeat="modifier in modifiergroup.modifiers.elements">
                         <div layout="column" layout-align="start start" layout-fill>
                             <md-input-container class="md-block" layout="row" layout-align="start start">
-                                <md-checkbox class="md-primary" ng-model="modifier.selected" ng-change="vm.itemModifiers.price = addRemoveModifier(vm.itemModifiers.price, modifier, modifier.selected);">{{modifier.name}}<span ng-if="modifier.price > 0">&nbsp;&#40;{{modifier.price/100 | currency}}&#41;</span></md-checkbox>
+                                <md-checkbox class="md-primary" ng-model="modifier.selected" ng-change="vm.itemModifiers.price = addRemoveModifier(vm.itemModifiers, modifier, modifier.selected);">{{modifier.name}}<span ng-if="modifier.price > 0">&nbsp;&#40;{{modifier.price/100 | currency}}&#41;</span></md-checkbox>
                             </md-input-container>
                         </div>
                     </md-grid-tile><br>
