@@ -1,25 +1,32 @@
 <div class="dashboard-social-header padding-20 padding-top-100 overlay-gradient-30" 
         layout="row" 
         layout-align="start center" 
-        style="background: url(assets/images/backgrounds/clavo/default.png) no-repeat; background-size: cover;">
+        ng-style="{'background-image':'url(' + vm.tempurl + ')'}" style="background-repeat: no-repeat;background-size: cover;min-height:250px;">
 
-    <div class="margin-right-20 margin-bottom-20">
+
+
+
+    <div ng-show="vm.loadingBranding" layout="column" layout-fill>
+        <md-progress-circular md-mode="indeterminate" md-diameter="30px"></md-progress-circular>
+    </div>    
+
+    <div class="margin-right-20 margin-bottom-20" ng-hide="vm.loadingBranding">
         <img src="assets/images/backgrounds/clavo/store_logo.png" alt="girl-avatar" class="make-round" width="100"/>
     </div>
 
-    <div class="text-light" layout="column" layout-fill>
-        <h2 class="font-weight-600 margin-bottom-0 text-light">{{merchantInfo.jsonData.name}}</h2>
+    <div class="text-light" layout="column" ng-hide="vm.loadingBranding" layout-fill>
+        <h2 class="font-weight-600 margin-bottom-0 text-light">{{vm.merchant.jsonData.name}}</h2>
 
         <p class="font-weight-300 margin-top-0 margin-bottom-0">
-            {{appDetails.data.appInfo.longDescription}}
+            {{vm.locationBranding.appInfo.longDescription}}
             <br>
         </p>
 
         <p style="bottom:0; top:80px;background: rgba(255,255,255,0.7);bottom: 0;text-align: left;margin-left: -140px;margin-right: -20px; margin-bottom:-40px;color:#fff;padding-left:140px;">
             <md-icon md-font-icon="zmdi zmdi-pin color-inherit"></md-icon> 
-            {{merchantInfo.jsonData.address.address1}} {{merchantInfo.jsonData.address.address2}} 
-            {{merchantInfo.jsonData.address.address3}} {{merchantInfo.jsonData.address.city}} 
-            {{merchantInfo.jsonData.address.country}} {{merchantInfo.jsonData.address.state}} {{merchantInfo.jsonData.address.zip}}
+            {{vm.merchant.jsonData.address.address1}} {{vm.merchant.jsonData.address.address2}} 
+            {{vm.merchant.jsonData.address.address3}} {{vm.merchant.jsonData.address.city}} 
+            {{vm.merchant.jsonData.address.country}} {{vm.merchant.jsonData.address.state}} {{vm.merchant.jsonData.address.zip}}
             <md-button md-no-ink class="md-accent" aria-label="flat button" ng-click="openLocationsDialog()"> 
                 CHANGE LOCATION
             </md-button> 
@@ -46,21 +53,14 @@
                             <md-button ng-click="vm.fetchCategories()"> Retry </md-button>
                         </div>
 
-
-
                         <md-list class="margin-right-10" ng-show="vm.loadingCategories && !vm.errorInCategories">
-                            <md-subheader class="md-button md-ink-ripple side-menu-link md-no-sticky margin-top-10 padding-0" style="color:#444" ng-click="vm.selectCategory('')">
+                            <md-subheader class="md-button md-ink-ripple side-menu-link md-no-sticky margin-top-10 padding-0" ng-click="vm.selectCategory('')" ng-class="{'active-category' : vm.selectedCategory == '', 'inactive-category': vm.selectedCategory != ''}">
                                     All Categories
                             </md-subheader>
-
                         </md-list>
 
-
                         <li ng-repeat="category in vm.categories" href="" style="color:grey;" class="margin-right-10">
-                            <!-- <button class="md-button md-ink-ripple side-menu-link" ng-show="$first">    All Categories 
-                            </button>   --> 
-
-                            <button class="md-button md-ink-ripple side-menu-link" ng-click="vm.selectCategory(category.id)">
+                            <button class="md-button md-ink-ripple side-menu-link" ng-click="vm.selectCategory(category.id)" ng-show="category.items.elements.length > 0" ng-class="{'active-category' : category.id == vm.selectedCategory}">
                                 {{category.name}} 
                             </button>             
                         </li>
@@ -69,29 +69,30 @@
                     <tri-widget flex="80">
                                               
                     <md-list  class="margin-bottom-20">
-                    <md-subheader class="md-no-sticky padding-top-10 padding-left-10" style="color:#000;" >Menu</md-subheader> 
+                    <md-subheader class="md-no-sticky padding-top-10 padding-left-10" style="color:#000;" >
+                        Menu
+                    </md-subheader> 
 
-
-                        <md-list-item class="md-2-line" ng-repeat="item in vm.items | filter : vm.filterItemsByCategory" ng-if="!item.vzCustomData.hideInApp && item.name != 'Delivery Fee'">
-                             <div class="md-list-item-text" style="width:100%">
-                                <h3 layout="row" layout-align="end center" layout-wrap >{{item.name}} 
-                                    <div layout="row" layout-align="start center" flex>
-                                        <span flex></span>
-                                        {{item.price/100 | currency}} &nbsp;&nbsp;
-                                        <md-icon md-font-icon="zmdi zmdi-plus-circle-o" layout-align="end end" class="md-primary" ng-click="vm.createDialog($event, item.id, 'add')">
-                                        <md-tooltip md-direction="right">
-                                            Add to cart
-                                        </md-tooltip>
-                                        </md-icon>
-                                    </div>
-                                </h3>
-                                <p>{{item.vzCustomData.description}}</p>
-                             </div>
-                            <md-divider ng-hide="$last"></md-divider>
-                        </md-list-item>
+                    <md-list-item class="md-2-line" ng-repeat="item in vm.items | filter : vm.filterItemsByCategory" ng-if="!item.vzCustomData.hideInApp && item.name != 'Delivery Fee'">
+                         <div class="md-list-item-text" style="width:100%">
+                            <h3 layout="row" layout-align="end center" layout-wrap >{{item.name}} 
+                                <div layout="row" layout-align="start center" flex>
+                                    <span flex></span>
+                                    {{item.price/100 | currency}} &nbsp;&nbsp;
+                                    <md-icon md-font-icon="zmdi zmdi-plus-circle-o" layout-align="end end" class="md-primary" ng-click="vm.createDialog($event, item.id, 'add')">
+                                    <md-tooltip md-direction="right">
+                                        Add to cart
+                                    </md-tooltip>
+                                    </md-icon>
+                                </div>
+                            </h3>
+                            <p>{{item.vzCustomData.description}}</p>
+                         </div>
+                        <md-divider ng-hide="$last"></md-divider>
+                    </md-list-item>
                     </md-list>
                 </tri-widget>
-                    </div>
+                </div>
                 </md-whiteframe>
                 <span flex></span>
 

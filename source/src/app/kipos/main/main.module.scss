@@ -24,3 +24,12 @@
     height: 72px;
   }
 }
+
+// Selected Category 
+.inactive-category{
+  color: rgb(128,128,128);
+}
+.active-category{
+  color: #444 !important;
+  font-weight: 500;
+}

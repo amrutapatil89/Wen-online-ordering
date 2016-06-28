@@ -13,7 +13,9 @@
 
         // Temporary object/ arrays/ functions - REMOVE TO STREAM LINE
         $scope.weeks                = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
+        vm.tempurl;
 
+        
         // Data Objects 
         vm.merchant;
         vm.locationInfo;
@@ -36,7 +38,7 @@
 
 
         // Data Functions
-        vm.fetchLocationAccount      = fetchLocationAccount;
+        vm.fetchLocationAccount     = fetchLocationAccount;
         vm.fetchLocationBranding    = fetchLocationBranding;
         vm.fetchCategories          = fetchCategories;
         vm.fetchItems               = fetchItems;
@@ -86,6 +88,7 @@
         // Default error messages
         $rootScope.categoryErrorMessage    = "Could not fetch categories. Please try again";
         $rootScope.itemErrorMessage        = "Could not fetch items. Please try again";
+        $rootScope.brandingErrorMessage    = "Could not fetch Merchant Branding. Please try again";
 
         //cart items details
         $rootScope.cartItemObject = {};
@@ -143,6 +146,9 @@
 
         function fetchLocationAccount(url){
 
+            // Start loading indicator for branding info
+            vm.loadingBranding =  true;
+
             // Fetching account details of the location 
             // From account info fetch app details of the merchant
             // i.e. Branding information, theme etc.
@@ -153,7 +159,7 @@
                 fetchLocationBranding(vm.appId);
             })
             .catch(function(){
-                return $rootScope.categoryErrorMessage;
+                return $rootScope.brandingErrorMessage;
             });
 
         }
@@ -164,10 +170,13 @@
             // as there are no dependency on other calls;
             DataService.getData(API_CONFIG.url + "apps/" + appid)
             .then(function(locationbranding){
+                // Hide loading indicator for branding information
+                vm.loadingBranding =  false;
+                vm.tempurl = "https://s3-us-west-2.amazonaws.com/clavo.data%2FstoreLogo%2FtestLogo/8BGKZCEY14S3E_LOGO?AWSAccessKeyId=AKIAJJ6UXA2IZPE64LDA&Expires=1467029331&Signature=sLz2pM%2BoZwuwuR5Au0REuS%2FNjfw%3D";
                 vm.locationBranding = locationbranding;
             })
             .catch(function(){
-                return $rootScope.categoryErrorMessage;
+                return $rootScope.brandingErrorMessage;
             });
         }
 
